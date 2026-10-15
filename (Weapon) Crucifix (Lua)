@@ -1,0 +1,119 @@
+
+-- convert by team secret
+-- Tool Crucifix For No Evil 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local Model = game:GetObjects("rbxassetid://12933040327")[1]
+local Player = game:GetService("Players").LocalPlayer
+local crucifix = Model.Crucifix
+crucifix.Parent = Player.Backpack
+local script = crucifix.CrucifixScript
+local effect = script:WaitForChild("effect_module")
+effect.Parent = nil
+local spin = script:WaitForChild("HandleSpin")
+spin.Parent = nil
+local handle = crucifix:WaitForChild("Handle")
+local function Raycast(position1, position2, filterlist)
+	local list = RaycastParams.new()
+	list.FilterDescendantsInstances = filterlist
+	list.FilterType = Enum.RaycastFilterType.Blacklist
+	return workspace:Raycast(position1, position2 - position1, list)
+end
+local distance = 17.434
+local can_crucifix = true
+local alternater = 6
+game:GetService("RunService").Heartbeat:Connect(function()
+	if can_crucifix == false then return end
+	if crucifix.Parent == workspace then return end
+	if not game:GetService("Players"):FindFirstChild(script.Parent.Parent.Name) then return end
+	if not handle then return end
+	local position1 = handle.Position
+	local position2 = position1 + handle.CFrame.LookVector * distance
+	local ray = Raycast(position1, position2, {handle, crucifix.Parent})
+	if ray then
+		local instance = ray.Instance
+		local model = instance.Parent
+		local human = model:FindFirstChildOfClass("Humanoid")
+		if not model:FindFirstChild("HumanoidRootPart") then return end
+		local root = model:FindFirstChild("HumanoidRootPart")
+		if not root:IsA("BasePart") then return end
+		if human then
+			root.Anchored = true
+			for _, stuff in pairs(model:GetDescendants()) do
+				pcall(function()
+					if stuff:IsA("Script") then
+						stuff.Enabled = false
+					end
+					if stuff:IsA("Sound") then
+						stuff:Stop()
+					end
+				end)
+			end
+			local subject = Instance.new("Part")
+			subject.CFrame = root.CFrame
+			subject.Position = subject.Position - Vector3.new(0, 15, 0)
+			game:GetService("TweenService"):Create(root, TweenInfo.new(6, Enum.EasingStyle.Back, Enum.EasingDirection.InOut, 0, false, 1), {["CFrame"] = subject.CFrame}):Play()
+			delay(7, function()
+				effect.recer.spin:Destroy()
+				effect.moon.spin:Destroy()
+				effect.recer.ParticleEmitter.Enabled = false
+				game:GetService("TweenService"):Create(effect.moon.PointLight, TweenInfo.new(3), {Range = 0; Brightness = 0;}):Play()
+				game:GetService("TweenService"):Create(effect.recer["guis"]["ImageLabel"], TweenInfo.new(1), {ImageTransparency = 1}):Play()
+				delay(1, function()
+					game:GetService("TweenService"):Create(effect.moon["spell circle"], TweenInfo.new(1), {Transparency = 1}):Play()
+				end)
+				pcall(function()
+					model:Destroy()
+				end)
+			end)
+			local raycast = Raycast(root.Position, root.Position - Vector3.new(0, 1000000, 0), {model})
+			if not raycast then return end
+			effect.Parent = workspace
+			effect.recer.CFrame = CFrame.new(raycast.Position)
+			effect.recer.Top.Parent = root
+			can_crucifix = false
+			script.Parent = game:GetService("ServerScriptService")
+			handle.Parent = workspace
+			handle.Position = handle.Position + handle.CFrame.LookVector * 2
+			handle.Orientation = Vector3.new(0, handle.Orientation.Y, 0)
+			handle.Anchored = true
+			handle.CanCollide = false
+			handle.CanTouch = false
+			handle.Color = Color3.fromRGB(149, 250, 255)
+			handle.Transparency = 0
+			handle.Material = Enum.Material.Neon
+			handle.Name = "C"
+			spin.Parent = handle
+			spin.Enabled = true
+			game:GetService("TweenService"):Create(handle, TweenInfo.new(3), {Position = handle.Position + Vector3.new(0, 4.324, 0)}):Play()
+			crucifix:Destroy()
+			delay(alternater, function()
+				pcall(function()
+					handle["emit"].Enabled = true
+					delay(0.1, function()
+						handle["emit"].Enabled = false
+					end)
+					spin:Destroy()
+					local tabler = {}
+					tabler.Size = Vector3.new(9.045, 11.391, 1.111)
+					tabler.Transparency = 1
+					game:GetService("TweenService"):Create(handle, TweenInfo.new(1), tabler):Play()
+				end)
+			end)
+		end
+	end
+end)
