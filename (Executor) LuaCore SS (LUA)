@@ -1,0 +1,347 @@
+function Loaded()
+local luacore = game:GetObjects("rbxassetid://136507719733274")[1].FluidForceSensor.Script.Script.Script.ScreenGui
+luacore.Parent = game.Players.LocalPlayer.PlayerGui
+
+--//====================\\--
+--\\                Open                  //--
+--//====================\\--
+
+function Lua()
+local imageLabel = luacore.open
+local TweenService = game:GetService("TweenService")
+
+
+imageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+
+
+imageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+wait(0.7)
+
+local targetPosition = UDim2.new(0, 60, 1, -60)
+local tweenInfo = TweenInfo.new(
+	1.5, 
+	Enum.EasingStyle.Quad,
+	Enum.EasingDirection.Out
+)
+
+moveTween = TweenService:Create(imageLabel, tweenInfo, {
+	Position = targetPosition
+})
+
+moveTween:Play()
+
+local TweenService = game:GetService("TweenService")
+local frame = imageLabel
+
+local rotating = false
+
+local function startRotation()
+	rotating = true
+	while rotating do
+		local tweenLeft = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+			Rotation = -5
+		})
+		tweenLeft:Play()
+		tweenLeft.Completed:Wait()
+
+		if not rotating then break end
+
+		local tweenRight = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+			Rotation = 5
+		})
+		tweenRight:Play()
+		tweenRight.Completed:Wait()
+	end
+
+    local reset = TweenService:Create(frame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+		Rotation = 0
+	})
+	reset:Play()
+end
+
+
+frame.MouseEnter:Connect(function()
+	if not rotating then
+		task.spawn(startRotation)
+	end
+end)
+
+
+frame.MouseLeave:Connect(function()
+	rotating = false
+end)
+
+local textLabel = imageLabel.ImageLabel:WaitForChild("TextLabel")
+
+textLabel.Visible = false
+
+imageLabel.MouseEnter:Connect(function()
+	textLabel.Visible = true
+end)
+
+imageLabel.MouseLeave:Connect(function()
+	textLabel.Visible = false
+end)
+end
+Lua()
+
+--//====================\\--
+--\\                Dragg                   //--
+--//====================\\--
+
+local UIS = game:GetService("UserInputService")
+function dragify(Frame)
+    dragToggle = nil
+    local dragSpeed = 0
+    dragInput = nil
+    dragStart = nil
+    local dragPos = nil
+    function updateInput(input)
+        local Delta = input.Position - dragStart
+        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
+    end
+    Frame.InputBegan:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+            dragToggle = true
+            dragStart = input.Position
+            startPos = Frame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragToggle = false
+                end
+            end)
+        end
+    end)
+    Frame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and dragToggle then
+            updateInput(input)
+        end
+    end)
+end
+
+local button = luacore.ResizableFrame.Script
+local fame = luacore.ohwow
+local fram = fame.ScriptHub
+
+dragify(luacore.ResizableFrame)
+dragify(fame)
+
+local frame = luacore.ResizableFrame
+local handle = frame.ResizeHandle
+local UIS = game:GetService("UserInputService")
+
+local resizing = false
+local startMouseY
+local startHeight
+
+handle.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		resizing = true
+		startMouseY = UIS:GetMouseLocation().Y
+		startHeight = frame.Size.Y.Offset
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if resizing and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local currentY = UIS:GetMouseLocation().Y
+		local deltaY = currentY - startMouseY
+
+		local newHeight = math.max(50, startHeight + deltaY)
+		frame.Size = UDim2.new(frame.Size.X.Scale, frame.Size.X.Offset, 0, newHeight)
+	end
+end)
+
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		resizing = false
+	end
+end)
+
+--//====================\\--
+--\\            Main Part               //--
+--//====================\\--
+
+local R6 = luacore.ResizableFrame.R6
+local Re = luacore.ResizableFrame.Respawn
+local Exe = luacore.ResizableFrame.ex
+local TextOx = luacore.ResizableFrame.TextBox
+
+R6.MouseButton1Click:Connect(function()
+
+end)
+
+Re.MouseButton1Click:Connect(function()
+
+end)
+
+Exe.MouseButton1Click:Connect(function()
+  assert(loadstring(TextOx.Text))()
+end)
+
+local tweenService = game:GetService("TweenService")
+
+
+fame.Visible = false
+fram.Visible = false
+fame.BackgroundTransparency = 1 
+fram.BackgroundTransparency = 1 
+
+local tweenInfo = TweenInfo.new(
+	0.5,
+	Enum.EasingStyle.Quad,
+	Enum.EasingDirection.Out
+)
+
+local goalVisible = {BackgroundTransparency = 0} 
+local goalInvisible = {BackgroundTransparency = 1} 
+
+button.MouseButton1Click:Connect(function()
+	if fame.Visible then
+
+		local tween = tweenService:Create(fame, tweenInfo, goalInvisible)
+		tween:Play()
+      local tween = tweenService:Create(fram, tweenInfo, goalInvisible)
+		tween:Play()
+		fame.Visible = false
+      fram.Visible = false
+	else
+
+		fame.Visible = true
+      fram.Visible = true
+  
+		local tween = tweenService:Create(fame, tweenInfo, goalVisible)
+		tween:Play()
+      local tween = tweenService:Create(fram, tweenInfo, goalVisible)
+		tween:Play()
+	end
+end)
+
+--//====================\\--
+--\\            ScriptsHubs           //--
+--//====================\\--
+
+local doge = fram:WaitForChild("doge sum")
+local pe = fram:WaitForChild("pee WHY")
+local knife = fram:WaitForChild("greab4pre")
+local goner = fram:WaitForChild("gonber")
+local sky = fram.snoop
+local thomas = fram:WaitForChild("thomas")
+local Steve = fram.Steve
+local F3x = fram.F3x
+local Xester = fram.Xester
+
+doge.MouseButton1Click:Connect(function()
+ loadstring(game:HttpGet("https://pastefy.app/FIodyZcm/raw"))()
+end)
+
+pe.MouseButton1Click:Connect(function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/gitezgitgit/Pee/refs/heads/main/PeeScript.lua"))()
+end)
+
+knife.MouseButton1Click:Connect(function()
+ loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-grab-knife-v4-42091"))()
+end)
+
+goner.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Goner-47954"))()
+end)
+
+sky.MouseButton1Click:Connect(function()
+-- This was made by Zer0EXE
+
+	snoop = Instance.new("Sound", game.Workspace)
+	snoop.Name = "snoop dugg?"
+	snoop.SoundId = "rbxassetid://5300345098"
+	snoop.Volume = 1500
+	snoop.Looped = true
+	snoop:Play()
+	
+	if game.Lighting:FindFirstChild("AnimatedSky") then return end
+
+	local imageIds = {
+		131395838,131395847,131395855,131395860,131395868,131395884,131395891,
+		131395897,131395901,131395946,131395957,131395966,131395972,131395979,
+		131395986,131395989,131395993,131395997,131396003,131396007,131396012,
+		131396016,131396019,131396024,131396029,131396037,131396042,131396044,
+		131396046,131396054,131396063,131396068,131396072,131396078,131396091,
+		131396098,131396102,131396108,131396110,131396113,131396116,131396121,
+		131396125,131396133,131396137,131396142,131396146,131396156,131396162,
+		131396164,131396169,131396173,131396176,131396181,131396185,131396188,
+		131396192
+	}
+
+	local sky = Instance.new("Sky")
+	sky.Name = "AnimatedSky"
+	sky.Parent = game.Lighting
+
+	while true do
+		for _, id in ipairs(imageIds) do
+			local url = "http://www.roblox.com/asset/?id=" .. id
+			sky.SkyboxBk = url
+			sky.SkyboxDn = url
+			sky.SkyboxFt = url
+			sky.SkyboxLf = url
+			sky.SkyboxRt = url
+			sky.SkyboxUp = url
+			wait(0.04)
+			
+		end
+	end
+ end)
+
+thomas.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Client-Replication-Fe-thomas-28335"))()
+end)
+
+Steve.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://pastebin.com/raw/2NNDTLjL"))()
+end)
+
+F3x.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-F3X-Tool-44387"))()
+end)
+
+Xester.MouseButton1Click:Connect(function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Xester-astra-44171"))()
+end)
+
+end
+
+local whitelist = {9546195060, 3098535773, 7782650268}
+local player = game.Players.LocalPlayer
+
+local function isPlayerWhitelisted(userId)
+    for _, id in ipairs(whitelist) do
+        if userId == id then
+            return true
+        end
+    end
+    return false
+end
+
+if not isPlayerWhitelisted(player.UserId) then
+  game:GetService("StarterGui"):SetCore("SendNotification", {
+	Title = "{ ! } Skid Alert { ! }",
+	Text = "You are not Whilelist! Please Don't Try run this scripts example you not Whilelist",
+	Duration = 5
+})
+  wait(1.9)
+  player:Kick("You are not Whilelist! Please Don't Try run this scripts example you not Whilelist")
+   wait(1)
+   game.Players.LocalPlayer:Destroy()
+end
+
+if isPlayerWhitelisted(player.UserId) then
+  wait(1)
+  print("Enjoy For Using Tidal ss Lua!")
+   warn("Don't Try Leaks this Scripts")
+  Loaded()
+end
