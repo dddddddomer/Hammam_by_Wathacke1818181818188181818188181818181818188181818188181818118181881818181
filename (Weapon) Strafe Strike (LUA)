@@ -1,0 +1,283 @@
+
+-- fixed stage
+
+-- Tool One
+
+local model = game:GetObjects("rbxassetid://11670894308")[1]
+local script = model.A10
+local Player = game:GetService("Players").LocalPlayer
+script.Parent = Player.Backpack
+local StarfS = model.StarfS
+local Handle = script.Handle
+local Epic = Handle.EquipSound
+local mos = Player:GetMouse()
+StarfS.Parent = game.ReplicatedStorage
+local RemoteEvent = Instance.new("BindableEvent")
+local s = 300
+local Player = game.Players.LocalPlayer
+
+local following = true
+
+local can = true
+local trg = nil
+
+local ms = Instance.new("Part", workspace)
+	ms.CanCollide = false
+	ms.CanQuery = false
+	ms.CanTouch = false
+   ms.Position = Vector3.new(20, 1, 20)
+	ms.Size = Vector3.new(20,1,20)
+   ms.Transparency = 1
+   ms.Anchored = true
+	ms.Material = Enum.Material.Neon
+
+local runService = game:GetService("RunService")
+
+runService.RenderStepped:Connect(function()
+	if following then
+		ms.CFrame = CFrame.new(mos.Hit.Position)
+	end
+end)
+
+script.Equipped:Connect(function()
+	if can == true then
+	trg = ms
+      ms.Transparency = 0
+      Epic:Play()
+		end
+end)
+
+script.Unequipped:Connect(function()
+	ms.Transparency = 1
+end)
+
+script.Activated:Connect(function()
+  if following then
+		following = false
+	if script.Enabled then
+   script.Script.Value.Value = true
+	Handle.Code:Play()
+   ms.Transparency = 1
+	local f = math.random(1,2)
+	wait(Handle.Code.TimeLength + 1)
+	local a10 = game.ReplicatedStorage.StarfS.A10W:Clone()
+	a10.Parent = workspace
+   local Vel = a10.Vel
+   local BodyVelocity = Vel.BodyVelocity
+   local G8A = a10.G8A
+   a10:MoveTo(ms.Position + Vector3.new(1150, 1050, 1150))
+	Vel.Engine.Playing = true
+	Vel.A10.Playing = true
+	wait()
+	Vel.CFrame = CFrame.lookAt(Vel.Position, ms.Position)
+	delay(40, function()
+		a10:Destroy()
+		script.Script.Value.Value = true
+	end)
+	coroutine.wrap(function()
+		while wait() do
+			BodyVelocity.Velocity = Vel.CFrame.LookVector * s
+		end
+	end)()
+	wait(3)
+	s = 200
+	coroutine.wrap(function()
+		if f == 1 then
+		local sfx = script.Script.Fire:Clone()
+		sfx.Parent = workspace
+		sfx.Playing = true
+		delay(5, function()
+			sfx:Destroy()
+			end)
+		elseif f == 2 then
+			local sfx = script.Script.Fire2:Clone()
+			sfx.Parent = workspace
+			sfx.Playing = true
+			delay(5, function()
+				sfx:Destroy()
+			end)
+			end
+		while wait(0.25) do
+			if script.Script.Value.Value == true then
+				local blt = game.ReplicatedStorage.StarfS.Bullet30MM:Clone()
+				blt.Parent = workspace
+				blt.Position = ms.Position
+				blt.Attachment2.WorldPosition = ms.Position + Vector3.new(math.random(0,20),math.random(0,0),math.random(0,20))
+				blt.Attachment.WorldPosition = G8A.Position
+            local Beam = blt.Beam
+				local x = Instance.new("Explosion", workspace)
+				x.BlastRadius = 25
+				x.Visible = false
+				x.Position = blt.Attachment2.WorldPosition
+				local vfx = game.ReplicatedStorage.StarfS.Fire0MM:Clone()
+				vfx.Parent = workspace
+				vfx.Position = x.Position
+				vfx.Attachment.FireParticles:Emit(1)
+				delay(5, function()
+					blt:Destroy()
+					vfx:Destroy()
+				end)
+				delay(1.5, function()
+					coroutine.wrap(function()
+						while wait(0.4) do
+							Beam.Width0 = Beam.Width0 - 0.05
+							Beam.Width1 = Beam.Width1 - 0.05
+							end
+					end)()
+				end)
+			end
+		end
+	end)()
+	wait(2)
+	script.Script.Value.Value = false
+	local sfx2 = script.Script.Echo:Clone()
+	sfx2.Parent = workspace
+	delay(10, function()
+		sfx2:Destroy()
+	end)
+		sfx2:Play()
+	s = 350
+	a10.Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0.5,0.1,0)
+	wait(3)
+	a10.Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0.25,0,0)
+	wait(1)
+	a10.Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0,0,0)
+  end
+  task.wait(0.5)
+		following = true
+	end
+end)
+
+-- Tool Two
+
+local Av = model.AV8B
+Av.Parent = Player.Backpack
+
+local Ep = Av.Handle.EquipSound
+
+Av.Equipped:Connect(function()
+	if can == true then
+	trg = ms
+      ms.Transparency = 0
+      Ep:Play()
+		end
+end)
+
+Av.Unequipped:Connect(function()
+	ms.Transparency = 1
+end)
+
+local spam = true
+local shoot = false
+
+coroutine.wrap(function()
+	while task.wait() do
+		if spam then
+			shoot = false
+			task.wait(0.2)
+		end
+	end
+end)()
+
+Av.Activated:Connect(function()
+   if following then
+		following = false
+	Av.Handle.Code:Play()
+   ms.Transparency = 1
+	wait(Av.Handle.Code.TimeLength + 1)
+	local AV8B = game.ReplicatedStorage.StarfS.AV8B:Clone()
+	local s = 190
+	AV8B.Parent = workspace
+   AV8B:MoveTo(ms.Position + Vector3.new(1000,900,1000))
+   local Vel = AV8B.Vel
+   local F1 = Vel.F1
+   local BodyVelocity = Vel.BodyVelocity
+   Vel.AV8B.Playing = true
+	wait()
+	Vel.CFrame = CFrame.lookAt(Vel.Position, ms.Position)
+	delay(40, function()
+		AV8B:Destroy()
+		Shoot = false
+	end)
+	coroutine.wrap(function()
+		while wait() do
+			BodyVelocity.Velocity = Vel.CFrame.LookVector * s
+		end
+	end)()
+	wait(4.5)
+	s = 175
+	wait(0.1)
+	s = 150
+	wait(0.1)
+	s = 125
+	wait(0.1)
+	s = 100
+	wait(0.1)
+	s = 75
+	wait(0.1)
+	s = 50
+	wait(0.1)
+	s = 25
+	wait(0.1)
+	s = 0
+	wait(1)
+	Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0.15,0,0)
+	wait(1)
+	Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0,0,0)
+	coroutine.wrap(function()
+		local sfx = Av.Script.Cannon:Clone()
+		sfx.Parent = workspace
+		sfx.Playing = true
+		delay(5, function()
+			sfx:Destroy()
+		end)
+       spam = false
+        shoot = true
+		while wait(0.35) do
+			if shoot == true then
+            print("Shoot")
+				local blt = game.ReplicatedStorage.StarfS.Bullet30MM:Clone()
+				blt.Parent = workspace
+				blt.Position = ms.Position
+				blt.Attachment2.WorldPosition = ms.Position + Vector3.new(math.random(0,20),math.random(0,0),math.random(0,20))
+				blt.Attachment.WorldPosition = F1.WorldPosition
+				local x = Instance.new("Explosion", workspace)
+				x.BlastRadius = 25
+				x.Visible = false
+            local Beam = blt.Beam
+				x.Position = blt.Attachment2.WorldPosition
+				local vfx = game.ReplicatedStorage.StarfS.Fire0MM:Clone()
+				vfx.Parent = workspace
+				vfx.Position = x.Position
+				vfx.Attachment.FireParticles:Emit(1)
+				delay(3, function()
+					blt:Destroy()
+					vfx:Destroy()
+               Beam:Destroy()
+				end)
+            
+				delay(1.5, function()
+					coroutine.wrap(function()
+						while wait(.05) do
+                        Beam.Width0 = Beam.Width0 -  1.75
+                            Beam.Width1 = Beam.Width1 -  1.75
+							end
+					end)()
+				end)
+			end
+		end
+	end)()
+	wait(5)
+       shoot = false
+       spam = true
+	s = 200
+	Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0.4,0.1,0)
+	wait(3)
+	Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0.25,0,0)
+	wait(1)
+	Vel.BodyAngularVelocity.AngularVelocity = Vector3.new(0,0,0)
+   wait(1)
+    AV8B:Remove()
+		following = true
+  end
+end)
