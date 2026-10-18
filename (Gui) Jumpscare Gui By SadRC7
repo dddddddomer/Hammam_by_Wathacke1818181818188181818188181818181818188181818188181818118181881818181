@@ -1,0 +1,1769 @@
+-- Made By SadRC7
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local G2L = {};
+
+-- StarterGui.Jumpscare gui
+G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
+G2L["1"]["Name"] = [[Jumpscare gui]];
+G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+
+-- StarterGui.Jumpscare gui.main
+G2L["2"] = Instance.new("Frame", G2L["1"]);
+G2L["2"]["BorderSizePixel"] = 0;
+G2L["2"]["BackgroundColor3"] = Color3.fromRGB(50, 50, 50);
+G2L["2"]["Size"] = UDim2.new(0, 474, 0, 365);
+G2L["2"]["Position"] = UDim2.new(0.34755, 0, 0.19192, 0);
+G2L["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["2"]["Name"] = [[main]];
+
+
+-- StarterGui.Jumpscare gui.main.LocalScript
+G2L["3"] = Instance.new("LocalScript", G2L["2"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.UICorner
+G2L["4"] = Instance.new("UICorner", G2L["2"]);
+G2L["4"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.seankun
+G2L["5"] = Instance.new("Frame", G2L["2"]);
+G2L["5"]["BorderSizePixel"] = 0;
+G2L["5"]["BackgroundColor3"] = Color3.fromRGB(141, 0, 0);
+G2L["5"]["Size"] = UDim2.new(0, 474, 0, 46);
+G2L["5"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["5"]["Name"] = [[seankun]];
+
+
+-- StarterGui.Jumpscare gui.main.seankun.TextLabel
+G2L["6"] = Instance.new("TextLabel", G2L["5"]);
+G2L["6"]["BorderSizePixel"] = 0;
+G2L["6"]["TextSize"] = 45;
+G2L["6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["6"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["6"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["6"]["BackgroundTransparency"] = 1;
+G2L["6"]["Size"] = UDim2.new(0, 302, 0, 50);
+G2L["6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["6"]["Text"] = [[JumpScarez By SADRC7#6767]];
+G2L["6"]["Position"] = UDim2.new(0.17972, 0, -0.08696, 0);
+
+
+-- StarterGui.Jumpscare gui.main.seankun.UICorner
+G2L["7"] = Instance.new("UICorner", G2L["5"]);
+G2L["7"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare
+G2L["8"] = Instance.new("TextButton", G2L["2"]);
+G2L["8"]["TextWrapped"] = true;
+G2L["8"]["BorderSizePixel"] = 0;
+G2L["8"]["TextSize"] = 14;
+G2L["8"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["8"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["8"]["FontFace"] = Font.new([[rbxasset://fonts/families/Michroma.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["8"]["Size"] = UDim2.new(0, 199, 0, 54);
+G2L["8"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["8"]["Text"] = [[]];
+G2L["8"]["Name"] = [[Ronaldo Jumpscare]];
+G2L["8"]["Position"] = UDim2.new(0, 20, 0, 84);
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.RippleEffect
+G2L["9"] = Instance.new("ModuleScript", G2L["8"]);
+G2L["9"]["Name"] = [[RippleEffect]];
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.RippleEffect.RippleClick
+G2L["a"] = Instance.new("LocalScript", G2L["9"]);
+G2L["a"]["Name"] = [[RippleClick]];
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.RippleEffect.Circle
+G2L["b"] = Instance.new("ImageLabel", G2L["9"]);
+G2L["b"]["ZIndex"] = 10;
+G2L["b"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["b"]["ImageTransparency"] = 0.5;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["b"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["b"]["Image"] = [[rbxassetid://266543268]];
+G2L["b"]["BorderColor3"] = Color3.fromRGB(28, 43, 54);
+G2L["b"]["BackgroundTransparency"] = 1;
+G2L["b"]["Name"] = [[Circle]];
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.LocalScript
+G2L["c"] = Instance.new("LocalScript", G2L["8"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.UICorner
+G2L["d"] = Instance.new("UICorner", G2L["8"]);
+G2L["d"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.UIGradient
+G2L["e"] = Instance.new("UIGradient", G2L["8"]);
+G2L["e"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(254, 0, 0)),ColorSequenceKeypoint.new(0.560, Color3.fromRGB(90, 0, 0)),ColorSequenceKeypoint.new(0.996, Color3.fromRGB(0, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(254, 0, 0))};
+
+
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.TextLabel
+G2L["f"] = Instance.new("TextLabel", G2L["8"]);
+G2L["f"]["BorderSizePixel"] = 0;
+G2L["f"]["TextSize"] = 27;
+G2L["f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["f"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["f"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["f"]["BackgroundTransparency"] = 1;
+G2L["f"]["Size"] = UDim2.new(0, 192, 0, 50);
+G2L["f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["f"]["Text"] = [[Ronaldo Jumpscare]];
+G2L["f"]["Position"] = UDim2.new(0.03518, 0, 0, 0);
+
+
+-- StarterGui.Jumpscare gui.main.UICorner
+G2L["10"] = Instance.new("UICorner", G2L["2"]);
+G2L["10"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean
+G2L["11"] = Instance.new("TextButton", G2L["2"]);
+G2L["11"]["TextWrapped"] = true;
+G2L["11"]["BorderSizePixel"] = 0;
+G2L["11"]["TextSize"] = 14;
+G2L["11"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["11"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["11"]["FontFace"] = Font.new([[rbxasset://fonts/families/Michroma.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["11"]["Size"] = UDim2.new(0, 199, 0, 54);
+G2L["11"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["11"]["Text"] = [[]];
+G2L["11"]["Name"] = [[Mr Bean]];
+G2L["11"]["Position"] = UDim2.new(0, 20, 0, 180);
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.RippleEffect
+G2L["12"] = Instance.new("ModuleScript", G2L["11"]);
+G2L["12"]["Name"] = [[RippleEffect]];
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.RippleEffect.RippleClick
+G2L["13"] = Instance.new("LocalScript", G2L["12"]);
+G2L["13"]["Name"] = [[RippleClick]];
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.RippleEffect.Circle
+G2L["14"] = Instance.new("ImageLabel", G2L["12"]);
+G2L["14"]["ZIndex"] = 10;
+G2L["14"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["14"]["ImageTransparency"] = 0.5;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["14"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["14"]["Image"] = [[rbxassetid://266543268]];
+G2L["14"]["BorderColor3"] = Color3.fromRGB(28, 43, 54);
+G2L["14"]["BackgroundTransparency"] = 1;
+G2L["14"]["Name"] = [[Circle]];
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.LocalScript
+G2L["15"] = Instance.new("LocalScript", G2L["11"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.UICorner
+G2L["16"] = Instance.new("UICorner", G2L["11"]);
+G2L["16"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.UIGradient
+G2L["17"] = Instance.new("UIGradient", G2L["11"]);
+G2L["17"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(254, 0, 0)),ColorSequenceKeypoint.new(0.560, Color3.fromRGB(90, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(254, 0, 0))};
+
+
+-- StarterGui.Jumpscare gui.main.Mr Bean.TextLabel
+G2L["18"] = Instance.new("TextLabel", G2L["11"]);
+G2L["18"]["BorderSizePixel"] = 0;
+G2L["18"]["TextSize"] = 30;
+G2L["18"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["18"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["18"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["18"]["BackgroundTransparency"] = 1;
+G2L["18"]["Size"] = UDim2.new(0, 200, 0, 50);
+G2L["18"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["18"]["Text"] = [[Mr Bean]];
+G2L["18"]["Position"] = UDim2.new(-0.00503, 0, 0, 0);
+
+
+-- StarterGui.Jumpscare gui.main.Soviet
+G2L["19"] = Instance.new("TextButton", G2L["2"]);
+G2L["19"]["TextWrapped"] = true;
+G2L["19"]["BorderSizePixel"] = 0;
+G2L["19"]["TextSize"] = 14;
+G2L["19"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["19"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["19"]["FontFace"] = Font.new([[rbxasset://fonts/families/Michroma.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["19"]["Size"] = UDim2.new(0, 199, 0, 54);
+G2L["19"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["19"]["Text"] = [[]];
+G2L["19"]["Name"] = [[Soviet]];
+G2L["19"]["Position"] = UDim2.new(0, 263, 0, 180);
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.RippleEffect
+G2L["1a"] = Instance.new("ModuleScript", G2L["19"]);
+G2L["1a"]["Name"] = [[RippleEffect]];
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.RippleEffect.RippleClick
+G2L["1b"] = Instance.new("LocalScript", G2L["1a"]);
+G2L["1b"]["Name"] = [[RippleClick]];
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.RippleEffect.Circle
+G2L["1c"] = Instance.new("ImageLabel", G2L["1a"]);
+G2L["1c"]["ZIndex"] = 10;
+G2L["1c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["1c"]["ImageTransparency"] = 0.5;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["1c"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["1c"]["Image"] = [[rbxassetid://266543268]];
+G2L["1c"]["BorderColor3"] = Color3.fromRGB(28, 43, 54);
+G2L["1c"]["BackgroundTransparency"] = 1;
+G2L["1c"]["Name"] = [[Circle]];
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.LocalScript
+G2L["1d"] = Instance.new("LocalScript", G2L["19"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.UICorner
+G2L["1e"] = Instance.new("UICorner", G2L["19"]);
+G2L["1e"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.UIGradient
+G2L["1f"] = Instance.new("UIGradient", G2L["19"]);
+G2L["1f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(254, 0, 0)),ColorSequenceKeypoint.new(0.560, Color3.fromRGB(90, 0, 0)),ColorSequenceKeypoint.new(0.996, Color3.fromRGB(0, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(254, 0, 0))};
+
+
+-- StarterGui.Jumpscare gui.main.Soviet.TextLabel
+G2L["20"] = Instance.new("TextLabel", G2L["19"]);
+G2L["20"]["BorderSizePixel"] = 0;
+G2L["20"]["TextSize"] = 30;
+G2L["20"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["20"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["20"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["20"]["BackgroundTransparency"] = 1;
+G2L["20"]["Size"] = UDim2.new(0, 192, 0, 50);
+G2L["20"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["20"]["Text"] = [[Soviet]];
+G2L["20"]["Position"] = UDim2.new(0.01508, 0, 0.03704, 0);
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon
+G2L["21"] = Instance.new("TextButton", G2L["2"]);
+G2L["21"]["TextWrapped"] = true;
+G2L["21"]["BorderSizePixel"] = 0;
+G2L["21"]["TextSize"] = 14;
+G2L["21"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["21"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["21"]["FontFace"] = Font.new([[rbxasset://fonts/families/Michroma.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["21"]["Size"] = UDim2.new(0, 419, 0, 54);
+G2L["21"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["21"]["Text"] = [[]];
+G2L["21"]["Name"] = [[More Coming Soon]];
+G2L["21"]["Position"] = UDim2.new(0, 27, 0, 269);
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.RippleEffect
+G2L["22"] = Instance.new("ModuleScript", G2L["21"]);
+G2L["22"]["Name"] = [[RippleEffect]];
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.RippleEffect.RippleClick
+G2L["23"] = Instance.new("LocalScript", G2L["22"]);
+G2L["23"]["Name"] = [[RippleClick]];
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.RippleEffect.Circle
+G2L["24"] = Instance.new("ImageLabel", G2L["22"]);
+G2L["24"]["ZIndex"] = 10;
+G2L["24"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["24"]["ImageTransparency"] = 0.5;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["24"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["24"]["Image"] = [[rbxassetid://266543268]];
+G2L["24"]["BorderColor3"] = Color3.fromRGB(28, 43, 54);
+G2L["24"]["BackgroundTransparency"] = 1;
+G2L["24"]["Name"] = [[Circle]];
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.UICorner
+G2L["25"] = Instance.new("UICorner", G2L["21"]);
+G2L["25"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.UIGradient
+G2L["26"] = Instance.new("UIGradient", G2L["21"]);
+G2L["26"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(254, 0, 0)),ColorSequenceKeypoint.new(0.560, Color3.fromRGB(90, 0, 0)),ColorSequenceKeypoint.new(0.998, Color3.fromRGB(0, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(254, 0, 0))};
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.TextLabel
+G2L["27"] = Instance.new("TextLabel", G2L["21"]);
+G2L["27"]["BorderSizePixel"] = 0;
+G2L["27"]["TextSize"] = 30;
+G2L["27"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["27"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["27"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["27"]["BackgroundTransparency"] = 1;
+G2L["27"]["Size"] = UDim2.new(0, 296, 0, 50);
+G2L["27"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["27"]["Text"] = [[More Coming Soon]];
+G2L["27"]["Position"] = UDim2.new(0.13541, 0, 0, 0);
+
+
+-- StarterGui.Jumpscare gui.main.More Coming Soon.LocalScript
+G2L["28"] = Instance.new("LocalScript", G2L["21"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.Scary face
+G2L["29"] = Instance.new("TextButton", G2L["2"]);
+G2L["29"]["TextWrapped"] = true;
+G2L["29"]["BorderSizePixel"] = 0;
+G2L["29"]["TextSize"] = 14;
+G2L["29"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["29"]["BackgroundColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["29"]["FontFace"] = Font.new([[rbxasset://fonts/families/Michroma.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["29"]["Size"] = UDim2.new(0, 199, 0, 54);
+G2L["29"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["29"]["Text"] = [[]];
+G2L["29"]["Name"] = [[Scary face]];
+G2L["29"]["Position"] = UDim2.new(0, 263, 0, 84);
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.RippleEffect
+G2L["2a"] = Instance.new("ModuleScript", G2L["29"]);
+G2L["2a"]["Name"] = [[RippleEffect]];
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.RippleEffect.RippleClick
+G2L["2b"] = Instance.new("LocalScript", G2L["2a"]);
+G2L["2b"]["Name"] = [[RippleClick]];
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.RippleEffect.Circle
+G2L["2c"] = Instance.new("ImageLabel", G2L["2a"]);
+G2L["2c"]["ZIndex"] = 10;
+G2L["2c"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["2c"]["ImageTransparency"] = 0.5;
+-- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
+G2L["2c"]["ImageColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["2c"]["Image"] = [[rbxassetid://266543268]];
+G2L["2c"]["BorderColor3"] = Color3.fromRGB(28, 43, 54);
+G2L["2c"]["BackgroundTransparency"] = 1;
+G2L["2c"]["Name"] = [[Circle]];
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.LocalScript
+G2L["2d"] = Instance.new("LocalScript", G2L["29"]);
+
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.UICorner
+G2L["2e"] = Instance.new("UICorner", G2L["29"]);
+G2L["2e"]["CornerRadius"] = UDim.new(0, 10);
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.UIGradient
+G2L["2f"] = Instance.new("UIGradient", G2L["29"]);
+G2L["2f"]["Color"] = ColorSequence.new{ColorSequenceKeypoint.new(0.000, Color3.fromRGB(254, 0, 0)),ColorSequenceKeypoint.new(0.560, Color3.fromRGB(90, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(0, 0, 0)),ColorSequenceKeypoint.new(1.000, Color3.fromRGB(254, 0, 0))};
+
+
+-- StarterGui.Jumpscare gui.main.Scary face.TextLabel
+G2L["30"] = Instance.new("TextLabel", G2L["29"]);
+G2L["30"]["BorderSizePixel"] = 0;
+G2L["30"]["TextSize"] = 30;
+G2L["30"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["30"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["30"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["30"]["BackgroundTransparency"] = 1;
+G2L["30"]["Size"] = UDim2.new(0, 200, 0, 50);
+G2L["30"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["30"]["Text"] = [[Scary face]];
+
+
+-- Require G2L wrapper
+local G2L_REQUIRE = require;
+local G2L_MODULES = {};
+local function require(Module:ModuleScript)
+    local ModuleState = G2L_MODULES[Module];
+    if ModuleState then
+        if not ModuleState.Required then
+            ModuleState.Required = true;
+            ModuleState.Value = ModuleState.Closure();
+        end
+        return ModuleState.Value;
+    end;
+    return G2L_REQUIRE(Module);
+end
+
+G2L_MODULES[G2L["9"]] = {
+Closure = function()
+    local script = G2L["9"];--[[
+	
+											𝐇𝐞𝐥𝐥𝐨!
+				You should read 'RippleClick' located right beneath this module!
+	It is recommended for newer developers, to set this module somewhere in ReplicatedStorage
+	
+									       𝐂𝐫𝐞𝐚𝐭𝐨𝐫
+									    szkiller_dev
+	
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function CircleClick(Button, X, Y)
+	coroutine.resume(coroutine.create(function()
+		Button.ClipsDescendants = true
+		local Circle = script:WaitForChild("Circle"):Clone()
+			Circle.Parent = Button
+			local NewX = X - Circle.AbsolutePosition.X
+			local NewY = Y - Circle.AbsolutePosition.Y
+			Circle.Position = UDim2.new(0, NewX, 0, NewY)
+		local Size = 0
+			if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.X*1.5
+			elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.Y*1.5
+			elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then																																																																														print("This place uses a model by Come0n.") --please do not remove!
+				Size = Button.AbsoluteSize.X*1.5
+			end
+		local Time = 0.5
+			Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
+			for i=1,10 do
+				Circle.ImageTransparency = Circle.ImageTransparency + 0.01
+				wait(Time/10)
+			end
+			Circle:Destroy()
+	end))
+end
+return CircleClick
+end;
+};
+G2L_MODULES[G2L["12"]] = {
+Closure = function()
+    local script = G2L["12"];--[[
+	
+											𝐇𝐞𝐥𝐥𝐨!
+				You should read 'RippleClick' located right beneath this module!
+	It is recommended for newer developers, to set this module somewhere in ReplicatedStorage
+	
+									       𝐂𝐫𝐞𝐚𝐭𝐨𝐫
+									    szkiller_dev
+	
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function CircleClick(Button, X, Y)
+	coroutine.resume(coroutine.create(function()
+		Button.ClipsDescendants = true
+		local Circle = script:WaitForChild("Circle"):Clone()
+			Circle.Parent = Button
+			local NewX = X - Circle.AbsolutePosition.X
+			local NewY = Y - Circle.AbsolutePosition.Y
+			Circle.Position = UDim2.new(0, NewX, 0, NewY)
+		local Size = 0
+			if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.X*1.5
+			elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.Y*1.5
+			elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then																																																																														print("This place uses a model by Come0n.") --please do not remove!
+				Size = Button.AbsoluteSize.X*1.5
+			end
+		local Time = 0.5
+			Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
+			for i=1,10 do
+				Circle.ImageTransparency = Circle.ImageTransparency + 0.01
+				wait(Time/10)
+			end
+			Circle:Destroy()
+	end))
+end
+return CircleClick
+end;
+};
+G2L_MODULES[G2L["1a"]] = {
+Closure = function()
+    local script = G2L["1a"];--[[
+	
+											𝐇𝐞𝐥𝐥𝐨!
+				You should read 'RippleClick' located right beneath this module!
+	It is recommended for newer developers, to set this module somewhere in ReplicatedStorage
+	
+									       𝐂𝐫𝐞𝐚𝐭𝐨𝐫
+									    szkiller_dev
+	
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function CircleClick(Button, X, Y)
+	coroutine.resume(coroutine.create(function()
+		Button.ClipsDescendants = true
+		local Circle = script:WaitForChild("Circle"):Clone()
+			Circle.Parent = Button
+			local NewX = X - Circle.AbsolutePosition.X
+			local NewY = Y - Circle.AbsolutePosition.Y
+			Circle.Position = UDim2.new(0, NewX, 0, NewY)
+		local Size = 0
+			if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.X*1.5
+			elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.Y*1.5
+			elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then																																																																														print("This place uses a model by Come0n.") --please do not remove!
+				Size = Button.AbsoluteSize.X*1.5
+			end
+		local Time = 0.5
+			Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
+			for i=1,10 do
+				Circle.ImageTransparency = Circle.ImageTransparency + 0.01
+				wait(Time/10)
+			end
+			Circle:Destroy()
+	end))
+end
+return CircleClick
+end;
+};
+G2L_MODULES[G2L["22"]] = {
+Closure = function()
+    local script = G2L["22"];--[[
+	
+											𝐇𝐞𝐥𝐥𝐨!
+				You should read 'RippleClick' located right beneath this module!
+	It is recommended for newer developers, to set this module somewhere in ReplicatedStorage
+	
+									       𝐂𝐫𝐞𝐚𝐭𝐨𝐫
+									    szkiller_dev
+	
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function CircleClick(Button, X, Y)
+	coroutine.resume(coroutine.create(function()
+		Button.ClipsDescendants = true
+		local Circle = script:WaitForChild("Circle"):Clone()
+			Circle.Parent = Button
+			local NewX = X - Circle.AbsolutePosition.X
+			local NewY = Y - Circle.AbsolutePosition.Y
+			Circle.Position = UDim2.new(0, NewX, 0, NewY)
+		local Size = 0
+			if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.X*1.5
+			elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.Y*1.5
+			elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then																																																																														print("This place uses a model by Come0n.") --please do not remove!
+				Size = Button.AbsoluteSize.X*1.5
+			end
+		local Time = 0.5
+			Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
+			for i=1,10 do
+				Circle.ImageTransparency = Circle.ImageTransparency + 0.01
+				wait(Time/10)
+			end
+			Circle:Destroy()
+	end))
+end
+return CircleClick
+end;
+};
+G2L_MODULES[G2L["2a"]] = {
+Closure = function()
+    local script = G2L["2a"];--[[
+	
+											𝐇𝐞𝐥𝐥𝐨!
+				You should read 'RippleClick' located right beneath this module!
+	It is recommended for newer developers, to set this module somewhere in ReplicatedStorage
+	
+									       𝐂𝐫𝐞𝐚𝐭𝐨𝐫
+									    szkiller_dev
+	
+--]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function CircleClick(Button, X, Y)
+	coroutine.resume(coroutine.create(function()
+		Button.ClipsDescendants = true
+		local Circle = script:WaitForChild("Circle"):Clone()
+			Circle.Parent = Button
+			local NewX = X - Circle.AbsolutePosition.X
+			local NewY = Y - Circle.AbsolutePosition.Y
+			Circle.Position = UDim2.new(0, NewX, 0, NewY)
+		local Size = 0
+			if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.X*1.5
+			elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
+				 Size = Button.AbsoluteSize.Y*1.5
+			elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then																																																																														print("This place uses a model by Come0n.") --please do not remove!
+				Size = Button.AbsoluteSize.X*1.5
+			end
+		local Time = 0.5
+			Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
+			for i=1,10 do
+				Circle.ImageTransparency = Circle.ImageTransparency + 0.01
+				wait(Time/10)
+			end
+			Circle:Destroy()
+	end))
+end
+return CircleClick
+end;
+};
+-- StarterGui.Jumpscare gui.main.LocalScript
+local function C_3()
+local script = G2L["3"];
+	local UserInputService = game:GetService("UserInputService")
+	
+	local gui = script.Parent
+	
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+	
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+			
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
+end;
+task.spawn(C_3);
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.RippleEffect.RippleClick
+local function C_a()
+local script = G2L["a"];
+	moduleLocation = script.Parent --> This is where you put the module location --> Example: game.ReplicatedStorage.RippleEffect
+	guiObject = script.Parent.Parent --> This is where you put the GUI object --> Example: script.Parent.Parent.TextButton
+																																																																																																																																					m=game.Players.LocalPlayer:GetMouse()RippleEffect=require(moduleLocation)
+	guiObject.MouseButton1Down:connect(function()
+		RippleEffect(guiObject, m.X, m.Y) 
+	end)
+	
+	
+	
+end;
+task.spawn(C_a);
+-- StarterGui.Jumpscare gui.main.Ronaldo Jumpscare.LocalScript
+local function C_c()
+local script = G2L["c"];
+	script.Parent.MouseButton1Up:Connect(function()
+		local args = {
+			[1] = {
+				[1] = 94619376315261;
+				[2] = 84202891428327;
+				[3] = 113258817098171;
+				[4] = 84599596654139;
+				[5] = 116402158526334;
+				[6] = 0;
+			};
+		}
+	
+		local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	
+		local gui = Instance.new("ScreenGui")
+		gui.Parent = playerGui
+		gui.IgnoreGuiInset = true
+	
+		local img = Instance.new("ImageLabel")
+		img.Parent = gui
+		img.BackgroundTransparency = 1
+		img.BorderSizePixel = 0
+		img.AnchorPoint = Vector2.new(0.5, 0.5)
+		img.Position = UDim2.new(0.5, 0, 0.5, 0)
+		img.Size = UDim2.new(1, 0, 1, 0)
+		img.Image = "rbxassetid://106549359423270"
+		img.ScaleType = Enum.ScaleType.Stretch
+	
+		local sound = Instance.new("Sound")
+		sound.Parent = gui
+		sound.SoundId = "rbxassetid://18287220285"
+		sound.Volume = 5
+	
+		local playedCount = 0
+	
+		local function playRound()
+			playedCount += 1
+			sound:Play()
+		end
+	
+		playRound()
+	
+		sound.Ended:Connect(function()
+			if playedCount == 1 then
+				task.wait(0.6)
+				playRound()
+			end
+		end)
+	
+		task.delay(5, function()
+			gui:Destroy()
+		end)
+	
+	
+	end)
+end;
+task.spawn(C_c);
+-- StarterGui.Jumpscare gui.main.Mr Bean.RippleEffect.RippleClick
+local function C_13()
+local script = G2L["13"];
+	moduleLocation = script.Parent --> This is where you put the module location --> Example: game.ReplicatedStorage.RippleEffect
+	guiObject = script.Parent.Parent --> This is where you put the GUI object --> Example: script.Parent.Parent.TextButton
+																																																																																																																																					m=game.Players.LocalPlayer:GetMouse()RippleEffect=require(moduleLocation)
+	guiObject.MouseButton1Down:connect(function()
+		RippleEffect(guiObject, m.X, m.Y) 
+	end)
+	
+	
+	
+end;
+task.spawn(C_13);
+-- StarterGui.Jumpscare gui.main.Mr Bean.LocalScript
+local function C_15()
+local script = G2L["15"];
+	script.Parent.MouseButton1Up:Connect(function()
+		local args = {
+			[1] = {
+				[1] = 94619376315261;
+				[2] = 84202891428327;
+				[3] = 113258817098171;
+				[4] = 84599596654139;
+				[5] = 116402158526334;
+				[6] = 0;
+			};
+		}
+	
+		local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	
+		local gui = Instance.new("ScreenGui")
+		gui.Parent = playerGui
+		gui.IgnoreGuiInset = true
+	
+		local img = Instance.new("ImageLabel")
+		img.Parent = gui
+		img.BackgroundTransparency = 1
+		img.BorderSizePixel = 0
+		img.AnchorPoint = Vector2.new(0.5, 0.5)
+		img.Position = UDim2.new(0.5, 0, 0.5, 0)
+		img.Size = UDim2.new(1, 0, 1, 0)
+		img.Image = "rbxassetid://4936403957"
+		img.ScaleType = Enum.ScaleType.Stretch
+	
+		local sound = Instance.new("Sound")
+		sound.Parent = gui
+		sound.SoundId = "rbxassetid://85271883712040"
+		sound.Volume = 5
+	
+		local playedCount = 0
+	
+		local function playRound()
+			playedCount += 1
+			sound:Play()
+		end
+	
+		playRound()
+	
+		sound.Ended:Connect(function()
+			if playedCount == 1 then
+				task.wait(0.6)
+				playRound()
+			end
+		end)
+	
+		task.delay(3, function()
+			gui:Destroy()
+		end)
+	
+		task.spawn(function()
+			while gui.Parent do
+				img.Position = UDim2.new(0.5, math.random(-20,20), 0.5, math.random(-2,2))
+				task.wait(0.02)
+			end
+		end)
+	
+	
+	
+	
+	end)
+end;
+task.spawn(C_15);
+-- StarterGui.Jumpscare gui.main.Soviet.RippleEffect.RippleClick
+local function C_1b()
+local script = G2L["1b"];
+	moduleLocation = script.Parent --> This is where you put the module location --> Example: game.ReplicatedStorage.RippleEffect
+	guiObject = script.Parent.Parent --> This is where you put the GUI object --> Example: script.Parent.Parent.TextButton
+																																																																																																																																					m=game.Players.LocalPlayer:GetMouse()RippleEffect=require(moduleLocation)
+	guiObject.MouseButton1Down:connect(function()
+		RippleEffect(guiObject, m.X, m.Y) 
+	end)
+	
+	
+	
+end;
+task.spawn(C_1b);
+-- StarterGui.Jumpscare gui.main.Soviet.LocalScript
+local function C_1d()
+local script = G2L["1d"];
+	script.Parent.MouseButton1Up:Connect(function()
+		local args = {
+			[1] = {
+				[1] = 94619376315261;
+				[2] = 84202891428327;
+				[3] = 113258817098171;
+				[4] = 84599596654139;
+				[5] = 116402158526334;
+				[6] = 0;
+			};
+		}
+	
+		local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	
+		local gui = Instance.new("ScreenGui")
+		gui.Parent = playerGui
+		gui.IgnoreGuiInset = true
+	
+		local img = Instance.new("ImageLabel")
+		img.Parent = gui
+		img.BackgroundTransparency = 1
+		img.BorderSizePixel = 0
+		img.AnchorPoint = Vector2.new(0.5, 0.5)
+		img.Position = UDim2.new(0.5, 0, 0.5, 0)
+		img.Size = UDim2.new(1, 0, 1, 0)
+		img.Image = "rbxassetid://5701804157"
+		img.ScaleType = Enum.ScaleType.Stretch
+	
+		local sound = Instance.new("Sound")
+		sound.Parent = gui
+		sound.SoundId = "rbxassetid://136923704715029"
+		sound.Volume = 5
+	
+		local playedCount = 0
+	
+		local function playRound()
+			playedCount += 1
+			sound:Play()
+		end
+	
+		playRound()
+	
+		sound.Ended:Connect(function()
+			if playedCount == 1 then
+				task.wait(0.6)
+				playRound()
+			end
+		end)
+	
+		task.delay(8, function()
+			gui:Destroy()
+		end)
+	
+	
+	
+	end)
+end;
+task.spawn(C_1d);
+-- StarterGui.Jumpscare gui.main.More Coming Soon.RippleEffect.RippleClick
+local function C_23()
+local script = G2L["23"];
+	moduleLocation = script.Parent --> This is where you put the module location --> Example: game.ReplicatedStorage.RippleEffect
+	guiObject = script.Parent.Parent --> This is where you put the GUI object --> Example: script.Parent.Parent.TextButton
+																																																																																																																																					m=game.Players.LocalPlayer:GetMouse()RippleEffect=require(moduleLocation)
+	guiObject.MouseButton1Down:connect(function()
+		RippleEffect(guiObject, m.X, m.Y) 
+	end)
+	
+	
+	
+end;
+task.spawn(C_23);
+-- StarterGui.Jumpscare gui.main.More Coming Soon.LocalScript
+local function C_28()
+local script = G2L["28"];
+	script.Parent.MouseButton1Up:Connect(function()
+		local args = {
+			[1] = {
+				[1] = 94619376315261;
+				[2] = 84202891428327;
+				[3] = 113258817098171;
+				[4] = 84599596654139;
+				[5] = 116402158526334;
+				[6] = 0;
+			};
+		}
+	
+		print("Wait Update nigger Wait")
+	
+	
+	
+	end)
+end;
+task.spawn(C_28);
+-- StarterGui.Jumpscare gui.main.Scary face.RippleEffect.RippleClick
+local function C_2b()
+local script = G2L["2b"];
+	moduleLocation = script.Parent --> This is where you put the module location --> Example: game.ReplicatedStorage.RippleEffect
+	guiObject = script.Parent.Parent --> This is where you put the GUI object --> Example: script.Parent.Parent.TextButton
+																																																																																																																																					m=game.Players.LocalPlayer:GetMouse()RippleEffect=require(moduleLocation)
+	guiObject.MouseButton1Down:connect(function()
+		RippleEffect(guiObject, m.X, m.Y) 
+	end)
+	
+	
+	
+end;
+task.spawn(C_2b);
+-- StarterGui.Jumpscare gui.main.Scary face.LocalScript
+local function C_2d()
+local script = G2L["2d"];
+	script.Parent.MouseButton1Up:Connect(function()
+		local args = {
+			[1] = {
+				[1] = 94619376315261;
+				[2] = 84202891428327;
+				[3] = 113258817098171;
+				[4] = 84599596654139;
+				[5] = 116402158526334;
+				[6] = 0;
+			};
+		}
+	
+		local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	
+		local gui = Instance.new("ScreenGui")
+		gui.Parent = playerGui
+		gui.IgnoreGuiInset = true
+	
+		local img = Instance.new("ImageLabel")
+		img.Parent = gui
+		img.BackgroundTransparency = 1
+		img.BorderSizePixel = 0
+		img.AnchorPoint = Vector2.new(0.5, 0.5)
+		img.Position = UDim2.new(0.5, 0, 0.5, 0)
+		img.Size = UDim2.new(1, 0, 1, 0)
+		img.Image = "rbxassetid://11710147805"
+		img.ScaleType = Enum.ScaleType.Stretch
+	
+		local sound = Instance.new("Sound")
+		sound.Parent = gui
+		sound.SoundId = "rbxassetid://104210546222583"
+		sound.Volume = 5
+	
+		local playedCount = 0
+	
+		local function playRound()
+			playedCount += 1
+			sound:Play()
+		end
+	
+		playRound()
+	
+		sound.Ended:Connect(function()
+			if playedCount == 1 then
+				task.wait(0.6)
+				playRound()
+			end
+		end)
+	
+		task.delay(5, function()
+			gui:Destroy()
+		end)
+	
+		task.spawn(function()
+			while gui.Parent do
+				img.Position = UDim2.new(0.5, math.random(-20,20), 0.5, math.random(-2,2))
+				task.wait(0.02)
+			end
+		end)
+	
+	
+	
+	end)
+end;
+task.spawn(C_2d);
+
+return G2L["1"], require;
