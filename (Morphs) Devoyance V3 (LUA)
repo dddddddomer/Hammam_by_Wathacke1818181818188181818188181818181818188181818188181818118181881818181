@@ -1,0 +1,2827 @@
+local target = game.Players.LocalPlayer.Name
+
+
+
+if game.Players.LocalPlayer.Name == target then
+	local function loadmod(modID,gamePath)
+		local IS = game:GetService("InsertService")
+
+		local loadedMOD = IS:LoadLocalAsset("rbxassetid://"..modID)
+		loadedMOD.Parent = gamePath
+	end
+
+	loadmod("13421637366",game.Players[target].Character)
+	wait(1)
+
+	Pl =  game.Players[target]
+	Player = Pl
+	C = Pl.Character
+	Hum = C.Humanoid
+	CFR = CFrame.new
+	game.Players[target].Character = Player.Character
+	local CAS = {Actions={}}
+	local Event = Instance.new("RemoteEvent")
+	Event.Name = "UserInput_Event"
+	Event.Parent = Player.Character
+	local fakeEvent = function()
+		local t = {_fakeEvent=true}
+		t.Connect = function(self,f)self.Function=f end
+		t.connect = t.Connect
+		return t
+	end
+	local m = {Target=nil,Hit=CFrame.new(),KeyUp=fakeEvent(),KeyDown=fakeEvent(),Button1Up=fakeEvent(),Button1Down=fakeEvent()}
+	local UIS = {InputBegan=fakeEvent(),InputEnded=fakeEvent()}
+	function CAS:BindAction(name,fun,touch,...)
+		CAS.Actions[name] = {Name=name,Function=fun,Keys={...}}
+	end
+	function CAS:UnbindAction(name)
+		CAS.Actions[name] = nil
+	end
+	local function te(self,ev,...)
+		local t = m[ev]
+		if t and t._fakeEvent and t.Function then
+			t.Function(...)
+		end
+	end
+	m.TrigEvent = te
+	UIS.TrigEvent = te
+	Event.OnClientEvent:Connect(function(plr,io)
+		if plr~=Player then return end
+		if io.isMouse then
+			m.Target = io.Target
+			m.Hit = io.Hit
+		elseif io.UserInputType == Enum.UserInputType.MouseButton1 then
+			if io.UserInputState == Enum.UserInputState.Begin then
+				m:TrigEvent("Button1Down")
+			else
+				m:TrigEvent("Button1Up")
+			end
+		else
+			for n,t in pairs(CAS.Actions) do
+				for _,k in pairs(t.Keys) do
+					if k==io.KeyCode then
+						t.Function(t.Name,io.UserInputState,io)
+					end
+				end
+			end
+			if io.UserInputState == Enum.UserInputState.Begin then
+				m:TrigEvent("KeyDown",io.KeyCode.Name:lower())
+				UIS:TrigEvent("InputBegan",io,false)
+			else
+				m:TrigEvent("KeyUp",io.KeyCode.Name:lower())
+				UIS:TrigEvent("InputEnded",io,false)
+			end
+		end
+	end)
+	Mouse,mouse,UserInputService,ContextActionService = m,m,UIS,CAS
+
+	-- Humanoid Stuff, Mainly Defining the player and what a CFrame is. -- //
+
+	rad = math.rad;
+	cos = math.cos;
+	sin = math.sin;
+	tan = math.tan;
+	pi = math.pi;
+	cosh = math.cosh;
+	sinh = math.sinh;
+	local LerpFactor, Alpha = .1
+	sine = 0
+	change = 1
+
+	-- Ceasing Animate -- //
+	C:WaitForChild("Animate"):Destroy() -- Animate needs to C e a s e -- //
+	C:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator"):Destroy()  -- Just So animate doesn't cause any further problems. -- //
+	-- Animate has now Ceased -- //
+
+	-- Limb Setup. --
+	local char = C
+	local Torso = char.Torso
+	local rarm = char["Right Arm"]
+	local larm = char["Left Arm"]
+	local lleg = char["Left Leg"]
+	local rleg = char["Right Leg"]
+	ra = char["Right Arm"]
+	la = char["Left Arm"]
+	rl = char["Right Leg"]
+	ll = char["Left Leg"]
+	LS=Torso["Left Shoulder"] 
+	LH=Torso["Left Hip"] 
+	RS=Torso["Right Shoulder"] 
+	RH=Torso["Right Hip"] 
+	RW, LW=Instance.new("Motor6D"), Instance.new("Motor6D") 
+	RW.Name="Right Shoulder" LW.Name="Left Shoulder"
+	LH=Torso["Left Hip"]
+	RH=Torso["Right Hip"]
+	hed = char.Head
+
+	-- CFrame Functions
+	function QuaternionFromCFrame(cf) 
+		local mx, my, mz, m00, m01, m02, m10, m11, m12, m20, m21, m22 = cf:components() 
+		local trace = m00 + m11 + m22 
+		if trace > 0 then 
+			local s = math.sqrt(1 + trace) 
+			local recip = 0.5/s 
+			return (m21-m12)*recip, (m02-m20)*recip, (m10-m01)*recip, s*0.5 
+		else 
+			local i = 0 
+			if m11 > m00 then
+				i = 1
+			end
+			if m22 > (i == 0 and m00 or m11) then 
+				i = 2 
+			end 
+			if i == 0 then 
+				local s = math.sqrt(m00-m11-m22+1) 
+				local recip = 0.5/s 
+				return 0.5*s, (m10+m01)*recip, (m20+m02)*recip, (m21-m12)*recip 
+			elseif i == 1 then 
+				local s = math.sqrt(m11-m22-m00+1) 
+				local recip = 0.5/s 
+				return (m01+m10)*recip, 0.5*s, (m21+m12)*recip, (m02-m20)*recip 
+			elseif i == 2 then 
+				local s = math.sqrt(m22-m00-m11+1) 
+				local recip = 0.5/s return (m02+m20)*recip, (m12+m21)*recip, 0.5*s, (m10-m01)*recip 
+			end 
+		end 
+	end
+
+	function QuaternionToCFrame(px, py, pz, x, y, z, w) 
+		local xs, ys, zs = x + x, y + y, z + z 
+		local wx, wy, wz = w*xs, w*ys, w*zs 
+		local xx = x*xs 
+		local xy = x*ys 
+		local xz = x*zs 
+		local yy = y*ys 
+		local yz = y*zs 
+		local zz = z*zs 
+		return CFrame.new(px, py, pz,1-(yy+zz), xy - wz, xz + wy,xy + wz, 1-(xx+zz), yz - wx, xz - wy, yz + wx, 1-(xx+yy)) 
+	end
+
+	function QuaternionSlerp(a, b, t) 
+		local cosTheta = a[1]*b[1] + a[2]*b[2] + a[3]*b[3] + a[4]*b[4] 
+		local startInterp, finishInterp; 
+		if cosTheta >= 0.0001 then 
+			if (1 - cosTheta) > 0.0001 then 
+				local theta = math.acos(cosTheta) 
+				local invSinTheta = 1/math.sin(theta) 
+				startInterp = math.sin((1-t)*theta)*invSinTheta 
+				finishInterp = math.sin(t*theta)*invSinTheta  
+			else 
+				startInterp = 1-t 
+				finishInterp = t 
+			end 
+		else 
+			if (1+cosTheta) > 0.0001 then 
+				local theta = math.acos(-cosTheta) 
+				local invSinTheta = 1/math.sin(theta) 
+				startInterp = math.sin((t-1)*theta)*invSinTheta 
+				finishInterp = math.sin(t*theta)*invSinTheta 
+			else 
+				startInterp = t-1 
+				finishInterp = t 
+			end 
+		end 
+		return a[1]*startInterp + b[1]*finishInterp, a[2]*startInterp + b[2]*finishInterp, a[3]*startInterp + b[3]*finishInterp, a[4]*startInterp + b[4]*finishInterp 
+	end
+
+
+	function clerp(a,b,t) 
+		local qa = {QuaternionFromCFrame(a)}
+		local qb = {QuaternionFromCFrame(b)} 
+		local ax, ay, az = a.x, a.y, a.z 
+		local bx, by, bz = b.x, b.y, b.z
+		local _t = 1-t
+		return QuaternionToCFrame(_t*ax + t*bx, _t*ay + t*by, _t*az + t*bz,QuaternionSlerp(qa, qb, t)) 
+	end 
+
+	euler = CFrame.fromEulerAnglesXYZ
+	cf = CFrame.new
+	angles = CFrame.Angles
+	necko=cf(0, 1, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+	necko2=cf(0, -0.5, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+	LHC0=cf(-1,-1,0,-0,-0,-1,0,1,0,1,0,0)
+	LHC1=cf(-0.5,1,0,-0,-0,-1,0,1,0,1,0,0)
+	RHC0=cf(1,-1,0,0,0,1,0,1,0,-1,-0,-0)
+	RHC1=cf(0.5,1,0,0,0,1,0,1,0,-1,-0,-0)
+	RootPart=char.HumanoidRootPart
+	RootJoint=RootPart.RootJoint
+	RootCF=euler(-1.57,0,3.14)
+	local root = char:FindFirstChild'HumanoidRootPart'
+	player=Player 
+	ch=char
+	RSH=ch.Torso["Right Shoulder"] 
+	LSH=ch.Torso["Left Shoulder"] 
+	-- 
+	RSH.Parent=nil 
+	LSH.Parent=nil 
+	-- 
+	RW.Name="Right Shoulder"
+	RW.Part0=ch.Torso 
+	RW.C0=cf(1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(1.3, 0, -0.5) 
+	RW.C1=cf(0, 0.5, 0) 
+	RW.Part1=ch["Right Arm"] 
+	RW.Parent=ch.Torso 
+	-- 
+	LW.Name="Left Shoulder"
+	LW.Part0=ch.Torso 
+	LW.C0=cf(-1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(1.7, 0, 0.8) 
+	LW.C1=cf(0, 0.5, 0) 
+	LW.Part1=ch["Left Arm"] 
+	LW.Parent=ch.Torso 
+
+	Hum.WalkSpeed = 16
+	Hum.JumpPower = 100
+	-- CFrame End --
+
+	local EyeToggle = true
+	local Mode = 1
+	Aero = Player.UserId == 16330509
+	AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+	WingFolder = game.Players[target].Character.Devoyance.Resources.Wings
+	OtherThings = game.Players[target].Character.Devoyance.Resources["Other Stuff"]
+	WNG1 = WingFolder.Wing1
+
+	local Wing1Weld = Instance.new("WeldConstraint",WingFolder.Wing1)
+	Wing1Weld.Part0 = WingFolder.Wing1.Main Wing1Weld.Part1 = WingFolder.Wing1.Secondary
+	W1 = Instance.new("Motor6D",OtherThings) W1.Part0 = Torso W1.Part1 = WingFolder.Wing1.Center
+	W2W = WNG1:Clone() W2W.Name = "Wing2" W2W.Parent = WingFolder
+	W2 = Instance.new('Motor6D',OtherThings) W2.Part0 = Torso W2.Part1 = WingFolder.Wing2.Center
+	W3W = WNG1:Clone() W3W.Name = "Wing3" W3W.Parent = WingFolder
+	W3 = Instance.new('Motor6D',OtherThings) W3.Part0 = Torso W3.Part1 = WingFolder.Wing3.Center
+	W4W = WNG1:Clone() W4W.Name = "Wing4" W4W.Parent = WingFolder
+	W4 = Instance.new('Motor6D',OtherThings) W4.Part0 = Torso W4.Part1 = WingFolder.Wing4.Center
+	W5W = WNG1:Clone() W5W.Name = "Wing5" W5W.Parent = WingFolder
+	W5 = Instance.new('Motor6D',OtherThings) W5.Part0 = Torso W5.Part1 = WingFolder.Wing5.Center
+	W6W = WNG1:Clone() W6W.Name = "Wing6" W6W.Parent = WingFolder
+	W6 = Instance.new('Motor6D',OtherThings) W6.Part0 = Torso W6.Part1 = WingFolder.Wing6.Center
+
+	local ExtraFolder = Instance.new('Folder',game.Players[target].Character.Devoyance.Resources)
+
+	W7W =  WNG1:Clone() W7W.Name = "Wing7" W7W.Parent = ExtraFolder
+	W7 = Instance.new('Motor6D',OtherThings) W7.Part0 = Torso W7.Part1 = ExtraFolder.Wing7.Center
+	W8W =  WNG1:Clone() W8W.Name = "Wing8" W8W.Parent = ExtraFolder
+	W8 = Instance.new('Motor6D',OtherThings) W8.Part0 = Torso W8.Part1 = ExtraFolder.Wing8.Center
+	W9W =  WNG1:Clone() W9W.Name = "Wing9" W9W.Parent = ExtraFolder
+	W9 = Instance.new('Motor6D',OtherThings) W9.Part0 = Torso W9.Part1 = ExtraFolder.Wing9.Center
+	W10W =  WNG1:Clone() W10W.Name = "Wing10" W10W.Parent = ExtraFolder
+	W10 = Instance.new('Motor6D',OtherThings) W10.Part0 = Torso W10.Part1 = ExtraFolder.Wing10.Center
+	W11W =  WNG1:Clone() W11W.Name = "Wing11" W11W.Parent = ExtraFolder
+	W11 = Instance.new('Motor6D',OtherThings) W11.Part0 = Torso W11.Part1 = ExtraFolder.Wing11.Center
+	W12W =  WNG1:Clone() W12W.Name = "Wing12" W12W.Parent = ExtraFolder
+	W12 = Instance.new('Motor6D',OtherThings) W12.Part0 = Torso W12.Part1 = ExtraFolder.Wing12.Center
+
+	-- < // Block of Gradient Welds. \\ > --
+	local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+	local h1 = Instance.new("Motor6D",OtherThings) h1.Part0 = e.f1 h1.Part1 = hed h1.C1 = CFrame.new(0,.3,0)
+	local h2 = Instance.new("Motor6D",OtherThings) h2.Part0 = e.f2 h2.Part1 = hed h2.C1 = CFrame.new(0,.28,0)
+	local h3 = Instance.new("Motor6D",OtherThings) h3.Part0 = e.f3 h3.Part1 = hed h3.C1 = CFrame.new(0,.26,0)
+	local h4 = Instance.new("Motor6D",OtherThings) h4.Part0 = e.f4 h4.Part1 = hed h4.C1 = CFrame.new(0,.24,0)
+	local h5 = Instance.new("Motor6D",OtherThings) h5.Part0 = e.f5 h5.Part1 = hed h5.C1 = CFrame.new(0,.22,0)
+	local h6 = Instance.new("Motor6D",OtherThings) h6.Part0 = e.f6 h6.Part1 = hed h6.C1 = CFrame.new(0,.2,0)
+	local h7 = Instance.new("Motor6D",OtherThings) h7.Part0 = e.f7 h7.Part1 = hed h7.C1 = CFrame.new(0,.18,0)
+	local h8 = Instance.new("Motor6D",OtherThings) h8.Part0 = e.f8 h8.Part1 = hed h8.C1 = CFrame.new(0,.16,0)
+	local h9 = Instance.new("Motor6D",OtherThings) h9.Part0 = e.f9 h9.Part1 = hed h9.C1 = CFrame.new(0,.14,0)
+	local h10 = Instance.new("Motor6D",OtherThings) h10.Part0 = e.f10 h10.Part1 = hed h10.C1 = CFrame.new(0,.12,0)
+	local h11 = Instance.new("Motor6D",OtherThings) h11.Part0 = e.f11 h11.Part1 = hed h11.C1 = CFrame.new(0,.1,0)
+	local h12 = Instance.new("Motor6D",OtherThings) h12.Part0 = e.f12 h12.Part1 = hed h12.C1 = CFrame.new(0,.08,0)
+
+	-- <// Aero Welding Stuff \\ > --
+	BetterHeadWeld = Instance.new('Motor6D',OtherThings) BetterHeadWeld.Part0 = AeroResources.AeroHead BetterHeadWeld.Part1 = C.Head BetterHeadWeld.C1 = CFrame.new(0,0,.01)
+	SWeld = Instance.new('Motor6D',OtherThings) SWeld.Part0 = AeroResources.Shades SWeld.Part1 = AeroResources.AeroHead SWeld.C0 = CFrame.new(0,-.35,-.175)
+	SCWeld = Instance.new('Motor6D',OtherThings) SCWeld.Part0 = AeroResources.Scarf SCWeld.Part1 = Torso SCWeld.C0 = CFrame.new(0,-.8,.05)
+	HairWeld = Instance.new('Motor6D',OtherThings) HairWeld.Part0 = AeroResources.LocksOfIce HairWeld.Part1 = C.Head HairWeld.C1 = CFrame.new(.32,.57,.28)
+	HairWeld2 = Instance.new('Motor6D',OtherThings) HairWeld2.Part0 = AeroResources.LocksOfIce2 HairWeld2.Part1 = C.Head HairWeld2.C1 = CFrame.new(.32,.57,.28)
+
+	-- Left Eye
+	LE = Instance.new("Part",hed) LE.Color = Color3.fromRGB(35,0,45) LE.Size = Vector3.new(1,1,1) LE.Anchored = false LE.CanCollide = false 
+	LE.Material = Enum.Material.Neon LE.Transparency = 0 LE.Name = "Left Eye"
+	LSphereThing = Instance.new("SpecialMesh",LE) LSphereThing.Scale = Vector3.new(.1,.3,.1) LSphereThing.MeshType = Enum.MeshType.Sphere
+	Leye = Instance.new("Motor6D",OtherThings) Leye.Part1 = LE Leye.Part0 = hed Leye.C1 = CFrame.new(.2,-.2,.6)
+	-- Secondary Left Color --
+	LESC = Instance.new("Part",LE) LESC.Color = Color3.fromRGB(125,0,255) LESC.Size = Vector3.new(1,1,1) LESC.Anchored = false LESC.CanCollide = false 
+	LESC.Material = Enum.Material.Neon LESC.Transparency = 0 LESC.Name = "Left Eye Secondary Color"
+	local LESSphereThing = Instance.new("SpecialMesh",LESC) LESSphereThing.Scale = Vector3.new(.1,.2,.1025) LESSphereThing.MeshType = Enum.MeshType.Sphere
+	LESeye = Instance.new("Motor6D",OtherThings) LESeye.Part1 = LESC LESeye.Part0 = hed LESeye.C1 = CFrame.new(.2,-.15,.6)
+	-- Left Iris --
+	Lir = Instance.new("Part",LE) Lir.Color = Color3.fromRGB(0,0,0) Lir.Size = Vector3.new(1,1,1) Lir.Anchored = false Lir.CanCollide = false
+	Lir.Material = Enum.Material.Neon Lir.Transparency = 0 Lir.Name = "Left Iris"
+	local LirSphereThing = Instance.new("SpecialMesh",Lir) LirSphereThing.Scale = Vector3.new(.087,.275,.135) LirSphereThing.MeshType = Enum.MeshType.Sphere
+	Liris = Instance.new("Motor6D",OtherThings) Liris.Part1 = Lir Liris.Part0 = hed Liris.C1 = CFrame.new(.2,-.2,.6)
+	-- L EyeShine -- 
+	Les = Instance.new("Part",LE) Les.Color = Color3.fromRGB(165,165,170) Les.Size = Vector3.new(1,1,1) Les.Anchored = false Les.CanCollide = false 
+	Les.Material = Enum.Material.Neon Les.Transparency = 0 Les.Name = "Left EyeShine"
+	local LeysSphereThing = Instance.new("SpecialMesh",Les) LeysSphereThing.Scale = Vector3.new(.015,.05,.05) LeysSphereThing.MeshType = Enum.MeshType.Sphere
+	Leysh = Instance.new("Motor6D",OtherThings) Leysh.Part1 = Les Leysh.Part0 = hed Leysh.C1 = CFrame.new(.18,-.27,.65)
+	LB = game.Players[target].Character.Devoyance.Resources.Aero.EyeParts.REyeClosed:Clone() LB.Anchored = false LB.Parent = game.Players[target].Character
+	LBW = Instance.new("Motor6D",OtherThings) LBW.Part1 = LB LBW.Part0 = hed LBW.C1 = CFrame.new(0,0,0) LBW.C0 = CFrame.new(-0.2,0.125,-0.55)*CFrame.Angles(math.rad(0),math.rad(90),math.rad(-90))
+	LB.Transparency = 1
+	-- End Left Eye Stuff -- 
+
+	-- Right Eye
+	RE = Instance.new("Part",hed) RE.Color = Color3.fromRGB(35,0,45) RE.Size = Vector3.new(1,1,1) RE.Anchored = false RE.CanCollide = false
+	RE.Material = Enum.Material.Neon RE.Transparency = 0 RE.Name = "Right Eye"
+	local RSphereThing = Instance.new("SpecialMesh",RE) RSphereThing.Scale = Vector3.new(.1,.3,.1) RSphereThing.MeshType = Enum.MeshType.Sphere
+	Reye = Instance.new("Motor6D",OtherThings) Reye.Part1 = RE Reye.Part0 = hed Reye.C1 = CFrame.new(-.2,-.2,.6)
+	-- Right Secondary Color --
+	RESC = Instance.new("Part",RE) RESC.Color = Color3.fromRGB(125,0,255) RESC.Size = Vector3.new(1,1,1) RESC.Anchored = false RESC.CanCollide = false
+	RESC.Material = Enum.Material.Neon RESC.Transparency = 0 RESC.Name = "Right Eye Secondary Color"
+	local RESSphereThing = Instance.new("SpecialMesh",RESC) RESSphereThing.Scale = Vector3.new(.1,.2,.1025) RESSphereThing.MeshType = Enum.MeshType.Sphere
+	RESeye = Instance.new("Motor6D",OtherThings) RESeye.Part1 = RESC RESeye.Part0 = hed RESeye.C1 = CFrame.new(-.2,-.15,.6)
+	-- Right Iris --
+	Rir = Instance.new("Part",RE) Rir.Color = Color3.fromRGB(0,0,0) Rir.Size = Vector3.new(1,1,1) Rir.Anchored = false Rir.CanCollide = false
+	Rir.Material = Enum.Material.Neon Rir.Transparency = 0 Rir.Name = "Right Iris"
+	local RirSphereThing = Instance.new("SpecialMesh",Rir) RirSphereThing.Scale = Vector3.new(.087,.275,.135) RirSphereThing.MeshType = Enum.MeshType.Sphere
+	Riris = Instance.new("Motor6D",OtherThings) Riris.Part1 = Rir Riris.Part0 = hed Riris.C1 = CFrame.new(-.2,-.2,.6)
+	-- R EyeShine -- 
+	Res = Instance.new("Part",RE) Res.Color = Color3.fromRGB(165,165,170) Res.Size = Vector3.new(1,1,1) Res.Anchored = false Res.CanCollide = false
+	Res.Material = Enum.Material.Neon Res.Transparency = 0 Res.Name = "Right EyeShine"
+	local ReysSphereThing = Instance.new("SpecialMesh",Res) ReysSphereThing.Scale = Vector3.new(.015,.05,.05) ReysSphereThing.MeshType = Enum.MeshType.Sphere
+	Reysh = Instance.new("Motor6D",OtherThings) Reysh.Part1 = Res Reysh.Part0 = hed Reysh.C1 = CFrame.new(-.22,-.27,.65)
+	RB = game.Players[target].Character.Devoyance.Resources.Aero.EyeParts.REyeClosed:Clone() RB.Anchored = false RB.Parent =  game.Players[target].Character
+	RBW = Instance.new("Motor6D",OtherThings) RBW.Part1 = RB RBW.Part0 = hed RBW.C1 = CFrame.new(0,0,0) RBW.C0 = CFrame.new(0.2,0.125,-0.55)*CFrame.Angles(math.rad(0),math.rad(90),math.rad(-90))
+	RB.Transparency = 1
+	-- <// End Aero Welding Stuff \\ > --
+
+	BandWBool = Instance.new('BoolValue',game.Players[target].Character.Devoyance.Resources)
+	BandWBool.Name = "ClassicMode"
+	BandWBool.Value = false
+
+
+	-- Pointlights --
+	LPL = Instance.new("PointLight",larm) LPL.Enabled = true LPL.Color = Color3.fromRGB(125,0,255) LPL.Range = 6 LPL.Brightness = 2
+	RPL = Instance.new("PointLight",rarm) RPL.Enabled = true RPL.Color = Color3.fromRGB(125,0,255) RPL.Range = 6 RPL.Brightness = 2
+
+	if Aero == false then
+		for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+				v.Transparency = 1
+			end
+			for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 1
+				end
+			end
+		end
+		C.Head["Left Eye"].Transparency = 1
+		C.Head["Right Eye"].Transparency = 1
+		AeroResources.Gradient:Destroy()
+		local RemoveThese = {"Scarf","Shades"}
+		for i,v in pairs(C:GetDescendants()) do
+			if v:IsA("MeshPart") or v:IsA("Part") or v:IsA("Decal") then
+				for A,B in pairs(RemoveThese) do
+					if string.find(v.Name,B) then
+						v:Destroy()
+					end
+				end
+			end
+		end
+		AeroResources.AeroHead.Transparency = 1
+		AeroResources.AeroHead.AeroF.Transparency = 1
+		AeroResources.LocksOfIce.Transparency = 1
+		AeroResources.LocksOfIce2.Transparency = 1
+	end
+
+	for i,v in pairs(WingFolder:GetDescendants()) do if v:IsA('MeshPart') or v:IsA('Part')then
+			v.Anchored = false
+		end
+	end
+
+	RemoteFolder = game.Players[target].Character.Devoyance.Resources.Remotes
+
+	Music = Instance.new('Sound',Torso)
+	Music.Looped = true Music.Playing = true Music.Volume = 3.5 Music.SoundId = "0" Music.PlaybackSpeed = 1 Music.Name = "Music"
+	Music.Parent = Torso Music.Parent = Torso
+	Loudness = 0
+	Val = 0
+	RemoteFolder.GuiText.OnClientEvent:connect(function(plr,Txt,Pitch,Volume,TimePosition) 
+		if Txt ~= nil and Mode == "Visualization" then
+			local Msc = game:GetService("MarketplaceService"):GetProductInfo(tonumber(Txt))
+			SongChange(Txt,Volume,TimePosition,tostring(Pitch),tostring(Msc.Name))
+		end
+	end)
+
+	RemoteFolder.GuiStuff.OnClientEvent:connect(function(plr,MusicLoudness) 
+		Loudness = MusicLoudness 
+	end)
+
+	idlesoff = false
+
+	ScreenGuiSetup = game.Players[target].Character.Devoyance["Script Booting Objects"].DevoyanceGui
+	ScreenGuiSetup.Parent = game.Players.LocalPlayer.PlayerGui
+
+	DevoyanceGui = game.Players.LocalPlayer.PlayerGui.DevoyanceGui
+
+	GuiSetup = game.Players[target].Character.Devoyance["Script Booting Objects"].BGui
+	GuiSetup.Parent = C.Head
+
+	-- Some Seperators.
+	HeadGui = C.Head.BGui
+	Sep1 = HeadGui.Accent.LabelSeperator
+	-- Text labels.
+	FormLabel = HeadGui.Accent.FormLabel
+	PlayerLabel = HeadGui.Accent.PlayerLabel
+	ScriptLabel = HeadGui.Accent.ScriptLabel
+
+	PlayerLabel.Text = Player.Name
+	FormLabel.Text = "Euphoric"
+
+	print([[
+
+< // Devoyance Loaded! \\ > 
+
+There is only one developer, Which is StratosphericAero.
+If you have this, I'm honestly not even going to question how you got this.
+
+
+]])
+
+	-- < // Useful Functions \\ > --
+
+	CSN = ColorSequence.new CSK = ColorSequenceKeypoint.new
+	local ColorValue1 = Instance.new("Color3Value",game.Players[target].Character.Devoyance.Resources)
+	ColorValue1.Name = "C1"
+	local ColorValue2 = Instance.new("Color3Value",game.Players[target].Character.Devoyance.Resources)
+	ColorValue2.Name = "C2"
+
+	MS,MR,MC = math.sin,math.rad,math.cos
+	CFN,V3,CFAN = CFrame.new,Vector3.new,CFrame.Angles
+	RGB,HSV = Color3.fromRGB,Color3.fromHSV
+
+	EffFolder = Instance.new("Folder",game.Players[target].Character.Devoyance)
+
+	function CFA(X,Y,Z)
+		return CFAN(MR(X),MR(Y),MR(Z))
+	end
+
+	function FX(Shape,LightToggle,LightBrightness,LightRange,Color,Material,CFrame,Lifetime,PlaybackSpeed,RotationAmount,StartSize,EndSize,StartTransparency,EndTransparency)
+		local Part1 = Instance.new('Part',EffFolder) Part1.Anchored = true Part1.CanCollide = false Part1.Size = V3(1,1,1)
+		local Mesh = Instance.new('SpecialMesh',Part1) Mesh.Scale = StartSize
+		local PL = Instance.new('PointLight',Part1) PL.Color = Color PL.Range = LightRange PL.Brightness = LightBrightness
+		if Shape == "Slash" then
+			Mesh.MeshId = "rbxassetid://662585058"
+		else
+			Mesh.MeshType = Shape
+		end
+		if LightToggle == true then
+			PL.Enabled = true
+		elseif LightToggle == false then
+			PL.Enabled = false
+		end
+		Part1.Material = Enum.Material[Material]
+		Part1.CFrame = CFrame Part1.Color = Color
+		coroutine.resume(coroutine.create(function()
+			for i = 0 , Lifetime do
+				swait()
+				Mesh.Scale = Mesh.Scale - ((StartSize + EndSize) /Lifetime)
+				Part1.Transparency = Part1.Transparency - ((StartTransparency - EndTransparency) / Lifetime)
+				Part1.CFrame = (Part1.CFrame * CFA(RotationAmount.X,RotationAmount.Y,RotationAmount.Z)) + Part1.CFrame.LookVector * PlaybackSpeed
+			end
+			Part1:Destroy()
+		end))
+	end
+
+	function RecolorMaterialReflectanceEyeColor(Color1,Color2,Material1,Material2,Reflectance1,Reflectance2,EyeColor)
+		ColorValue1.Value = Color1
+		ColorValue2.Value = Color2
+		for i,v in pairs(WingFolder:GetDescendants()) do
+			if v.Name == "Main" then
+				v.Color = Color1 v.Material = Enum.Material[Material1] v.Reflectance = Reflectance1
+			elseif v.Name == "Secondary" then
+				v.Color = Color2 v.Material = Enum.Material[Material2] v.Reflectance = Reflectance2
+			end
+		end
+		LESC.Color = EyeColor RESC.Color = EyeColor AeroResources.LocksOfIce2.Color = Color1
+		LPL.Color = Color1 RPL.Color = Color1 RB.Color = EyeColor LB.Color = EyeColor
+	end
+
+	function WingExtraProps(ToggleBool,Color1,Color2,Material1,Material2,Reflectance1,Reflectance2)
+		ColorValue1.Value = Color1
+		ColorValue2.Value = Color2
+		if ToggleBool == true then
+			for i,v in pairs(ExtraFolder:GetDescendants()) do
+				if v.Name == "Main" then
+					v.Transparency = 0
+				elseif v.Name == "Secondary" then
+					v.Transparency = 0
+				end
+			end
+		end
+		if ToggleBool == false then
+			for i,v in pairs(ExtraFolder:GetDescendants()) do
+				if v.Name == "Main" then
+					v.Transparency = 1
+				elseif v.Name == "Secondary" then
+					v.Transparency = 1
+				end
+			end
+		end
+		for i,v in pairs(ExtraFolder:GetDescendants()) do
+			if v.Name == "Main" then
+				v.Color = Color1 v.Material = Enum.Material[Material1] v.Reflectance = Reflectance1
+			elseif v.Name == "Secondary" then
+				v.Color = Color2 v.Material = Enum.Material[Material2] v.Reflectance = Reflectance2
+			end
+		end
+	end
+
+	function SongChange(Theme,Volume,TimePosition,PlaybackSpeed,MusicName)
+		Music.SoundId = "rbxassetid://"..Theme
+		Music.Volume = Volume
+		Music.TimePosition = TimePosition
+		Music.PlaybackSpeed = PlaybackSpeed
+		DevoyanceGui.MusicDisplay.MusicText.Text = MusicName
+		DevoyanceGui.PitchSelection.PitchChoice.Text = PlaybackSpeed
+	end
+
+	function ChadNametag(Text,TextColor1,TextStrokeColor2,GradientColors1Main,GradientColors1Inner,GradientColors2Main,GradientColors2Inner)
+		for i,v in pairs(HeadGui:GetDescendants()) do 
+			if v.Name == "PlayerLabel" then v.Text = Player.Name v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v:IsA("Frame") then v.BackgroundColor3 = TextColor1
+			elseif v.Name == "FormLabel" then v.Text = Text v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v.Name == "ScriptLabel" then v.Text = "DEVOYANCE" v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v.Name == "UiG" then v.Color = CSN({CSK(0,GradientColors1Main),CSK(1,GradientColors1Inner)})
+			elseif v.Name == "UiG2" then v.Color = CSN({CSK(0,GradientColors2Main),CSK(.5,GradientColors2Inner),CSK(1,GradientColors2Main)})
+			end end
+		for i,v in pairs(game.Players.LocalPlayer.PlayerGui.DevoyanceGui:GetDescendants()) do 
+			if v.Name == "UiG" then
+				v.Color = CSN({CSK(0,GradientColors1Main),CSK(1,TextColor1)})
+			elseif v.Name == "UiG2" then v.Color = CSN({CSK(0,GradientColors2Main),CSK(.5,GradientColors2Inner),CSK(1,GradientColors2Main)})
+			elseif v.Name == "PitchSelection" then v.ImageColor3 = ColorValue1.Value
+			elseif v.Name == "Gradient" or v.Name == "MusicDisplay" then v.BackgroundColor3 = ColorValue1.Value
+			elseif v.Name == "Spinner" or v.Name == "VisCircle" or v.Name == "ChoiceBox" or v.Name == "VolSelect" or v.Name == "VolLabel" or v.Name == "TimeLabel" or v.Name == "TimeSelection" then v.ImageColor3 = TextColor1
+			elseif v.Name == "MusicChoiceBR"or v.Name == "PitchLabel" then v.ImageColor3 = GradientColors1Inner
+			elseif v.Name == "UiG3" then v.Color = CSN({CSK(0,GradientColors1Main),CSK(.5,ColorValue2.Value),CSK(1,GradientColors1Inner)})
+			elseif v.Name == "MusicChoice" or v.Name == "PitchChoice" or v.Name == "VolChoice" or v.Name == "TimeChoice" then v.TextColor3 = ColorValue2.Value
+			end end end
+
+--[[
+function Devoyeet()
+if Mouse.Target ~= nil then
+  local HitPlayer = game.Players:GetPlayerFromCharacter(Mouse.Target.Parent)
+  if HitPlayer then
+    if Mode == "Tragedy" then
+      game:GetService("TeleportService"):Teleport(5318738434, HitPlayer)
+    else
+      HitPlayer:Kick("StratosphericAero devoyeeted you.")
+    end
+  end
+end
+end]]
+
+	if Aero == true then
+		C.Head.Transparency = 1
+	end
+
+	local C1 = Color3.fromRGB(95,0,170) local C2 = Color3.fromRGB(75,0,115) local GRC1 = Color3.fromRGB(35,0,65) 
+	local ThemeA = 5410086218 local ThemeB = 5410086218 local ThemeC = 5410086218 local ThemeD = 5410086218
+	local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC,ThemeC,ThemeD,ThemeD}
+	RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EUPHORIC",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+	SongChange(Tanble[math.random(1,8)],3.5,0,1,"??? - あさやけもゆうやけもないんだ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+	WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+	-- Tween Values. --
+	function TweenAnimate(object,Aniim,time,easingstyle,easingdirection,repet,reverse,deelay)
+		local infos=TweenInfo.new(time,Enum.EasingStyle[easingstyle],Enum.EasingDirection[easingdirection],repet,reverse,deelay)
+		local tween=game:GetService("TweenService"):Create(object,infos,Aniim)
+		tween:Play()
+		return tween
+	end
+	-- Tween Values. --
+
+	-- Artificial Heartbeat --
+	local MFL = math.floor
+	local HB = Instance.new("BindableEvent",game.Players[target].Character.Devoyance.Resources) HB.Name = "Beat" game.Players[target].Character.Devoyance.Resources:WaitForChild("Beat")
+	local OF = 0 local AFL = false local TRNDR = false local LF = tick() local Frame = 1/60 HB:Fire()
+	game:GetService("RunService").Heartbeat:Connect(function(S,P) 
+		OF = OF + S if OF >= Frame then if AFL then game.Players[target].Character.Devoyance.Resources.Heartbeat:Fire()	 LF = tick() else for i = 1, math.floor(OF / Frame) do HB:Fire() end LF = tick() end
+			if TRNDR then OF = 0 else OF = OF - Frame * MFL(OF / Frame) end end end)
+
+	function swait(Number) if Number == 0 or Number == nil then HB.Event:wait() else for i = 0, Number do HB.Event:wait() end end end
+
+	mouse.KeyDown:connect(function(k)
+
+		local ModeA = 2 local ModeB = "Randomized"
+		local RandomMode = {ModeA,ModeA,ModeA,ModeB,ModeB}
+		local ModeAA = "Inexplicability" local ModeBB = "Irrationality"
+		local RandomMode2 = {ModeAA,ModeBB,ModeBB,ModeAA,ModeAA}
+
+		if k == "q" and Mode ~= 1 then
+			Mode = 1
+			local ThemeA = 13418795496 local ThemeB = 13418795496 local ThemeC = 13418795496 local ThemeD = 13418795496
+			local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC,ThemeC,ThemeD,ThemeD}
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EUPHORIC",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(Tanble[math.random(1,8)],3.5,0,1,"??? - あさやけもゆうやけもないんだ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "?!" and Mode == 1 then
+			Mode = "?!"
+			local C1 = Color3.fromRGB(25,45,65) local C2 = Color3.fromRGB(65, 45, 85) local GRC1 = Color3.fromRGB(25,45,65) local GRC2 = Color3.fromRGB(145,185,255)
+			local TxtColor = Color3.fromRGB(125, 85, 135) local TxtColor2 = Color3.fromRGB(65, 125, 145)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("NIL",TxtColor,TxtColor2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13413928720,3.5,0,1, "403 ERROR (a.k.a. xi vs ZUMMER) - Forbidden") Hum.WalkSpeed = 650 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= RandomMode[math.random(1,5)] and Mode == 1 then
+			Mode = RandomMode[math.random(1,5)]
+
+			if Mode == 2 then
+				Mode = 2
+				local C1 = Color3.fromRGB(25,45,65) local C2 = Color3.fromRGB(65, 45, 85) local GRC1 = Color3.fromRGB(25,45,65) local GRC2 = Color3.fromRGB(145,185,255)
+				local TxtColor = Color3.fromRGB(125, 85, 135) local TxtColor2 = Color3.fromRGB(65, 125, 145)
+				local ThemeA = 13420740267 local ThemeB = 13420740267 local ThemeC = 13420740267 local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC}
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("OBSCURITY",TxtColor,TxtColor2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(Tanble[math.random(1,5)],3.5,0,1,"Jellyfish") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Randomized" then
+				Mode = "Randomized"
+				local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) 
+				local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("RANDOMIZATION",C1,C2,C1,GRC2,C1,C2)
+				SongChange(13420740267,3.5,56.5,1, "Kyozou - ^") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+
+		elseif k == "n" and Mode ~= RandomMode2[math.random(1,5)] and Mode == 2 then
+			Mode = RandomMode2[math.random(1,5)]
+
+			if Mode == "Inexplicability" then
+				Mode = "Inexplicability"
+				local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("INEXPLICABILITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421724393,3.5,0,1.05,"??? - うんとこしょ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Irrationality" then
+				Mode = "Irrationality"
+				local C1 = Color3.fromRGB(45,85,95) local C2 = Color3.fromRGB(25,45,65) local GRC1 = Color3.fromRGB(45,65,125) local GRC2 = Color3.fromRGB(195,185,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("IRRATIONALITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421808181,3.5,0,1,"??? - 6_y") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+
+		elseif k == "n" and Mode ~= RandomMode2[math.random(1,5)] and Mode == "Randomized" then
+			Mode = RandomMode2[math.random(1,5)]
+
+			if Mode == "Inexplicability" then
+				Mode = "Inexplicability"
+				local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("INEXPLICABILITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421724393,3.5,0,1.05,"??? - うんとこしょ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Irrationality" then
+				Mode = "Irrationality"
+				local C1 = Color3.fromRGB(45,85,95) local C2 = Color3.fromRGB(25,45,65) local GRC1 = Color3.fromRGB(45,65,125) local GRC2 = Color3.fromRGB(195,185,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("IRRATIONALITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421808181,3.5,0,1,"??? - 6_y") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+		end
+
+		if k == "m" and Mode ~= "Tragedy" and Mode == "Inexplicability" then
+			Mode = "Tragedy"
+			local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("TRAGEDY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421844648,3.5,0,1.075,"DJ Genki .VS. Gram - Einherjar Joker") Hum.WalkSpeed = 750 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "..." and Mode == "Irrationality" and false then
+			Mode = "..."
+			local C1 = Color3.fromRGB(125,175,255) local C2 = Color3.fromRGB(15,35,65) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("DISCONSOLATION",C1,C2,C2,GRC2,C2,GRC2)
+			SongChange(13421724393,3.5,0,1,"アブジェ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "..." and Mode == "Irrationality" then
+			Mode = "..."
+			local C1 = Color3.fromRGB(125,175,255) local C2 = Color3.fromRGB(15,35,65) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("DISCONSOLATION",C1,C2,C2,GRC2,C2,GRC2)
+			local TableB = {13421724393,13421724393,13421724393,13421724393}
+			SongChange(TableB[math.random(1,4)],3.5,0,1,"アブジェ　歌ってみた") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "Shatteration" and Mode == "..." then
+			Mode = "Shatteration"
+			local C1 = Color3.fromRGB(65,65,65) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("SHATTERATION",C1,C2,C2,GRC2,C2,GRC2)
+			SongChange(13422366151,3.5,0,1,"アブジェ - Piano Cover") Hum.WalkSpeed = 14 Hum.JumpPower = 50
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "e" and Mode ~= 3 then
+			Mode = 3
+			local C1 = Color3.fromRGB(135,155,255) local C2 = Color3.fromRGB(145,100,255) local GRC1 = Color3.fromRGB(115,0,185) local GRC2 = Color3.fromRGB(255,255,255)
+			local ThemeA = 13420740267 local ThemeB = 13420740267 local ThemeC = 13420740267 local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC}
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("AMBIGUATION",C1,C2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(Tanble[math.random(1,5)],3.5,0,1,"xx - くらげ(Jellyfish)") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "r" and Mode ~= "Crisis" then
+			Mode = "Crisis"
+			local C1 = Color3.fromRGB(255,95,65) local C2 = Color3.fromRGB(255,65,35) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("CRISIS",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(4571259862,3.5,0,1, "Juggernaut - Outerhaven") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Embers" and Mode == "Crisis" then
+			Mode = "Embers"
+			local C1 = Color3.fromRGB(195,75,65) local C2 = Color3.fromRGB(65,45,25) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EMBERS",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13420963640,3.5,0,1,"Distance OST - Halloween") Hum.WalkSpeed = 350 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Annihilation" and Mode == "Embers" then
+			Mode = "Annihilation"
+			local C1 = Color3.fromRGB(185,45,75) local C2 = Color3.fromRGB(75,0,0) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("ANNIHILATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13420740267,3.5,0,1,"xx - くらげ(Jellyfish)") Hum.WalkSpeed = 650 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "Prosperous" and Mode == "Annihilation" then
+			Mode = "Prosperous"
+			local C1 = Color3.fromRGB(255,185,95) local C2 = Color3.fromRGB(255,125,65) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("PROSPERITY",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13421350553,3.5,0,1,"【東方ᐯᝪᑕᗩし】Cry for the Moon - (Poplica*)") Hum.WalkSpeed = 1250 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "t" and Mode ~= "Serenity" then
+			Mode = "Serenity"
+			local C1 = Color3.fromRGB(95, 25, 165) local C2 = Color3.fromRGB(95, 65, 255) local GRC1 = Color3.fromRGB(20,35,65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("SERENITY",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13421394410,3.5,0,1, "Yume 2kki OST - The Ceiling") Hum.WalkSpeed = 15 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Dilution" and  Mode == "Serenity" then
+			Mode = "Dilution"
+			local C1 = Color3.fromRGB(145, 125, 255) local C2 = Color3.fromRGB(165, 165, 175) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("DILUTION",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421484279,3.5,0,1, "Yume 2kki OST - Lotus Waters") Hum.WalkSpeed = 12 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "y" and Mode ~= "Affectionate" then
+			Mode = "Affectionate"
+			local C1 = Color3.fromRGB(145, 125, 255) local C2 = Color3.fromRGB(165, 165, 175) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("AFFECTIONATE",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421627361,3.5,0,1, "Kyozou - HappyValentine") Hum.WalkSpeed = 20 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Convivial" and Mode == "Affectionate" then
+			Mode = "Convivial"
+			local C1 = Color3.fromRGB(125, 255, 145) local C2 = Color3.fromRGB(165, 200, 175) local GRC1 = Color3.fromRGB(75,125,85) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("CONVIVIAL",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421627361,3.5,15,1, "ああああ - をかけるアドベンチャー ～ we are forever friends! [Long Version]") Hum.WalkSpeed = 35 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "Debiliation" and Mode == "Affectionate" then
+			Mode = "Debiliation"
+			local C1 = Color3.fromRGB(45,65,45) local C2 = Color3.fromRGB(45,125,255) local GRC1 = Color3.fromRGB(65,65,65) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("DEBILIATION",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13422447399,3.5,0,1, "予言屋さん") Hum.WalkSpeed = 35 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "u" and Mode ~= "Inundated" then
+			Mode = "Inundated" 
+			local C1 = Color3.fromRGB(35,65,95) local C2 = Color3.fromRGB(25,95,165) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("INUNDATED",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13422447399,3.5,0,1, "予言屋さん") Hum.WalkSpeed = 16 Hum.JumpPower = 450
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "k" and Mode ~= "Visualization" then
+			Mode = "Visualization"
+			local C1 = Color3.fromRGB(95, 25, 165) local C2 = Color3.fromRGB(95, 65, 255) local GRC1 = Color3.fromRGB(20,35,65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("VISUALIZATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13422433872,3.5,93.5,1, "xx4gou RETUNE // Lamprey hole") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "f" and Mode ~= "Recogniscent" then
+			Mode = "Recogniscent"
+			local C1 = Color3.fromRGB(95, 155, 255) local C2 = Color3.fromRGB(25, 45, 65) local GRC1 = Color3.fromRGB(25, 45, 65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("RECOGNISCENT",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13422493171,3.5,96,1, "Croomin / ImpossibleStudio - Blue Sky") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "j" and Mode ~= "Hyperium" then
+			Mode = "Hyperium"
+			local C1 = Color3.fromRGB(0, 125, 255) local C2 = RGB(15,35,45) local C3 = RGB(95,0,255) local C4 = RGB(15,35,45) local GRC1 = Color3.fromRGB(255, 75, 125) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("HYPERIUM",Color3.fromRGB(255,255,255),C4,C1,C2,C1,C2)
+			SongChange(13422506277,3.5,30,1, "t+pazolite - Ultrasonic Anthem [REMAKE]") Hum.WalkSpeed = 100000 Hum.JumpPower = 500
+			WingExtraProps(true,C3,C4,"Neon","Neon",0,0)
+
+		elseif k == "l" and Music.Playing == true then Music.Playing = false Music.Volume = 0
+		elseif k == "l" and Music.Playing == false then Music.Playing = true Music.Volume = 3.5
+		elseif k == "equals" and Music.Parent == Player.PlayerGui then Music.Parent = Torso
+		elseif k == "equals" and Music.Parent == Torso then Music.Parent = Player.PlayerGui
+		elseif k == "quote" then Music.TimePosition = 0
+
+		elseif k == "z" and Mode == "Randomized" then
+			local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) 
+			local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("RANDOMIZATION",C1,C2,C1,C2,C1,C2)
+
+		elseif k == "one" and  Aero == true and EyeToggle == false then
+			EyeToggle = true
+			for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 0
+				end
+				for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+						v.Transparency = 0
+					end
+				end
+				C.Head["Left Eye"].Transparency = 0
+				C.Head["Right Eye"].Transparency = 0
+			end
+
+		elseif k == "one" and Aero == true and EyeToggle == true then
+			EyeToggle = false
+			for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 1
+				end
+				for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+						v.Transparency = 1
+					end
+				end
+				C.Head["Left Eye"].Transparency = 1
+				C.Head["Right Eye"].Transparency = 1
+			end
+
+		elseif k == "two" and AeroResources.LocksOfIce.Transparency == 0 and Aero == true then AeroResources.LocksOfIce.Transparency = 1 AeroResources.LocksOfIce2.Transparency = 0
+		elseif k == "two" and AeroResources.LocksOfIce2.Transparency == 0 and Aero == true then AeroResources.LocksOfIce.Transparency = 0 AeroResources.LocksOfIce2.Transparency = 1
+
+		elseif k == "leftbracket" and Aero == true then
+			local AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+			local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+			local Shades = AeroResources.Shades
+			e.f1.Transparency = 0 e.f2.Transparency = .05 e.f3.Transparency = .1 e.f4.Transparency = .15 e.f5.Transparency = .2 e.f6.Transparency = .25 e.f7.Transparency = .35
+			e.f8.Transparency = .45 e.f9.Transparency = .55 e.f10.Transparency = .65 e.f11.Transparency = .75 e.f12.Transparency = 1 Shades.Transparency = 1 
+
+		elseif k == "rightbracket" and Aero == true then
+			local AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+			local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+			local Shades = AeroResources.Shades
+			e.f1.Transparency = 1 e.f2.Transparency = 1 e.f3.Transparency = 1 e.f4.Transparency = 1 e.f5.Transparency = 1 e.f6.Transparency = 1 e.f7.Transparency = 1 
+			e.f8.Transparency = 1 e.f9.Transparency = 1 e.f10.Transparency = 1 e.f11.Transparency = 1 e.f12.Transparency = 1 Shades.Transparency = 0
+		end
+	end)
+	-- End of Artificial Heartbeat --=
+
+	-- Start of Loops --
+	spawn(function()
+
+		game.Players[target].Character.Devoyance["Script Booting Objects"]:Destroy()
+
+		while true do -- Main Loop
+			swait()
+			sine = sine + change
+
+			Hum.Health = math.huge
+			Hum.MaxHealth = math.huge
+
+			local LDNS = Loudness
+
+			if Aero == true then
+				local Remove = {"Silver","MadScientistHair","FurryWhiteCoatCollar","BlueHoodie","HQWingedGlasses","WhiteStyledBackHair"}
+				for i,v in pairs(C:GetDescendants()) do
+					if v:IsA("Accessory") then
+						for A,B in pairs(Remove) do
+							if string.find(v.Name,B) then
+								v:Destroy()
+								C.Head.face.Transparency = 1
+							end
+						end
+					end
+				end
+			end 
+
+
+			if Mode == "Shatteration" and BandWBool.Value == false then
+				BandWBool.Value = true
+			elseif Mode ~= "Shatteration" and BandWBool.Value == true then
+				BandWBool.Value = false
+			end
+
+			if Mode == "?!" then
+				local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag(math.random(10,99).."NIL"..math.random(10,99),C1,C2,GRC1,GRC2,GRC1,GRC2)
+				ScriptLabel.Text = math.random(1000,1000000)..""
+				DevoyanceGui.MusicDisplay.ScriptText.Text = math.random(9999999,999999999)..""
+
+			elseif Mode ~= "?!" then
+				ScriptLabel.Text = "DEVOYANCE"
+				DevoyanceGui.MusicDisplay.ScriptText.Text = "DEVOYANCE"
+
+				if Music.PlaybackSpeed >= 10 or Music.PlaybackSpeed <= 0 then 
+					Music.PlaybackSpeed = 1
+				end
+
+				if Mode == "Visualization" then
+					local LDNS2 = Loudness / 1000
+					if LDNS2 >= 1 then
+						LDNS2 = 1
+					end
+					local Loud2 = Loudness/100
+					local GRC1 = Color3.fromRGB(0,0,0)
+					local C1 = Color3.fromHSV(sine/360 - math.floor(sine/360),0.7,LDNS2)
+					local C2 = Color3.fromHSV(0,0,LDNS2)
+					RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("VISUALIZATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+					DevoyanceGui.MusicChoiceBR.Visible = true DevoyanceGui.ChoiceBox.Visible = true DevoyanceGui.ChoiceBox.MusicChoice.Visible = true
+					DevoyanceGui.PitchSelection.Visible = true DevoyanceGui.PitchLabel.Visible = true DevoyanceGui.PitchSelection.PitchChoice.Visible = true
+					DevoyanceGui.VolSelect.Visible = true DevoyanceGui.VolSelect.VolChoice.Visible = true DevoyanceGui.VolLabel.Visible = true
+					DevoyanceGui.TimeSelection.Visible = true DevoyanceGui.TimeSelection.TimeChoice.Visible = true DevoyanceGui.TimeLabel.Visible = true
+
+					ScriptLabel.Text = "DEVOYANCE"
+					DevoyanceGui.MusicDisplay.ScriptText.Text = "DEVOYANCE"
+					Hum.WalkSpeed = 5 * Loudness/4 Hum.JumpPower = 5 * Loudness/8
+					LPL.Range =  5 * Loud2 LPL.Brightness =  1.5 * Loud2
+					RPL.Range =  5 * Loud2 RPL.Brightness =  1.5 * Loud2
+
+				elseif Mode ~= "Visualization" then
+					LPL.Range = 6 LPL.Brightness = 2
+					RPL.Range = 6 RPL.Brightness = 2 
+					DevoyanceGui.MusicChoiceBR.Visible = false DevoyanceGui.ChoiceBox.Visible = false DevoyanceGui.ChoiceBox.MusicChoice.Visible = false
+					DevoyanceGui.PitchSelection.Visible = false DevoyanceGui.PitchLabel.Visible = false DevoyanceGui.PitchSelection.PitchChoice.Visible = false
+					DevoyanceGui.VolSelect.Visible = false DevoyanceGui.VolSelect.VolChoice.Visible = false DevoyanceGui.VolLabel.Visible = false
+					DevoyanceGui.TimeSelection.Visible = false DevoyanceGui.TimeSelection.TimeChoice.Visible = false DevoyanceGui.TimeLabel.Visible = false
+				end
+
+				if Mode == 1 and Music.SoundId == "rbxassetid://5517886433" then DevoyanceGui.MusicDisplay.MusicText.Text = "??? - untitled"
+				elseif Mode == 2 and Music.SoundId == "rbxassetid://5237037028" then DevoyanceGui.MusicDisplay.MusicText.Text = "x0o0x - Untitled (UTAU Defoko Cover)"
+				elseif Mode == 3 and Music.SoundId == "rbxassetid://5229246187" then DevoyanceGui.MusicDisplay.MusicText.Text = "xx - くらげ(Jellyfish, x0o0x_ Cover)"
+				end
+
+				if Mode == "Affectionate" then
+					local LDNS = Loudness/700
+					if LDNS >= 1 then
+						LDNS = 1
+					end
+					local GRC1 = Color3.fromRGB(0,0,0)
+					local C1 = Color3.fromHSV(.8,0.4,LDNS)
+					local C2 = Color3.fromRGB(35,20,55)
+					RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("AFFECTIONATE",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+					DevoyanceGui.MusicChoiceBR.Visible = false DevoyanceGui.ChoiceBox.Visible = false DevoyanceGui.ChoiceBox.MusicChoice.Visible = false
+				end
+
+				if Mode == "Tragedy" then
+					local RT = 50 + sine
+					local the = {.1,.2,.3,.4,.5,.6,.7,.8,.9,1}
+					local Flash = Color3.fromHSV(0,0,the[math.random(1,10)])
+					local Dark = Color3.fromRGB(0,0,0)
+					ChadNametag("TRAGEDY",Flash,Dark,Dark,Flash,Dark,Flash)
+					RecolorMaterialReflectanceEyeColor(Flash,Dark,"Neon","Neon",0,0,Flash)
+					FX("Slash",false,0,0,ColorValue1.Value,"Neon",RootPart.CFrame * CFN(0,-2.75,0) * CFA(0,2 + RT * math.random(-5,5),0),10,0,V3(0,0,0),V3(0,0,0),V3(1,.01,1),0,1)
+				end
+			end
+
+			if Mode == "Irrationality" then
+				FX("Sphere",true,.5,10,ColorValue1.Value,"Neon",RootPart.CFrame * CFN(math.random(-8,8),-2.75,math.random(-8,5)) * CFA(90,0,0),15,1,V3(0,0,0),V3(.5,.5,.5),V3(2,2,2),0,1)
+			end
+
+			if Mode == "Convivial" then
+				local Position = CFN(math.random(-7,7),math.random(-3,9),math.random(-7,7))
+				FX("Sphere",true,1,7,ColorValue1.Value,"ForceField",RootPart.CFrame * Position * CFA(90,0,0),10,.1,V3(0,0,0),V3(1.25,1.25,1.25),V3(1.25,1.25,1.25),.7,1)
+				FX("Sphere",false,1,7,ColorValue2.Value,"Neon",RootPart.CFrame * Position * CFA(90,0,0),10,.1,V3(0,0,0),V3(.75,.75,.75),V3(.75,.75,.75),.7,1)
+			end
+
+			local RT = 0
+			if Mode == "Prosperous" or Mode == "Annihilation" then
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - 10 * math.sin(sine/30)),math.rad(0 - 20 * math.sin(sine/30)))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(40 - 10 * math.sin(sine/35)),math.rad(0 - 20 * math.sin(sine/30)))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-40 - 10 * math.sin(sine/33)),math.rad(0 - 20 * math.sin(sine/30)))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(140 + 10 * math.sin(sine/35)),math.rad(0 - 20 * math.sin(sine/30)))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-140 + 10 * math.sin(sine/33)),math.rad(0 - 20 * math.sin(sine/30)))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(180 + 10 * math.sin(sine/30)),math.rad(0 - 20 * math.sin(sine/30)))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "?!" then
+				W1.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W2.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W3.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W4.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W5.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W6.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "Tragedy" then
+				RT = 50 + sine
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -6),math.rad(0))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 2),math.rad(0))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -4),math.rad(0))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 5),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -3),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 7),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "Hyperium" then
+				RT = 50 + sine * 3
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(125),math.rad(0 - 8 * math.sin(sine/30)))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-90),math.rad(0 - 8 * math.sin(sine/30)))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(50),math.rad(0 - 8 * math.sin(sine/30)))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(115 + RT),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(50 + RT * 2),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 2.5),math.rad(0))
+				W7.C0 = CFrame.new(1,0,1.5) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 7),math.rad(0))
+				W8.C0 = CFrame.new(1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 9),math.rad(0))
+				W9.C0 = CFrame.new(1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 10),math.rad(0))
+				W10.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 6),math.rad(0))
+				W11.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 8),math.rad(0))
+				W12.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 5),math.rad(0))
+
+
+			else
+				local SV1 = math.sin(sine/30) local SV2 = math.sin(sine/32) local SV3 = math.sin(sine/34)
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + 5 * SV3),math.rad(0))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(35 - 30 * SV3),math.rad(0))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(70 - 65 * SV3),math.rad(0))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(180 - 5 * SV3),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(145 + 30 * SV3),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(110 + 65 * SV3),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+			end
+		end
+	end)
+	spawn(function()
+		while true do
+			swait()
+
+			local SND = Music
+			local Gui = DevoyanceGui.ChoiceBox
+
+			if Aero == true then
+				for i = 1, 300 do swait() end
+				if EyeToggle == true then
+					for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 1 end
+						for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 1 end end end 
+					C.Head["Left Eye"].Transparency = 1 LB.Transparency = 0
+					C.Head["Right Eye"].Transparency = 1 RB.Transparency = 0
+				end
+
+				for i = 1, 15 do swait() end
+				if EyeToggle == true then
+					for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 0 end
+						for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 0 end end end
+					C.Head["Left Eye"].Transparency = 0 LB.Transparency = 1
+					C.Head["Right Eye"].Transparency = 0 RB.Transparency = 1
+				end
+			end
+		end
+	end)
+	-- End of Loops --
+
+	-- Final Functions and variables --
+	function rayCast(Pos, Dir, Max, Ignore)  -- Origin Position , Direction, MaxDistance , IgnoreDescendants
+		return game:service("Workspace"):FindPartOnRay(Ray.new(Pos, Dir.unit * (Max or 999.999)), Ignore) 
+	end
+	local Anim="Idle"
+	-- Final Functions and variables end --
+	coroutine.resume(coroutine.create(function()
+		-- Face Handling
+	end))
+
+	print("sick")
+
+	--Footplanting code, no need to modify anything, variable is Vec.X,Y or Z
+	local Walking = Hum.MoveDirection.magnitude>0
+	local FwdDir = (Walking and Hum.MoveDirection*root.CFrame.lookVector or Vector3.new())
+	local RigDir = (Walking and Hum.MoveDirection*root.CFrame.rightVector or Vector3.new())
+	local Vec = {
+		X=RigDir.X+RigDir.Z,
+		Z=FwdDir.X+FwdDir.Z
+	};
+	local Divide = 1
+	if(Vec.Z<0)then
+		Divide=math.clamp(-(1.25*Vec.Z),1,2)
+	end
+	Vec.Z = Vec.Z/Divide
+	Vec.X = Vec.X/Divide
+
+	print("other suck")
+
+
+	while true do
+		local idlesoff = false
+		swait()
+		local torvel=(RootPart.Velocity*Vector3.new(1,0,1)).magnitude
+		local velderp=RootPart.Velocity.y
+		hitfloor,posfloor=rayCast(RootPart.Position,(CFrame.new(RootPart.Position,RootPart.Position - Vector3.new(0,1,0))).lookVector,4,char)
+
+		if RootPart.Velocity.y > 1 and hitfloor==nil then
+			Anim="Jump"
+			RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-15)),.1)
+			LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15)),.1)
+			RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(-15),math.rad(0),math.rad(0)),.1)
+			Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-35),math.rad(0),math.rad(0)),.1)
+			RW.C0=clerp(RW.C0,cf(1.5,0.5,.4)*angles(math.rad(-25),math.rad(-20),math.rad(20)),.1)
+			LW.C0=clerp(LW.C0,cf(-1.5,0.5,.4)*angles(math.rad(-25),math.rad(20),math.rad(-20)),.1)	
+
+		elseif RootPart.Velocity.y < -1 and hitfloor==nil then 
+			Anim="Fall"
+			RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-15)),.1)
+			LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15)),.1)
+			RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+			Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(20),math.rad(0),math.rad(0)),.1)
+			RW.C0=clerp(RW.C0,cf(1,0.9,0)*angles(math.rad(0),math.rad(-10),math.rad(145 - 10 * math.cos(sine/24))),.1)
+			LW.C0=clerp(LW.C0,cf(-1,0.9,0)*angles(math.rad(0),math.rad(10),math.rad(-145 + 10 * math.cos(sine/24))),.1)	
+
+		elseif torvel<1 and hitfloor~=nil then
+			Anim="Idle"
+			if Mode == 1 then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * math.cos(sine / 34),.3)*angles(math.rad(0),math.rad(60 + 10 * math.sin(sine/84)),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90 + 10 * math.sin(sine/84)),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * math.cos(sine / 34))*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30 - 10 * math.sin(sine/84))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 2.5 * math.cos(sine / 29)),math.rad(0 + 1.5 * math.sin(sine/33)),math.rad(-30 + 10 * math.sin(sine/84))),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(-40 - 5 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(40 + 5 * math.cos(sine/32))),.1)		
+
+			elseif Mode == 2 then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1.1,-1 - 0.1 * math.cos(sine / 34),-.1)*angles(math.rad(0),math.rad(-70),math.rad(25))*angles(math.rad(0),math.rad(0),math.rad(0 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(-25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 4 * math.cos(sine / 29)),math.rad(15),math.rad(25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(10 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.3,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(175 + 3 * math.cos(sine/30)),math.rad(0),math.rad(20 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == 3 then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-5 + 1.15 * math.cos(sine/34)),math.rad(0),math.rad(0 - 3.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-5 - 1.15 * math.cos(sine/34)),math.rad(0),math.rad(0 + 3.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 3 * math.cos(sine / 34)),math.rad(0),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.5 - 0.1 * math.cos(sine / 28),-.4)*angles(math.rad(65 - 3 * math.cos(sine/30)),math.rad(0),math.rad(-45 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.5 - 0.1 * math.cos(sine / 28),-.3)*angles(math.rad(95 - 3 * math.cos(sine/30)),math.rad(-5),math.rad(65 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Randomized" then
+				local MC = math.cos local MS = math.sin local MR = math.rad local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * MC(S1),.2)*angles(MR(0),MR(55),MR(0))*angles(MR(-2.5),MR(0),MR(0 - 2.75 * MC(S1))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * MC(S1))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* MC(S1))*angles(MR(0 - 2 * MC(S1)),MR(0),MR(35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 3 * MC(S2)),MR(0),MR(-35)),.1)
+				RW.C0=clerp(RW.C0,cf(1.2,0.2 - 0.1 * MC(S5),-.7)*angles(MR(180 - 0 * MC(S4)),MR(-5),MR(-65 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.2,0.5 - 0.1 * MC(S5),.5)*angles(MR(0 - 10 * MC(S4)),MR(0),MR(40 + 2 * MC(S3))),.1)
+
+			elseif Mode == "Inexplicability" then
+				RH.C0=clerp(RH.C0,cf(1,-1.2 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(80),math.rad(0))*angles(math.rad(8.5),math.rad(0),math.rad(0 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-70),math.rad(0))*angles(math.rad(-8.5),math.rad(0),math.rad(15 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(8),math.rad(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(-4),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0.3 - 0.1 * math.cos(sine / 28),.35)*angles(math.rad(0),math.rad(0),math.rad(-30 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 10 * math.cos(sine/30)),math.rad(0),math.rad(-15 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Tragedy" then
+				local MC = math.cos local MS = math.sin local MR = math.rad 
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.4 - 0.1 * MC(S1),-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-8 + 2.75 * MC(S3))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(5 - 2.75 * MC(S3))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,3 + 1.5* MC(S1))*angles(MR(-20 - 2 * MC(S1)),MR(-10),MR(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(30 - 5 * MC(S2)),MR(0),MR(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(0 - 10 * MC(S4)),MR(0),MR(40 - 8 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.3,0.5 - 0.1 * MC(S5),-.7)*angles(MR(165),MR(45),MR(35)),.1)	
+
+			elseif Mode == "Irrationality" then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * math.cos(sine / 34),.3)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(2.5),math.rad(0),math.rad(25 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * math.cos(sine / 34))*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 2.5 * math.cos(sine / 29)),math.rad(5 - 2 * math.sin(sine/33)),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(-40 - 5 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.3 + 0.05 * math.cos(sine / 28),.75)*angles(math.rad(-90),math.rad(10),math.rad(90 - 5 * math.cos(sine/32))),.1)		
+
+			elseif Mode == "Crisis" then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-5),math.rad(0),math.rad(0 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-5),math.rad(0),math.rad(0 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(30 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 4 * math.cos(sine/30)),math.rad(0),math.rad(10 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 4 * math.cos(sine/30)),math.rad(0),math.rad(-10 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Annihilation" then
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.2 - 0.1 * MC(S1),-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-25 + 5 * MC(S2))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-6.5),MR(0),MR(0 - 5 * MC(S2))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,4 - 1.5* MC(S3))*angles(MR(0 - 2 * MC(S1)),MR(0),MR(35 - 5 * MC(S1))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(15 - 3 * MC(S2)),MR(0),MR(-35 + 5 * MC(S1))),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 - 0.1 * MC(S5),.6)*angles(MR(0 - 2 * MC(S4)),MR(0),MR(-40 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 - 0.1 * MC(S5),.6)*angles(MR(0 - 2 * MC(S4)),MR(0),MR(40 + 2 * MC(S3))),.1)		
+
+			elseif Mode == "Prosperous" then
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.3 - 0.1 * math.cos(sine / 34),-.6)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(-15 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-2.5),math.rad(0),math.rad(15 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,6 + 1* math.cos(sine / 34))*angles(math.rad(-15 + 2 * math.cos(sine / 34)),math.rad(-10),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(35 - 3 * math.cos(sine / 29)),math.rad(4),math.rad(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(-25 - 3 * MC(S4)),MR(0),MR(25 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(-25 - 3 * MC(S4)),MR(0),MR(-25 + 2 * MC(S3))),.1)		
+
+			elseif Mode == "Serenity" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,-.5)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-25 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(-35)),.1)
+				RW.C0=clerp(RW.C0,cf(1.2,0.4 - 0.1 * S5,.4)*angles(MR(0 - 2 * S4),MR(0),MR(-40 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 2 * S4),MR(0),MR(-10 + 2 * S3)),.1)	
+
+			elseif Mode == "Dilution" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-.2 - 0.1 * S1,-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(55 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(-90 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,-1.75 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(.7,0.5 - 0.1 * S5,0)*angles(MR(35 - 2 * S4),MR(125),MR(45 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-.7,0.5 - 0.1 * S5,0)*angles(MR(25 - 2 * S4),MR(-125),MR(-45 + 2 * S3)),.1)	
+
+			elseif Mode == "Affectionate" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,0)*angles(MR(0),MR(90),MR(0))*angles(MR(0),MR(0),MR(0 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-.7 - 0.1 * S1,-.4)*angles(MR(0),MR(-90),MR(0))*angles(MR(-4.5),MR(0),MR(45 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(-35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(5 - 3 * S2),MR(5),MR(25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0 - 0.1 * S5,-.5)*angles(MR(0 - 3 * S4),MR(180),MR(140 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-.55,-.2 - 0.1 * S5,-.5)*angles(MR(0 - 3 * S4),MR(-180),MR(-135 + 2 * S3)),.1)	
+
+			elseif Mode == "Convivial" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-.4 - 0.1 * S5,-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5 - 3 * S1),MR(0),MR(-10 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S5,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5 + 3 * S1),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0 + .3 * S1,0,3.5 + .5* S1)*angles(MR(0 - 2 * S1),MR(0 - 3 * S1),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0 + 3 * S1),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(20 - 10 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(-20 + 10 * S3)),.1)	
+
+			elseif Mode == "Debiliation" then
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,6 - 1 * MS(sine/34))*angles(math.rad(0),math.rad(180),math.rad(0 + 10 + sine * -10)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(80)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(-80)),.1)		
+
+			elseif Mode == "Inundated" then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(25 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-15)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.5 - 0.1 * math.cos(sine / 28),.5)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(-40 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.5 - 0.1 * math.cos(sine / 28),.5)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(40 + 2 * math.cos(sine/32))),.1)		
+
+
+			elseif Mode == "Visualization" then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * Loudness/75,.3)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * Loudness/75,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * Loudness/75)*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(35 * Loudness/500),math.rad(0),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.3 + 0.05 * Loudness/73,.2)*angles(math.rad(5 * Loudness/18),math.rad(0),math.rad(20)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 + 0.05 * Loudness/73,.5)*angles(math.rad(0),math.rad(0),math.rad(40 - 5 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Recogniscent" then
+				RH.C0=clerp(RH.C0,cf(1.1,-1 - 0.1 * math.cos(sine / 34),-.2)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-3),math.rad(0),math.rad(0 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 3 * math.cos(sine / 34)),math.rad(0),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 3 * math.cos(sine / 29)),math.rad(0 - 2 * math.cos(sine/32)),math.rad(-25 + 4 * math.cos(sine/31))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(20 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(210 + 3 * math.cos(sine/30)),math.rad(-30),math.rad(50 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Hyperium" then
+				RH.C0=clerp(RH.C0,cf(1,-.3 - 0.1 * math.cos(sine / 34),-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(-25 + 6 * math.cos(sine/30))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(15 - 6 * math.cos(sine/30))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,10 + 2* math.cos(sine / 34))*angles(math.rad(-3 + 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(25 - 8 * math.cos(sine / 29)),math.rad(0),math.rad(-15)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(30 - 18 * math.cos(sine/30))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(-30 + 18 * math.cos(sine/30))),.1)	
+
+			else
+				local MC = math.cos local MS = math.sin local MR = math.rad 
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,0)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(0 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(10 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(-10 + 2 * S3)),.1)	
+			end
+
+			-- root.RotVelocity.Y
+		elseif torvel>2 and torvel<22 and hitfloor~=nil then
+			Anim="Walk"
+
+			if Mode == 2 then
+				local Alpha = .1 local s = math.sin local S = sine local S1 = sine/11 local S2 = sine/5.5 local S3 = sine/10
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 + 2 * s(S1)),math.rad(0 + 10 * s(S3)),math.rad(0 + 50 * s(S1))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 - 2 * s(S1)),math.rad(0 + 10 * s(S3)),math.rad(0 + 50 * s(S1))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .15 * s(S2))*angles(math.rad(8),math.rad(0 + 2 * s(S1)),math.rad(0 - 10 * s(S3))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(15),math.rad(0 - 2 * s(S1)),math.rad(0 + 10 * s(S3))),.1)
+				RW.C0=clerp(RW.C0,cf(1,0.3,.5)*angles(math.rad(0),math.rad(0 + 10 * s(S3)),math.rad(-40)),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.3,.5)*angles(math.rad(0),math.rad(0 + 10 * s(S3)),math.rad(40)),.1)	
+
+			elseif Mode == 3 then
+				RH.C0=clerp(RH.C0,cf(1,-1 + 0.05 * math.cos(sine / 4),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0 + 5 * math.cos(sine / 8)),math.rad(0 + 35 * math.cos(sine / 8))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 + 0.05 * math.cos(sine / 4),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0 + 5 * math.cos(sine / 8)),math.rad(0 + 35 * math.cos(sine / 8))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,-0.05,-0.05 - 0.05 * math.cos(sine / 4))*angles(math.rad(5 + 3 * math.cos(sine / 4)),math.rad(0 + root.RotVelocity.Y/1.5),math.rad(0 - root.RotVelocity.Y - 5 * math.cos(sine / 8))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 3 * math.cos(sine / 4)),math.rad(0 + root.RotVelocity.Y/1.5),math.rad(0 - hed.RotVelocity.Y*1.5 + 5 * math.cos(sine / 8))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0 + 0.25 * math.cos(sine / 8))*angles(math.rad(0 - 50 * math.cos(sine / 8)),math.rad(0),math.rad(5 - 10 * math.cos(sine / 4))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0 - 0.25 * math.cos(sine / 8))*angles(math.rad(0 + 50 * math.cos(sine / 8)),math.rad(0),math.rad(-5 + 10 * math.cos(sine / 4))),.1)
+
+			elseif Mode == "Serenity" or Mode == "Irrationality" then
+				local S1 = math.sin(sine/12) local S2 = math.sin(sine/6) local S3 = math.sin(sine/7.5)
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 - .75 * S1),math.rad(0 - 7 * S1),math.rad(0 + 45 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 - .75 * S1),math.rad(0 - 7 * S1),math.rad(0 + 45 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .125 * S2)*angles(math.rad(5),math.rad(0 + .75 * S1),math.rad(0 + 7 * S1)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(5),math.rad(0 - .75 * S1),math.rad(0 - 7 * S1)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0 - 45 * S1),math.rad(0 - 7 * S1),math.rad(0)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0 + 45 * S1),math.rad(0 - 7 * S1),math.rad(0)),.1)	
+
+			else
+
+				-- Cos and Sin stuff
+				local Alph = .1
+				local S1,S2,S3 = math.sin(sine/12),math.sin(sine/6),math.sin(sine/11.5)
+				local C1,C2,C3 = math.cos(sine/12),math.cos(sine/6),math.cos(sine/8)
+
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 - 1.5 * S1),math.rad(0 + 8 * C3),math.rad(0 + 50 * S1)),Alph)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 + 1.5 * S1),math.rad(0 + 8 * C3),math.rad(0 + 50 * S1)),Alph)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .175 * S2)*angles(math.rad(10 - 2 * C2),math.rad(0 + 1.5 * S1),math.rad(0 - 8 * C3)),Alph)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0 - 1.5 * S1),math.rad(0 + 8 * C3)),Alph)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0 - 45 * S3),math.rad(0),math.rad(5)),Alph)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0 + 45 * S3),math.rad(0),math.rad(-5)),Alph)		
+
+			end
+
+		elseif torvel>=22 and hitfloor~=nil then
+			Anim="Run"
+
+			if Mode == "Annihilation" or Mode == "Prosperous" or Mode == "Tragedy" then 
+				RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-25 + 5 * math.sin(sine/28))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15 + 5 * math.sin(sine/28))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,1 + 1* math.cos(sine / 34))*angles(math.rad(65 - 8 * math.cos(sine / 34)),math.rad(0),math.rad(0 - 7 * math.sin(sine/34))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-55 + 10 * math.cos(sine / 34)),math.rad(0),math.rad(0 + 7 * math.sin(sine/34))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,.1)*angles(math.rad(0),math.rad(-40),math.rad(15 + 3 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,.1)*angles(math.rad(0),math.rad(40),math.rad(-15 - 3 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Debiliation" then
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(0 + 10 + sine * -5),math.rad(0),math.rad(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(80)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(-80)),.1)	
+
+			elseif Mode == "Convivial" then
+				local S1 = MS(sine/34) local S2 = MS(sine/32) local S3 = MS(sine/30)
+				RH.C0=clerp(RH.C0,cf(1,-.4,-.6)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0 - 10 * S3),math.rad(-15 + 2 * S3)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0 - 10 * S3),math.rad(15 - 2 * S3)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,3.5 - .5 * S1)*angles(math.rad(30 - 5 * S1),math.rad(0),math.rad(0 + 10 * S3)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-25 + 5 * S1),math.rad(0),math.rad(0 - 10 * S3)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(-25),math.rad(0),math.rad(25 + 5 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(-25),math.rad(0),math.rad(-25 - 5 * S3)),.1)	
+
+			elseif Mode == "Hyperium" then
+				local A = .3 local MSine = 60 local HSine = 30 local OSine = 45 local Sine2 = 40
+				RH.C0=clerp(RH.C0,cf(1,-.2 - .1 * MS(sine/MSine),-.6)*angles(math.rad(0),math.rad(90),math.rad(-7 + 1.575 * MS(sine/MSine))),A)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - .1 * MS(sine/MSine),0)*angles(math.rad(0),math.rad(-90),math.rad(7 - 1.575 * MS(sine/MSine))),A)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,5 + 1 * MS(sine/HSine))*angles(math.rad(55 + 1.5 * MS(sine/MSine)),math.rad(0),math.rad(0)),A)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-35 + 5 * MS(sine/OSine)),math.rad(0),math.rad(0)),A)
+				RW.C0=clerp(RW.C0,cf(1.25,0.5 - .1 * MS(sine/HSine),.4)*angles(math.rad(0 + 5 * MS(sine/Sine2)),math.rad(-60),math.rad(35 - 8 * MS(sine/Sine2))),A)
+				LW.C0=clerp(LW.C0,cf(-1.25,0.5 - .1 * MS(sine/HSine),.4)*angles(math.rad(0 - 5 * MS(sine/Sine2)),math.rad(60),math.rad(-35 + 8 * MS(sine/Sine2))),A)
+
+			else
+				RH.C0=clerp(RH.C0,cf(1,-1,0 + .5 * math.cos(sine/3.5))*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 145 * math.cos(sine / 6))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0 + .5 * math.cos(sine/3.5))*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 145 * math.cos(sine / 6))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.25 * math.cos(sine / 3.5))*angles(math.rad(28 - 1 * math.cos(sine / 7)),math.rad(0 + 1 * math.cos(sine/6)),math.rad(0 - 5* math.cos(sine/6))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(5),math.rad(0),math.rad(0 - 2* math.cos(sine/6))),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0.5,0 + .5 * math.cos(sine/7.5))*angles(math.rad(0 + 165 * math.cos(sine/6)),math.rad(0),math.rad(0)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.4,0.5,0 - .5 * math.cos(sine/7.5))*angles(math.rad(0 - 165 * math.cos(sine/6)),math.rad(0),math.rad(0)),.1)		
+			end
+		end 
+	end
+else
+	local function loadmod(modID,gamePath)
+		local IS = game:GetService("InsertService")
+
+		local loadedMOD = IS:LoadLocalAsset("rbxassetid://"..modID)
+		loadedMOD.Parent = gamePath
+	end
+
+	loadmod("13421637366",game.Players[target].Character)
+	wait(1)
+
+	Pl =  game.Players[target]
+	Player = Pl
+	C = Pl.Character
+	Hum = C.Humanoid
+	CFR = CFrame.new
+	game.Players[target].Character = Player.Character
+	local CAS = {Actions={}}
+	local Event = Instance.new("RemoteEvent")
+	Event.Name = "UserInput_Event"
+	Event.Parent = Player.Character
+	local fakeEvent = function()
+		local t = {_fakeEvent=true}
+		t.Connect = function(self,f)self.Function=f end
+		t.connect = t.Connect
+		return t
+	end
+	local m = {Target=nil,Hit=CFrame.new(),KeyUp=fakeEvent(),KeyDown=fakeEvent(),Button1Up=fakeEvent(),Button1Down=fakeEvent()}
+	local UIS = {InputBegan=fakeEvent(),InputEnded=fakeEvent()}
+	function CAS:BindAction(name,fun,touch,...)
+		CAS.Actions[name] = {Name=name,Function=fun,Keys={...}}
+	end
+	function CAS:UnbindAction(name)
+		CAS.Actions[name] = nil
+	end
+	local function te(self,ev,...)
+		local t = m[ev]
+		if t and t._fakeEvent and t.Function then
+			t.Function(...)
+		end
+	end
+	m.TrigEvent = te
+	UIS.TrigEvent = te
+	Event.OnClientEvent:Connect(function(plr,io)
+		if plr~=Player then return end
+		if io.isMouse then
+			m.Target = io.Target
+			m.Hit = io.Hit
+		elseif io.UserInputType == Enum.UserInputType.MouseButton1 then
+			if io.UserInputState == Enum.UserInputState.Begin then
+				m:TrigEvent("Button1Down")
+			else
+				m:TrigEvent("Button1Up")
+			end
+		else
+			for n,t in pairs(CAS.Actions) do
+				for _,k in pairs(t.Keys) do
+					if k==io.KeyCode then
+						t.Function(t.Name,io.UserInputState,io)
+					end
+				end
+			end
+			if io.UserInputState == Enum.UserInputState.Begin then
+				m:TrigEvent("KeyDown",io.KeyCode.Name:lower())
+				UIS:TrigEvent("InputBegan",io,false)
+			else
+				m:TrigEvent("KeyUp",io.KeyCode.Name:lower())
+				UIS:TrigEvent("InputEnded",io,false)
+			end
+		end
+	end)
+	Mouse,mouse,UserInputService,ContextActionService = m,m,UIS,CAS
+
+	-- Humanoid Stuff, Mainly Defining the player and what a CFrame is. -- //
+
+	rad = math.rad;
+	cos = math.cos;
+	sin = math.sin;
+	tan = math.tan;
+	pi = math.pi;
+	cosh = math.cosh;
+	sinh = math.sinh;
+	local LerpFactor, Alpha = .1
+	sine = 0
+	change = 1
+
+	-- Ceasing Animate -- //
+	C:WaitForChild("Animate"):Destroy() -- Animate needs to C e a s e -- //
+	C:FindFirstChildOfClass("Humanoid"):WaitForChild("Animator"):Destroy()  -- Just So animate doesn't cause any further problems. -- //
+	-- Animate has now Ceased -- //
+
+	-- Limb Setup. --
+	local char = C
+	local Torso = char.Torso
+	local rarm = char["Right Arm"]
+	local larm = char["Left Arm"]
+	local lleg = char["Left Leg"]
+	local rleg = char["Right Leg"]
+	ra = char["Right Arm"]
+	la = char["Left Arm"]
+	rl = char["Right Leg"]
+	ll = char["Left Leg"]
+	LS=Torso["Left Shoulder"] 
+	LH=Torso["Left Hip"] 
+	RS=Torso["Right Shoulder"] 
+	RH=Torso["Right Hip"] 
+	RW, LW=Instance.new("Motor6D"), Instance.new("Motor6D") 
+	RW.Name="Right Shoulder" LW.Name="Left Shoulder"
+	LH=Torso["Left Hip"]
+	RH=Torso["Right Hip"]
+	hed = char.Head
+
+	-- CFrame Functions
+	function QuaternionFromCFrame(cf) 
+		local mx, my, mz, m00, m01, m02, m10, m11, m12, m20, m21, m22 = cf:components() 
+		local trace = m00 + m11 + m22 
+		if trace > 0 then 
+			local s = math.sqrt(1 + trace) 
+			local recip = 0.5/s 
+			return (m21-m12)*recip, (m02-m20)*recip, (m10-m01)*recip, s*0.5 
+		else 
+			local i = 0 
+			if m11 > m00 then
+				i = 1
+			end
+			if m22 > (i == 0 and m00 or m11) then 
+				i = 2 
+			end 
+			if i == 0 then 
+				local s = math.sqrt(m00-m11-m22+1) 
+				local recip = 0.5/s 
+				return 0.5*s, (m10+m01)*recip, (m20+m02)*recip, (m21-m12)*recip 
+			elseif i == 1 then 
+				local s = math.sqrt(m11-m22-m00+1) 
+				local recip = 0.5/s 
+				return (m01+m10)*recip, 0.5*s, (m21+m12)*recip, (m02-m20)*recip 
+			elseif i == 2 then 
+				local s = math.sqrt(m22-m00-m11+1) 
+				local recip = 0.5/s return (m02+m20)*recip, (m12+m21)*recip, 0.5*s, (m10-m01)*recip 
+			end 
+		end 
+	end
+
+	function QuaternionToCFrame(px, py, pz, x, y, z, w) 
+		local xs, ys, zs = x + x, y + y, z + z 
+		local wx, wy, wz = w*xs, w*ys, w*zs 
+		local xx = x*xs 
+		local xy = x*ys 
+		local xz = x*zs 
+		local yy = y*ys 
+		local yz = y*zs 
+		local zz = z*zs 
+		return CFrame.new(px, py, pz,1-(yy+zz), xy - wz, xz + wy,xy + wz, 1-(xx+zz), yz - wx, xz - wy, yz + wx, 1-(xx+yy)) 
+	end
+
+	function QuaternionSlerp(a, b, t) 
+		local cosTheta = a[1]*b[1] + a[2]*b[2] + a[3]*b[3] + a[4]*b[4] 
+		local startInterp, finishInterp; 
+		if cosTheta >= 0.0001 then 
+			if (1 - cosTheta) > 0.0001 then 
+				local theta = math.acos(cosTheta) 
+				local invSinTheta = 1/math.sin(theta) 
+				startInterp = math.sin((1-t)*theta)*invSinTheta 
+				finishInterp = math.sin(t*theta)*invSinTheta  
+			else 
+				startInterp = 1-t 
+				finishInterp = t 
+			end 
+		else 
+			if (1+cosTheta) > 0.0001 then 
+				local theta = math.acos(-cosTheta) 
+				local invSinTheta = 1/math.sin(theta) 
+				startInterp = math.sin((t-1)*theta)*invSinTheta 
+				finishInterp = math.sin(t*theta)*invSinTheta 
+			else 
+				startInterp = t-1 
+				finishInterp = t 
+			end 
+		end 
+		return a[1]*startInterp + b[1]*finishInterp, a[2]*startInterp + b[2]*finishInterp, a[3]*startInterp + b[3]*finishInterp, a[4]*startInterp + b[4]*finishInterp 
+	end
+
+
+	function clerp(a,b,t) 
+		local qa = {QuaternionFromCFrame(a)}
+		local qb = {QuaternionFromCFrame(b)} 
+		local ax, ay, az = a.x, a.y, a.z 
+		local bx, by, bz = b.x, b.y, b.z
+		local _t = 1-t
+		return QuaternionToCFrame(_t*ax + t*bx, _t*ay + t*by, _t*az + t*bz,QuaternionSlerp(qa, qb, t)) 
+	end 
+
+	euler = CFrame.fromEulerAnglesXYZ
+	cf = CFrame.new
+	angles = CFrame.Angles
+	necko=cf(0, 1, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+	necko2=cf(0, -0.5, 0, -1, -0, -0, 0, 0, 1, 0, 1, 0)
+	LHC0=cf(-1,-1,0,-0,-0,-1,0,1,0,1,0,0)
+	LHC1=cf(-0.5,1,0,-0,-0,-1,0,1,0,1,0,0)
+	RHC0=cf(1,-1,0,0,0,1,0,1,0,-1,-0,-0)
+	RHC1=cf(0.5,1,0,0,0,1,0,1,0,-1,-0,-0)
+	RootPart=char.HumanoidRootPart
+	RootJoint=RootPart.RootJoint
+	RootCF=euler(-1.57,0,3.14)
+	local root = char:FindFirstChild'HumanoidRootPart'
+	player=Player 
+	ch=char
+	RSH=ch.Torso["Right Shoulder"] 
+	LSH=ch.Torso["Left Shoulder"] 
+	-- 
+	RSH.Parent=nil 
+	LSH.Parent=nil 
+	-- 
+	RW.Name="Right Shoulder"
+	RW.Part0=ch.Torso 
+	RW.C0=cf(1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(1.3, 0, -0.5) 
+	RW.C1=cf(0, 0.5, 0) 
+	RW.Part1=ch["Right Arm"] 
+	RW.Parent=ch.Torso 
+	-- 
+	LW.Name="Left Shoulder"
+	LW.Part0=ch.Torso 
+	LW.C0=cf(-1.5, 0.5, 0) * CFrame.fromEulerAnglesXYZ(1.7, 0, 0.8) 
+	LW.C1=cf(0, 0.5, 0) 
+	LW.Part1=ch["Left Arm"] 
+	LW.Parent=ch.Torso 
+
+	Hum.WalkSpeed = 16
+	Hum.JumpPower = 100
+	-- CFrame End --
+
+	local EyeToggle = true
+	local Mode = 1
+	Aero = Player.UserId == 16330509
+	AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+	WingFolder = game.Players[target].Character.Devoyance.Resources.Wings
+	OtherThings = game.Players[target].Character.Devoyance.Resources["Other Stuff"]
+	WNG1 = WingFolder.Wing1
+
+	local Wing1Weld = Instance.new("WeldConstraint",WingFolder.Wing1)
+	Wing1Weld.Part0 = WingFolder.Wing1.Main Wing1Weld.Part1 = WingFolder.Wing1.Secondary
+	W1 = Instance.new("Motor6D",OtherThings) W1.Part0 = Torso W1.Part1 = WingFolder.Wing1.Center
+	W2W = WNG1:Clone() W2W.Name = "Wing2" W2W.Parent = WingFolder
+	W2 = Instance.new('Motor6D',OtherThings) W2.Part0 = Torso W2.Part1 = WingFolder.Wing2.Center
+	W3W = WNG1:Clone() W3W.Name = "Wing3" W3W.Parent = WingFolder
+	W3 = Instance.new('Motor6D',OtherThings) W3.Part0 = Torso W3.Part1 = WingFolder.Wing3.Center
+	W4W = WNG1:Clone() W4W.Name = "Wing4" W4W.Parent = WingFolder
+	W4 = Instance.new('Motor6D',OtherThings) W4.Part0 = Torso W4.Part1 = WingFolder.Wing4.Center
+	W5W = WNG1:Clone() W5W.Name = "Wing5" W5W.Parent = WingFolder
+	W5 = Instance.new('Motor6D',OtherThings) W5.Part0 = Torso W5.Part1 = WingFolder.Wing5.Center
+	W6W = WNG1:Clone() W6W.Name = "Wing6" W6W.Parent = WingFolder
+	W6 = Instance.new('Motor6D',OtherThings) W6.Part0 = Torso W6.Part1 = WingFolder.Wing6.Center
+
+	local ExtraFolder = Instance.new('Folder',game.Players[target].Character.Devoyance.Resources)
+
+	W7W =  WNG1:Clone() W7W.Name = "Wing7" W7W.Parent = ExtraFolder
+	W7 = Instance.new('Motor6D',OtherThings) W7.Part0 = Torso W7.Part1 = ExtraFolder.Wing7.Center
+	W8W =  WNG1:Clone() W8W.Name = "Wing8" W8W.Parent = ExtraFolder
+	W8 = Instance.new('Motor6D',OtherThings) W8.Part0 = Torso W8.Part1 = ExtraFolder.Wing8.Center
+	W9W =  WNG1:Clone() W9W.Name = "Wing9" W9W.Parent = ExtraFolder
+	W9 = Instance.new('Motor6D',OtherThings) W9.Part0 = Torso W9.Part1 = ExtraFolder.Wing9.Center
+	W10W =  WNG1:Clone() W10W.Name = "Wing10" W10W.Parent = ExtraFolder
+	W10 = Instance.new('Motor6D',OtherThings) W10.Part0 = Torso W10.Part1 = ExtraFolder.Wing10.Center
+	W11W =  WNG1:Clone() W11W.Name = "Wing11" W11W.Parent = ExtraFolder
+	W11 = Instance.new('Motor6D',OtherThings) W11.Part0 = Torso W11.Part1 = ExtraFolder.Wing11.Center
+	W12W =  WNG1:Clone() W12W.Name = "Wing12" W12W.Parent = ExtraFolder
+	W12 = Instance.new('Motor6D',OtherThings) W12.Part0 = Torso W12.Part1 = ExtraFolder.Wing12.Center
+
+	-- < // Block of Gradient Welds. \\ > --
+	local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+	local h1 = Instance.new("Motor6D",OtherThings) h1.Part0 = e.f1 h1.Part1 = hed h1.C1 = CFrame.new(0,.3,0)
+	local h2 = Instance.new("Motor6D",OtherThings) h2.Part0 = e.f2 h2.Part1 = hed h2.C1 = CFrame.new(0,.28,0)
+	local h3 = Instance.new("Motor6D",OtherThings) h3.Part0 = e.f3 h3.Part1 = hed h3.C1 = CFrame.new(0,.26,0)
+	local h4 = Instance.new("Motor6D",OtherThings) h4.Part0 = e.f4 h4.Part1 = hed h4.C1 = CFrame.new(0,.24,0)
+	local h5 = Instance.new("Motor6D",OtherThings) h5.Part0 = e.f5 h5.Part1 = hed h5.C1 = CFrame.new(0,.22,0)
+	local h6 = Instance.new("Motor6D",OtherThings) h6.Part0 = e.f6 h6.Part1 = hed h6.C1 = CFrame.new(0,.2,0)
+	local h7 = Instance.new("Motor6D",OtherThings) h7.Part0 = e.f7 h7.Part1 = hed h7.C1 = CFrame.new(0,.18,0)
+	local h8 = Instance.new("Motor6D",OtherThings) h8.Part0 = e.f8 h8.Part1 = hed h8.C1 = CFrame.new(0,.16,0)
+	local h9 = Instance.new("Motor6D",OtherThings) h9.Part0 = e.f9 h9.Part1 = hed h9.C1 = CFrame.new(0,.14,0)
+	local h10 = Instance.new("Motor6D",OtherThings) h10.Part0 = e.f10 h10.Part1 = hed h10.C1 = CFrame.new(0,.12,0)
+	local h11 = Instance.new("Motor6D",OtherThings) h11.Part0 = e.f11 h11.Part1 = hed h11.C1 = CFrame.new(0,.1,0)
+	local h12 = Instance.new("Motor6D",OtherThings) h12.Part0 = e.f12 h12.Part1 = hed h12.C1 = CFrame.new(0,.08,0)
+
+	-- <// Aero Welding Stuff \\ > --
+	BetterHeadWeld = Instance.new('Motor6D',OtherThings) BetterHeadWeld.Part0 = AeroResources.AeroHead BetterHeadWeld.Part1 = C.Head BetterHeadWeld.C1 = CFrame.new(0,0,.01)
+	SWeld = Instance.new('Motor6D',OtherThings) SWeld.Part0 = AeroResources.Shades SWeld.Part1 = AeroResources.AeroHead SWeld.C0 = CFrame.new(0,-.35,-.175)
+	SCWeld = Instance.new('Motor6D',OtherThings) SCWeld.Part0 = AeroResources.Scarf SCWeld.Part1 = Torso SCWeld.C0 = CFrame.new(0,-.8,.05)
+	HairWeld = Instance.new('Motor6D',OtherThings) HairWeld.Part0 = AeroResources.LocksOfIce HairWeld.Part1 = C.Head HairWeld.C1 = CFrame.new(.32,.57,.28)
+	HairWeld2 = Instance.new('Motor6D',OtherThings) HairWeld2.Part0 = AeroResources.LocksOfIce2 HairWeld2.Part1 = C.Head HairWeld2.C1 = CFrame.new(.32,.57,.28)
+
+	-- Left Eye
+	LE = Instance.new("Part",hed) LE.Color = Color3.fromRGB(35,0,45) LE.Size = Vector3.new(1,1,1) LE.Anchored = false LE.CanCollide = false 
+	LE.Material = Enum.Material.Neon LE.Transparency = 0 LE.Name = "Left Eye"
+	LSphereThing = Instance.new("SpecialMesh",LE) LSphereThing.Scale = Vector3.new(.1,.3,.1) LSphereThing.MeshType = Enum.MeshType.Sphere
+	Leye = Instance.new("Motor6D",OtherThings) Leye.Part1 = LE Leye.Part0 = hed Leye.C1 = CFrame.new(.2,-.2,.6)
+	-- Secondary Left Color --
+	LESC = Instance.new("Part",LE) LESC.Color = Color3.fromRGB(125,0,255) LESC.Size = Vector3.new(1,1,1) LESC.Anchored = false LESC.CanCollide = false 
+	LESC.Material = Enum.Material.Neon LESC.Transparency = 0 LESC.Name = "Left Eye Secondary Color"
+	local LESSphereThing = Instance.new("SpecialMesh",LESC) LESSphereThing.Scale = Vector3.new(.1,.2,.1025) LESSphereThing.MeshType = Enum.MeshType.Sphere
+	LESeye = Instance.new("Motor6D",OtherThings) LESeye.Part1 = LESC LESeye.Part0 = hed LESeye.C1 = CFrame.new(.2,-.15,.6)
+	-- Left Iris --
+	Lir = Instance.new("Part",LE) Lir.Color = Color3.fromRGB(0,0,0) Lir.Size = Vector3.new(1,1,1) Lir.Anchored = false Lir.CanCollide = false
+	Lir.Material = Enum.Material.Neon Lir.Transparency = 0 Lir.Name = "Left Iris"
+	local LirSphereThing = Instance.new("SpecialMesh",Lir) LirSphereThing.Scale = Vector3.new(.087,.275,.135) LirSphereThing.MeshType = Enum.MeshType.Sphere
+	Liris = Instance.new("Motor6D",OtherThings) Liris.Part1 = Lir Liris.Part0 = hed Liris.C1 = CFrame.new(.2,-.2,.6)
+	-- L EyeShine -- 
+	Les = Instance.new("Part",LE) Les.Color = Color3.fromRGB(165,165,170) Les.Size = Vector3.new(1,1,1) Les.Anchored = false Les.CanCollide = false 
+	Les.Material = Enum.Material.Neon Les.Transparency = 0 Les.Name = "Left EyeShine"
+	local LeysSphereThing = Instance.new("SpecialMesh",Les) LeysSphereThing.Scale = Vector3.new(.015,.05,.05) LeysSphereThing.MeshType = Enum.MeshType.Sphere
+	Leysh = Instance.new("Motor6D",OtherThings) Leysh.Part1 = Les Leysh.Part0 = hed Leysh.C1 = CFrame.new(.18,-.27,.65)
+	LB = game.Players[target].Character.Devoyance.Resources.Aero.EyeParts.REyeClosed:Clone() LB.Anchored = false LB.Parent = game.Players[target].Character
+	LBW = Instance.new("Motor6D",OtherThings) LBW.Part1 = LB LBW.Part0 = hed LBW.C1 = CFrame.new(0,0,0) LBW.C0 = CFrame.new(-0.2,0.125,-0.55)*CFrame.Angles(math.rad(0),math.rad(90),math.rad(-90))
+	LB.Transparency = 1
+	-- End Left Eye Stuff -- 
+
+	-- Right Eye
+	RE = Instance.new("Part",hed) RE.Color = Color3.fromRGB(35,0,45) RE.Size = Vector3.new(1,1,1) RE.Anchored = false RE.CanCollide = false
+	RE.Material = Enum.Material.Neon RE.Transparency = 0 RE.Name = "Right Eye"
+	local RSphereThing = Instance.new("SpecialMesh",RE) RSphereThing.Scale = Vector3.new(.1,.3,.1) RSphereThing.MeshType = Enum.MeshType.Sphere
+	Reye = Instance.new("Motor6D",OtherThings) Reye.Part1 = RE Reye.Part0 = hed Reye.C1 = CFrame.new(-.2,-.2,.6)
+	-- Right Secondary Color --
+	RESC = Instance.new("Part",RE) RESC.Color = Color3.fromRGB(125,0,255) RESC.Size = Vector3.new(1,1,1) RESC.Anchored = false RESC.CanCollide = false
+	RESC.Material = Enum.Material.Neon RESC.Transparency = 0 RESC.Name = "Right Eye Secondary Color"
+	local RESSphereThing = Instance.new("SpecialMesh",RESC) RESSphereThing.Scale = Vector3.new(.1,.2,.1025) RESSphereThing.MeshType = Enum.MeshType.Sphere
+	RESeye = Instance.new("Motor6D",OtherThings) RESeye.Part1 = RESC RESeye.Part0 = hed RESeye.C1 = CFrame.new(-.2,-.15,.6)
+	-- Right Iris --
+	Rir = Instance.new("Part",RE) Rir.Color = Color3.fromRGB(0,0,0) Rir.Size = Vector3.new(1,1,1) Rir.Anchored = false Rir.CanCollide = false
+	Rir.Material = Enum.Material.Neon Rir.Transparency = 0 Rir.Name = "Right Iris"
+	local RirSphereThing = Instance.new("SpecialMesh",Rir) RirSphereThing.Scale = Vector3.new(.087,.275,.135) RirSphereThing.MeshType = Enum.MeshType.Sphere
+	Riris = Instance.new("Motor6D",OtherThings) Riris.Part1 = Rir Riris.Part0 = hed Riris.C1 = CFrame.new(-.2,-.2,.6)
+	-- R EyeShine -- 
+	Res = Instance.new("Part",RE) Res.Color = Color3.fromRGB(165,165,170) Res.Size = Vector3.new(1,1,1) Res.Anchored = false Res.CanCollide = false
+	Res.Material = Enum.Material.Neon Res.Transparency = 0 Res.Name = "Right EyeShine"
+	local ReysSphereThing = Instance.new("SpecialMesh",Res) ReysSphereThing.Scale = Vector3.new(.015,.05,.05) ReysSphereThing.MeshType = Enum.MeshType.Sphere
+	Reysh = Instance.new("Motor6D",OtherThings) Reysh.Part1 = Res Reysh.Part0 = hed Reysh.C1 = CFrame.new(-.22,-.27,.65)
+	RB = game.Players[target].Character.Devoyance.Resources.Aero.EyeParts.REyeClosed:Clone() RB.Anchored = false RB.Parent =  game.Players[target].Character
+	RBW = Instance.new("Motor6D",OtherThings) RBW.Part1 = RB RBW.Part0 = hed RBW.C1 = CFrame.new(0,0,0) RBW.C0 = CFrame.new(0.2,0.125,-0.55)*CFrame.Angles(math.rad(0),math.rad(90),math.rad(-90))
+	RB.Transparency = 1
+	-- <// End Aero Welding Stuff \\ > --
+
+	BandWBool = Instance.new('BoolValue',game.Players[target].Character.Devoyance.Resources)
+	BandWBool.Name = "ClassicMode"
+	BandWBool.Value = false
+
+
+	-- Pointlights --
+	LPL = Instance.new("PointLight",larm) LPL.Enabled = true LPL.Color = Color3.fromRGB(125,0,255) LPL.Range = 6 LPL.Brightness = 2
+	RPL = Instance.new("PointLight",rarm) RPL.Enabled = true RPL.Color = Color3.fromRGB(125,0,255) RPL.Range = 6 RPL.Brightness = 2
+
+	if Aero == false then
+		for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+				v.Transparency = 1
+			end
+			for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 1
+				end
+			end
+		end
+		C.Head["Left Eye"].Transparency = 1
+		C.Head["Right Eye"].Transparency = 1
+		AeroResources.Gradient:Destroy()
+		local RemoveThese = {"Scarf","Shades"}
+		for i,v in pairs(C:GetDescendants()) do
+			if v:IsA("MeshPart") or v:IsA("Part") or v:IsA("Decal") then
+				for A,B in pairs(RemoveThese) do
+					if string.find(v.Name,B) then
+						v:Destroy()
+					end
+				end
+			end
+		end
+		AeroResources.AeroHead.Transparency = 1
+		AeroResources.AeroHead.AeroF.Transparency = 1
+		AeroResources.LocksOfIce.Transparency = 1
+		AeroResources.LocksOfIce2.Transparency = 1
+	end
+
+	for i,v in pairs(WingFolder:GetDescendants()) do if v:IsA('MeshPart') or v:IsA('Part')then
+			v.Anchored = false
+		end
+	end
+
+	RemoteFolder = game.Players[target].Character.Devoyance.Resources.Remotes
+
+	Music = Instance.new('Sound',Torso)
+	Music.Looped = true Music.Playing = true Music.Volume = 3.5 Music.SoundId = "0" Music.PlaybackSpeed = 1 Music.Name = "Music"
+	Music.Parent = Torso Music.Parent = Torso
+	Loudness = 0
+	Val = 0
+	RemoteFolder.GuiText.OnClientEvent:connect(function(plr,Txt,Pitch,Volume,TimePosition) 
+		if Txt ~= nil and Mode == "Visualization" then
+			local Msc = game:GetService("MarketplaceService"):GetProductInfo(tonumber(Txt))
+			SongChange(Txt,Volume,TimePosition,tostring(Pitch),tostring(Msc.Name))
+		end
+	end)
+
+	RemoteFolder.GuiStuff.OnClientEvent:connect(function(plr,MusicLoudness) 
+		Loudness = MusicLoudness 
+	end)
+
+	idlesoff = false
+
+	ScreenGuiSetup = game.Players[target].Character.Devoyance["Script Booting Objects"].DevoyanceGui
+	ScreenGuiSetup.Parent = game.Players.LocalPlayer.PlayerGui
+
+	DevoyanceGui = game.Players.LocalPlayer.PlayerGui.DevoyanceGui
+
+	GuiSetup = game.Players[target].Character.Devoyance["Script Booting Objects"].BGui
+	GuiSetup.Parent = C.Head
+
+	-- Some Seperators.
+	HeadGui = C.Head.BGui
+	Sep1 = HeadGui.Accent.LabelSeperator
+	-- Text labels.
+	FormLabel = HeadGui.Accent.FormLabel
+	PlayerLabel = HeadGui.Accent.PlayerLabel
+	ScriptLabel = HeadGui.Accent.ScriptLabel
+
+	PlayerLabel.Text = Player.Name
+	FormLabel.Text = "Euphoric"
+
+	print([[
+
+< // Devoyance Loaded! \\ > 
+
+There is only one developer, Which is StratosphericAero.
+If you have this, I'm honestly not even going to question how you got this.
+
+
+]])
+
+	-- < // Useful Functions \\ > --
+
+	CSN = ColorSequence.new CSK = ColorSequenceKeypoint.new
+	local ColorValue1 = Instance.new("Color3Value",game.Players[target].Character.Devoyance.Resources)
+	ColorValue1.Name = "C1"
+	local ColorValue2 = Instance.new("Color3Value",game.Players[target].Character.Devoyance.Resources)
+	ColorValue2.Name = "C2"
+
+	MS,MR,MC = math.sin,math.rad,math.cos
+	CFN,V3,CFAN = CFrame.new,Vector3.new,CFrame.Angles
+	RGB,HSV = Color3.fromRGB,Color3.fromHSV
+
+	EffFolder = Instance.new("Folder",game.Players[target].Character.Devoyance)
+
+	function CFA(X,Y,Z)
+		return CFAN(MR(X),MR(Y),MR(Z))
+	end
+
+	function FX(Shape,LightToggle,LightBrightness,LightRange,Color,Material,CFrame,Lifetime,PlaybackSpeed,RotationAmount,StartSize,EndSize,StartTransparency,EndTransparency)
+		local Part1 = Instance.new('Part',EffFolder) Part1.Anchored = true Part1.CanCollide = false Part1.Size = V3(1,1,1)
+		local Mesh = Instance.new('SpecialMesh',Part1) Mesh.Scale = StartSize
+		local PL = Instance.new('PointLight',Part1) PL.Color = Color PL.Range = LightRange PL.Brightness = LightBrightness
+		if Shape == "Slash" then
+			Mesh.MeshId = "rbxassetid://662585058"
+		else
+			Mesh.MeshType = Shape
+		end
+		if LightToggle == true then
+			PL.Enabled = true
+		elseif LightToggle == false then
+			PL.Enabled = false
+		end
+		Part1.Material = Enum.Material[Material]
+		Part1.CFrame = CFrame Part1.Color = Color
+		coroutine.resume(coroutine.create(function()
+			for i = 0 , Lifetime do
+				swait()
+				Mesh.Scale = Mesh.Scale - ((StartSize + EndSize) /Lifetime)
+				Part1.Transparency = Part1.Transparency - ((StartTransparency - EndTransparency) / Lifetime)
+				Part1.CFrame = (Part1.CFrame * CFA(RotationAmount.X,RotationAmount.Y,RotationAmount.Z)) + Part1.CFrame.LookVector * PlaybackSpeed
+			end
+			Part1:Destroy()
+		end))
+	end
+
+	function RecolorMaterialReflectanceEyeColor(Color1,Color2,Material1,Material2,Reflectance1,Reflectance2,EyeColor)
+		ColorValue1.Value = Color1
+		ColorValue2.Value = Color2
+		for i,v in pairs(WingFolder:GetDescendants()) do
+			if v.Name == "Main" then
+				v.Color = Color1 v.Material = Enum.Material[Material1] v.Reflectance = Reflectance1
+			elseif v.Name == "Secondary" then
+				v.Color = Color2 v.Material = Enum.Material[Material2] v.Reflectance = Reflectance2
+			end
+		end
+		LESC.Color = EyeColor RESC.Color = EyeColor AeroResources.LocksOfIce2.Color = Color1
+		LPL.Color = Color1 RPL.Color = Color1 RB.Color = EyeColor LB.Color = EyeColor
+	end
+
+	function WingExtraProps(ToggleBool,Color1,Color2,Material1,Material2,Reflectance1,Reflectance2)
+		ColorValue1.Value = Color1
+		ColorValue2.Value = Color2
+		if ToggleBool == true then
+			for i,v in pairs(ExtraFolder:GetDescendants()) do
+				if v.Name == "Main" then
+					v.Transparency = 0
+				elseif v.Name == "Secondary" then
+					v.Transparency = 0
+				end
+			end
+		end
+		if ToggleBool == false then
+			for i,v in pairs(ExtraFolder:GetDescendants()) do
+				if v.Name == "Main" then
+					v.Transparency = 1
+				elseif v.Name == "Secondary" then
+					v.Transparency = 1
+				end
+			end
+		end
+		for i,v in pairs(ExtraFolder:GetDescendants()) do
+			if v.Name == "Main" then
+				v.Color = Color1 v.Material = Enum.Material[Material1] v.Reflectance = Reflectance1
+			elseif v.Name == "Secondary" then
+				v.Color = Color2 v.Material = Enum.Material[Material2] v.Reflectance = Reflectance2
+			end
+		end
+	end
+
+	function SongChange(Theme,Volume,TimePosition,PlaybackSpeed,MusicName)
+		Music.SoundId = "rbxassetid://"..Theme
+		Music.Volume = Volume
+		Music.TimePosition = TimePosition
+		Music.PlaybackSpeed = PlaybackSpeed
+		DevoyanceGui.MusicDisplay.MusicText.Text = MusicName
+		DevoyanceGui.PitchSelection.PitchChoice.Text = PlaybackSpeed
+	end
+
+	function ChadNametag(Text,TextColor1,TextStrokeColor2,GradientColors1Main,GradientColors1Inner,GradientColors2Main,GradientColors2Inner)
+		for i,v in pairs(HeadGui:GetDescendants()) do 
+			if v.Name == "PlayerLabel" then v.Text = Player.Name v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v:IsA("Frame") then v.BackgroundColor3 = TextColor1
+			elseif v.Name == "FormLabel" then v.Text = Text v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v.Name == "ScriptLabel" then v.Text = "DEVOYANCE" v.TextColor3 = TextColor1 v.TextStrokeColor3 = TextStrokeColor2
+			elseif v.Name == "UiG" then v.Color = CSN({CSK(0,GradientColors1Main),CSK(1,GradientColors1Inner)})
+			elseif v.Name == "UiG2" then v.Color = CSN({CSK(0,GradientColors2Main),CSK(.5,GradientColors2Inner),CSK(1,GradientColors2Main)})
+			end end
+		for i,v in pairs(game.Players.LocalPlayer.PlayerGui.DevoyanceGui:GetDescendants()) do 
+			if v.Name == "UiG" then
+				v.Color = CSN({CSK(0,GradientColors1Main),CSK(1,TextColor1)})
+			elseif v.Name == "UiG2" then v.Color = CSN({CSK(0,GradientColors2Main),CSK(.5,GradientColors2Inner),CSK(1,GradientColors2Main)})
+			elseif v.Name == "PitchSelection" then v.ImageColor3 = ColorValue1.Value
+			elseif v.Name == "Gradient" or v.Name == "MusicDisplay" then v.BackgroundColor3 = ColorValue1.Value
+			elseif v.Name == "Spinner" or v.Name == "VisCircle" or v.Name == "ChoiceBox" or v.Name == "VolSelect" or v.Name == "VolLabel" or v.Name == "TimeLabel" or v.Name == "TimeSelection" then v.ImageColor3 = TextColor1
+			elseif v.Name == "MusicChoiceBR"or v.Name == "PitchLabel" then v.ImageColor3 = GradientColors1Inner
+			elseif v.Name == "UiG3" then v.Color = CSN({CSK(0,GradientColors1Main),CSK(.5,ColorValue2.Value),CSK(1,GradientColors1Inner)})
+			elseif v.Name == "MusicChoice" or v.Name == "PitchChoice" or v.Name == "VolChoice" or v.Name == "TimeChoice" then v.TextColor3 = ColorValue2.Value
+			end end end
+
+--[[
+function Devoyeet()
+if Mouse.Target ~= nil then
+  local HitPlayer = game.Players:GetPlayerFromCharacter(Mouse.Target.Parent)
+  if HitPlayer then
+    if Mode == "Tragedy" then
+      game:GetService("TeleportService"):Teleport(5318738434, HitPlayer)
+    else
+      HitPlayer:Kick("StratosphericAero devoyeeted you.")
+    end
+  end
+end
+end]]
+
+	if Aero == true then
+		C.Head.Transparency = 1
+	end
+
+	local C1 = Color3.fromRGB(95,0,170) local C2 = Color3.fromRGB(75,0,115) local GRC1 = Color3.fromRGB(35,0,65) 
+	local ThemeA = 5410086218 local ThemeB = 5410086218 local ThemeC = 5410086218 local ThemeD = 5410086218
+	local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC,ThemeC,ThemeD,ThemeD}
+	RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EUPHORIC",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+	SongChange(Tanble[math.random(1,8)],3.5,0,1,"??? - あさやけもゆうやけもないんだ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+	WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+	-- Tween Values. --
+	function TweenAnimate(object,Aniim,time,easingstyle,easingdirection,repet,reverse,deelay)
+		local infos=TweenInfo.new(time,Enum.EasingStyle[easingstyle],Enum.EasingDirection[easingdirection],repet,reverse,deelay)
+		local tween=game:GetService("TweenService"):Create(object,infos,Aniim)
+		tween:Play()
+		return tween
+	end
+	-- Tween Values. --
+
+	-- Artificial Heartbeat --
+	local MFL = math.floor
+	local HB = Instance.new("BindableEvent",game.Players[target].Character.Devoyance.Resources) HB.Name = "Beat" game.Players[target].Character.Devoyance.Resources:WaitForChild("Beat")
+	local OF = 0 local AFL = false local TRNDR = false local LF = tick() local Frame = 1/60 HB:Fire()
+	game:GetService("RunService").Heartbeat:Connect(function(S,P) 
+		OF = OF + S if OF >= Frame then if AFL then game.Players[target].Character.Devoyance.Resources.Heartbeat:Fire()	 LF = tick() else for i = 1, math.floor(OF / Frame) do HB:Fire() end LF = tick() end
+			if TRNDR then OF = 0 else OF = OF - Frame * MFL(OF / Frame) end end end)
+
+	function swait(Number) if Number == 0 or Number == nil then HB.Event:wait() else for i = 0, Number do HB.Event:wait() end end end
+
+	mouse.KeyDown:connect(function(k)
+
+		local ModeA = 2 local ModeB = "Randomized"
+		local RandomMode = {ModeA,ModeA,ModeA,ModeB,ModeB}
+		local ModeAA = "Inexplicability" local ModeBB = "Irrationality"
+		local RandomMode2 = {ModeAA,ModeBB,ModeBB,ModeAA,ModeAA}
+
+		if k == "q" and Mode ~= 1 then
+			Mode = 1
+			local ThemeA = 13418795496 local ThemeB = 13418795496 local ThemeC = 13418795496 local ThemeD = 13418795496
+			local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC,ThemeC,ThemeD,ThemeD}
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EUPHORIC",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(Tanble[math.random(1,8)],3.5,0,1,"??? - あさやけもゆうやけもないんだ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "?!" and Mode == 1 then
+			Mode = "?!"
+			local C1 = Color3.fromRGB(25,45,65) local C2 = Color3.fromRGB(65, 45, 85) local GRC1 = Color3.fromRGB(25,45,65) local GRC2 = Color3.fromRGB(145,185,255)
+			local TxtColor = Color3.fromRGB(125, 85, 135) local TxtColor2 = Color3.fromRGB(65, 125, 145)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("NIL",TxtColor,TxtColor2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13413928720,3.5,0,1, "403 ERROR (a.k.a. xi vs ZUMMER) - Forbidden") Hum.WalkSpeed = 650 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= RandomMode[math.random(1,5)] and Mode == 1 then
+			Mode = RandomMode[math.random(1,5)]
+
+			if Mode == 2 then
+				Mode = 2
+				local C1 = Color3.fromRGB(25,45,65) local C2 = Color3.fromRGB(65, 45, 85) local GRC1 = Color3.fromRGB(25,45,65) local GRC2 = Color3.fromRGB(145,185,255)
+				local TxtColor = Color3.fromRGB(125, 85, 135) local TxtColor2 = Color3.fromRGB(65, 125, 145)
+				local ThemeA = 13420740267 local ThemeB = 13420740267 local ThemeC = 13420740267 local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC}
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("OBSCURITY",TxtColor,TxtColor2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(Tanble[math.random(1,5)],3.5,0,1,"Jellyfish") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Randomized" then
+				Mode = "Randomized"
+				local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) 
+				local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("RANDOMIZATION",C1,C2,C1,GRC2,C1,C2)
+				SongChange(13420740267,3.5,56.5,1, "Kyozou - ^") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+
+		elseif k == "n" and Mode ~= RandomMode2[math.random(1,5)] and Mode == 2 then
+			Mode = RandomMode2[math.random(1,5)]
+
+			if Mode == "Inexplicability" then
+				Mode = "Inexplicability"
+				local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("INEXPLICABILITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421724393,3.5,0,1.05,"??? - うんとこしょ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Irrationality" then
+				Mode = "Irrationality"
+				local C1 = Color3.fromRGB(45,85,95) local C2 = Color3.fromRGB(25,45,65) local GRC1 = Color3.fromRGB(45,65,125) local GRC2 = Color3.fromRGB(195,185,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("IRRATIONALITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421808181,3.5,0,1,"??? - 6_y") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+
+		elseif k == "n" and Mode ~= RandomMode2[math.random(1,5)] and Mode == "Randomized" then
+			Mode = RandomMode2[math.random(1,5)]
+
+			if Mode == "Inexplicability" then
+				Mode = "Inexplicability"
+				local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("INEXPLICABILITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421724393,3.5,0,1.05,"??? - うんとこしょ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+			elseif Mode == "Irrationality" then
+				Mode = "Irrationality"
+				local C1 = Color3.fromRGB(45,85,95) local C2 = Color3.fromRGB(25,45,65) local GRC1 = Color3.fromRGB(45,65,125) local GRC2 = Color3.fromRGB(195,185,255)
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("IRRATIONALITY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+				SongChange(13421808181,3.5,0,1,"??? - 6_y") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+				WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+			end
+		end
+
+		if k == "m" and Mode ~= "Tragedy" and Mode == "Inexplicability" then
+			Mode = "Tragedy"
+			local C1 = Color3.fromRGB(175,175,175) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("TRAGEDY",C1,C2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421844648,3.5,0,1.075,"DJ Genki .VS. Gram - Einherjar Joker") Hum.WalkSpeed = 750 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "..." and Mode == "Irrationality" and false then
+			Mode = "..."
+			local C1 = Color3.fromRGB(125,175,255) local C2 = Color3.fromRGB(15,35,65) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("DISCONSOLATION",C1,C2,C2,GRC2,C2,GRC2)
+			SongChange(13421724393,3.5,0,1,"アブジェ") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "..." and Mode == "Irrationality" then
+			Mode = "..."
+			local C1 = Color3.fromRGB(125,175,255) local C2 = Color3.fromRGB(15,35,65) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("DISCONSOLATION",C1,C2,C2,GRC2,C2,GRC2)
+			local TableB = {13421724393,13421724393,13421724393,13421724393}
+			SongChange(TableB[math.random(1,4)],3.5,0,1,"アブジェ　歌ってみた") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "b" and Mode ~= "Shatteration" and Mode == "..." then
+			Mode = "Shatteration"
+			local C1 = Color3.fromRGB(65,65,65) local C2 = Color3.fromRGB(95,95,95) local GRC1 = Color3.fromRGB(75,75,75) local GRC2 = Color3.fromRGB(255,255,255)
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("SHATTERATION",C1,C2,C2,GRC2,C2,GRC2)
+			SongChange(13422366151,3.5,0,1,"アブジェ - Piano Cover") Hum.WalkSpeed = 14 Hum.JumpPower = 50
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "e" and Mode ~= 3 then
+			Mode = 3
+			local C1 = Color3.fromRGB(135,155,255) local C2 = Color3.fromRGB(145,100,255) local GRC1 = Color3.fromRGB(115,0,185) local GRC2 = Color3.fromRGB(255,255,255)
+			local ThemeA = 13420740267 local ThemeB = 13420740267 local ThemeC = 13420740267 local Tanble = {ThemeA,ThemeA,ThemeB,ThemeA,ThemeC}
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("AMBIGUATION",C1,C2,GRC1,GRC2,GRC1,GRC2)
+			SongChange(Tanble[math.random(1,5)],3.5,0,1,"xx - くらげ(Jellyfish)") Hum.WalkSpeed = 16 Hum.JumpPower = 100
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "r" and Mode ~= "Crisis" then
+			Mode = "Crisis"
+			local C1 = Color3.fromRGB(255,95,65) local C2 = Color3.fromRGB(255,65,35) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("CRISIS",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(4571259862,3.5,0,1, "Juggernaut - Outerhaven") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Embers" and Mode == "Crisis" then
+			Mode = "Embers"
+			local C1 = Color3.fromRGB(195,75,65) local C2 = Color3.fromRGB(65,45,25) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("EMBERS",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13420963640,3.5,0,1,"Distance OST - Halloween") Hum.WalkSpeed = 350 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Annihilation" and Mode == "Embers" then
+			Mode = "Annihilation"
+			local C1 = Color3.fromRGB(185,45,75) local C2 = Color3.fromRGB(75,0,0) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("ANNIHILATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13420740267,3.5,0,1,"xx - くらげ(Jellyfish)") Hum.WalkSpeed = 650 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "Prosperous" and Mode == "Annihilation" then
+			Mode = "Prosperous"
+			local C1 = Color3.fromRGB(255,185,95) local C2 = Color3.fromRGB(255,125,65) local GRC1 = Color3.fromRGB(65,35,20) 
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("PROSPERITY",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13421350553,3.5,0,1,"【東方ᐯᝪᑕᗩし】Cry for the Moon - (Poplica*)") Hum.WalkSpeed = 1250 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "t" and Mode ~= "Serenity" then
+			Mode = "Serenity"
+			local C1 = Color3.fromRGB(95, 25, 165) local C2 = Color3.fromRGB(95, 65, 255) local GRC1 = Color3.fromRGB(20,35,65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("SERENITY",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13421394410,3.5,0,1, "Yume 2kki OST - The Ceiling") Hum.WalkSpeed = 15 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Dilution" and  Mode == "Serenity" then
+			Mode = "Dilution"
+			local C1 = Color3.fromRGB(145, 125, 255) local C2 = Color3.fromRGB(165, 165, 175) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("DILUTION",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421484279,3.5,0,1, "Yume 2kki OST - Lotus Waters") Hum.WalkSpeed = 12 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "y" and Mode ~= "Affectionate" then
+			Mode = "Affectionate"
+			local C1 = Color3.fromRGB(145, 125, 255) local C2 = Color3.fromRGB(165, 165, 175) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("AFFECTIONATE",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421627361,3.5,0,1, "Kyozou - HappyValentine") Hum.WalkSpeed = 20 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "m" and Mode ~= "Convivial" and Mode == "Affectionate" then
+			Mode = "Convivial"
+			local C1 = Color3.fromRGB(125, 255, 145) local C2 = Color3.fromRGB(165, 200, 175) local GRC1 = Color3.fromRGB(75,125,85) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("CONVIVIAL",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13421627361,3.5,15,1, "ああああ - をかけるアドベンチャー ～ we are forever friends! [Long Version]") Hum.WalkSpeed = 35 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "n" and Mode ~= "Debiliation" and Mode == "Affectionate" then
+			Mode = "Debiliation"
+			local C1 = Color3.fromRGB(45,65,45) local C2 = Color3.fromRGB(45,125,255) local GRC1 = Color3.fromRGB(65,65,65) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("DEBILIATION",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13422447399,3.5,0,1, "予言屋さん") Hum.WalkSpeed = 35 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "u" and Mode ~= "Inundated" then
+			Mode = "Inundated" 
+			local C1 = Color3.fromRGB(35,65,95) local C2 = Color3.fromRGB(25,95,165) local GRC1 = Color3.fromRGB(125,65,255) local GRC2 = Color3.fromRGB(255,255,255) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("INUNDATED",C2,C1,GRC1,GRC2,GRC1,GRC2)
+			SongChange(13422447399,3.5,0,1, "予言屋さん") Hum.WalkSpeed = 16 Hum.JumpPower = 450
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "k" and Mode ~= "Visualization" then
+			Mode = "Visualization"
+			local C1 = Color3.fromRGB(95, 25, 165) local C2 = Color3.fromRGB(95, 65, 255) local GRC1 = Color3.fromRGB(20,35,65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("VISUALIZATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13422433872,3.5,93.5,1, "xx4gou RETUNE // Lamprey hole") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "f" and Mode ~= "Recogniscent" then
+			Mode = "Recogniscent"
+			local C1 = Color3.fromRGB(95, 155, 255) local C2 = Color3.fromRGB(25, 45, 65) local GRC1 = Color3.fromRGB(25, 45, 65) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("RECOGNISCENT",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+			SongChange(13422493171,3.5,96,1, "Croomin / ImpossibleStudio - Blue Sky") Hum.WalkSpeed = 16 Hum.JumpPower = 150
+			WingExtraProps(false,C1,C2,"Neon","Neon",0,0)
+
+		elseif k == "j" and Mode ~= "Hyperium" then
+			Mode = "Hyperium"
+			local C1 = Color3.fromRGB(0, 125, 255) local C2 = RGB(15,35,45) local C3 = RGB(95,0,255) local C4 = RGB(15,35,45) local GRC1 = Color3.fromRGB(255, 75, 125) 
+			RecolorMaterialReflectanceEyeColor(C2,C1,"Neon","Neon",0,0,C1) ChadNametag("HYPERIUM",Color3.fromRGB(255,255,255),C4,C1,C2,C1,C2)
+			SongChange(13422506277,3.5,30,1, "t+pazolite - Ultrasonic Anthem [REMAKE]") Hum.WalkSpeed = 100000 Hum.JumpPower = 500
+			WingExtraProps(true,C3,C4,"Neon","Neon",0,0)
+
+		elseif k == "l" and Music.Playing == true then Music.Playing = false Music.Volume = 0
+		elseif k == "l" and Music.Playing == false then Music.Playing = true Music.Volume = 3.5
+		elseif k == "equals" and Music.Parent == Player.PlayerGui then Music.Parent = Torso
+		elseif k == "equals" and Music.Parent == Torso then Music.Parent = Player.PlayerGui
+		elseif k == "quote" then Music.TimePosition = 0
+
+		elseif k == "z" and Mode == "Randomized" then
+			local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) 
+			local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+			RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag("RANDOMIZATION",C1,C2,C1,C2,C1,C2)
+
+		elseif k == "one" and  Aero == true and EyeToggle == false then
+			EyeToggle = true
+			for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 0
+				end
+				for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+						v.Transparency = 0
+					end
+				end
+				C.Head["Left Eye"].Transparency = 0
+				C.Head["Right Eye"].Transparency = 0
+			end
+
+		elseif k == "one" and Aero == true and EyeToggle == true then
+			EyeToggle = false
+			for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+					v.Transparency = 1
+				end
+				for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then
+						v.Transparency = 1
+					end
+				end
+				C.Head["Left Eye"].Transparency = 1
+				C.Head["Right Eye"].Transparency = 1
+			end
+
+		elseif k == "two" and AeroResources.LocksOfIce.Transparency == 0 and Aero == true then AeroResources.LocksOfIce.Transparency = 1 AeroResources.LocksOfIce2.Transparency = 0
+		elseif k == "two" and AeroResources.LocksOfIce2.Transparency == 0 and Aero == true then AeroResources.LocksOfIce.Transparency = 0 AeroResources.LocksOfIce2.Transparency = 1
+
+		elseif k == "leftbracket" and Aero == true then
+			local AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+			local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+			local Shades = AeroResources.Shades
+			e.f1.Transparency = 0 e.f2.Transparency = .05 e.f3.Transparency = .1 e.f4.Transparency = .15 e.f5.Transparency = .2 e.f6.Transparency = .25 e.f7.Transparency = .35
+			e.f8.Transparency = .45 e.f9.Transparency = .55 e.f10.Transparency = .65 e.f11.Transparency = .75 e.f12.Transparency = 1 Shades.Transparency = 1 
+
+		elseif k == "rightbracket" and Aero == true then
+			local AeroResources = game.Players[target].Character.Devoyance.Resources.Aero
+			local e = game.Players[target].Character.Devoyance.Resources.Aero.Gradient
+			local Shades = AeroResources.Shades
+			e.f1.Transparency = 1 e.f2.Transparency = 1 e.f3.Transparency = 1 e.f4.Transparency = 1 e.f5.Transparency = 1 e.f6.Transparency = 1 e.f7.Transparency = 1 
+			e.f8.Transparency = 1 e.f9.Transparency = 1 e.f10.Transparency = 1 e.f11.Transparency = 1 e.f12.Transparency = 1 Shades.Transparency = 0
+		end
+	end)
+	-- End of Artificial Heartbeat --=
+
+	-- Start of Loops --
+	spawn(function()
+
+		game.Players[target].Character.Devoyance["Script Booting Objects"]:Destroy()
+
+		while true do -- Main Loop
+			swait()
+			sine = sine + change
+
+			Hum.Health = math.huge
+			Hum.MaxHealth = math.huge
+
+			local LDNS = Loudness
+
+			if Aero == true then
+				local Remove = {"Silver","MadScientistHair","FurryWhiteCoatCollar","BlueHoodie","HQWingedGlasses","WhiteStyledBackHair"}
+				for i,v in pairs(C:GetDescendants()) do
+					if v:IsA("Accessory") then
+						for A,B in pairs(Remove) do
+							if string.find(v.Name,B) then
+								v:Destroy()
+								C.Head.face.Transparency = 1
+							end
+						end
+					end
+				end
+			end 
+
+
+			if Mode == "Shatteration" and BandWBool.Value == false then
+				BandWBool.Value = true
+			elseif Mode ~= "Shatteration" and BandWBool.Value == true then
+				BandWBool.Value = false
+			end
+
+			if Mode == "?!" then
+				local C1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC1 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				local C2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255)) local GRC2 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C2) ChadNametag(math.random(10,99).."NIL"..math.random(10,99),C1,C2,GRC1,GRC2,GRC1,GRC2)
+				ScriptLabel.Text = math.random(1000,1000000)..""
+				DevoyanceGui.MusicDisplay.ScriptText.Text = math.random(9999999,999999999)..""
+
+			elseif Mode ~= "?!" then
+				ScriptLabel.Text = "DEVOYANCE"
+				DevoyanceGui.MusicDisplay.ScriptText.Text = "DEVOYANCE"
+
+				if Music.PlaybackSpeed >= 10 or Music.PlaybackSpeed <= 0 then 
+					Music.PlaybackSpeed = 1
+				end
+
+				if Mode == "Visualization" then
+					local LDNS2 = Loudness / 1000
+					if LDNS2 >= 1 then
+						LDNS2 = 1
+					end
+					local Loud2 = Loudness/100
+					local GRC1 = Color3.fromRGB(0,0,0)
+					local C1 = Color3.fromHSV(sine/360 - math.floor(sine/360),0.7,LDNS2)
+					local C2 = Color3.fromHSV(0,0,LDNS2)
+					RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("VISUALIZATION",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+					DevoyanceGui.MusicChoiceBR.Visible = true DevoyanceGui.ChoiceBox.Visible = true DevoyanceGui.ChoiceBox.MusicChoice.Visible = true
+					DevoyanceGui.PitchSelection.Visible = true DevoyanceGui.PitchLabel.Visible = true DevoyanceGui.PitchSelection.PitchChoice.Visible = true
+					DevoyanceGui.VolSelect.Visible = true DevoyanceGui.VolSelect.VolChoice.Visible = true DevoyanceGui.VolLabel.Visible = true
+					DevoyanceGui.TimeSelection.Visible = true DevoyanceGui.TimeSelection.TimeChoice.Visible = true DevoyanceGui.TimeLabel.Visible = true
+
+					ScriptLabel.Text = "DEVOYANCE"
+					DevoyanceGui.MusicDisplay.ScriptText.Text = "DEVOYANCE"
+					Hum.WalkSpeed = 5 * Loudness/4 Hum.JumpPower = 5 * Loudness/8
+					LPL.Range =  5 * Loud2 LPL.Brightness =  1.5 * Loud2
+					RPL.Range =  5 * Loud2 RPL.Brightness =  1.5 * Loud2
+
+				elseif Mode ~= "Visualization" then
+					LPL.Range = 6 LPL.Brightness = 2
+					RPL.Range = 6 RPL.Brightness = 2 
+					DevoyanceGui.MusicChoiceBR.Visible = false DevoyanceGui.ChoiceBox.Visible = false DevoyanceGui.ChoiceBox.MusicChoice.Visible = false
+					DevoyanceGui.PitchSelection.Visible = false DevoyanceGui.PitchLabel.Visible = false DevoyanceGui.PitchSelection.PitchChoice.Visible = false
+					DevoyanceGui.VolSelect.Visible = false DevoyanceGui.VolSelect.VolChoice.Visible = false DevoyanceGui.VolLabel.Visible = false
+					DevoyanceGui.TimeSelection.Visible = false DevoyanceGui.TimeSelection.TimeChoice.Visible = false DevoyanceGui.TimeLabel.Visible = false
+				end
+
+				if Mode == 1 and Music.SoundId == "rbxassetid://5517886433" then DevoyanceGui.MusicDisplay.MusicText.Text = "??? - untitled"
+				elseif Mode == 2 and Music.SoundId == "rbxassetid://5237037028" then DevoyanceGui.MusicDisplay.MusicText.Text = "x0o0x - Untitled (UTAU Defoko Cover)"
+				elseif Mode == 3 and Music.SoundId == "rbxassetid://5229246187" then DevoyanceGui.MusicDisplay.MusicText.Text = "xx - くらげ(Jellyfish, x0o0x_ Cover)"
+				end
+
+				if Mode == "Affectionate" then
+					local LDNS = Loudness/700
+					if LDNS >= 1 then
+						LDNS = 1
+					end
+					local GRC1 = Color3.fromRGB(0,0,0)
+					local C1 = Color3.fromHSV(.8,0.4,LDNS)
+					local C2 = Color3.fromRGB(35,20,55)
+					RecolorMaterialReflectanceEyeColor(C1,C2,"Neon","Neon",0,0,C1) ChadNametag("AFFECTIONATE",C1,C2,GRC1,Color3.fromRGB(255,255,255),GRC1,Color3.fromRGB(255,255,255))
+					DevoyanceGui.MusicChoiceBR.Visible = false DevoyanceGui.ChoiceBox.Visible = false DevoyanceGui.ChoiceBox.MusicChoice.Visible = false
+				end
+
+				if Mode == "Tragedy" then
+					local RT = 50 + sine
+					local the = {.1,.2,.3,.4,.5,.6,.7,.8,.9,1}
+					local Flash = Color3.fromHSV(0,0,the[math.random(1,10)])
+					local Dark = Color3.fromRGB(0,0,0)
+					ChadNametag("TRAGEDY",Flash,Dark,Dark,Flash,Dark,Flash)
+					RecolorMaterialReflectanceEyeColor(Flash,Dark,"Neon","Neon",0,0,Flash)
+					FX("Slash",false,0,0,ColorValue1.Value,"Neon",RootPart.CFrame * CFN(0,-2.75,0) * CFA(0,2 + RT * math.random(-5,5),0),10,0,V3(0,0,0),V3(0,0,0),V3(1,.01,1),0,1)
+				end
+			end
+
+			if Mode == "Irrationality" then
+				FX("Sphere",true,.5,10,ColorValue1.Value,"Neon",RootPart.CFrame * CFN(math.random(-8,8),-2.75,math.random(-8,5)) * CFA(90,0,0),15,1,V3(0,0,0),V3(.5,.5,.5),V3(2,2,2),0,1)
+			end
+
+			if Mode == "Convivial" then
+				local Position = CFN(math.random(-7,7),math.random(-3,9),math.random(-7,7))
+				FX("Sphere",true,1,7,ColorValue1.Value,"ForceField",RootPart.CFrame * Position * CFA(90,0,0),10,.1,V3(0,0,0),V3(1.25,1.25,1.25),V3(1.25,1.25,1.25),.7,1)
+				FX("Sphere",false,1,7,ColorValue2.Value,"Neon",RootPart.CFrame * Position * CFA(90,0,0),10,.1,V3(0,0,0),V3(.75,.75,.75),V3(.75,.75,.75),.7,1)
+			end
+
+			local RT = 0
+			if Mode == "Prosperous" or Mode == "Annihilation" then
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - 10 * math.sin(sine/30)),math.rad(0 - 20 * math.sin(sine/30)))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(40 - 10 * math.sin(sine/35)),math.rad(0 - 20 * math.sin(sine/30)))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-40 - 10 * math.sin(sine/33)),math.rad(0 - 20 * math.sin(sine/30)))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(140 + 10 * math.sin(sine/35)),math.rad(0 - 20 * math.sin(sine/30)))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-140 + 10 * math.sin(sine/33)),math.rad(0 - 20 * math.sin(sine/30)))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(180 + 10 * math.sin(sine/30)),math.rad(0 - 20 * math.sin(sine/30)))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "?!" then
+				W1.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W2.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W3.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 - math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W4.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W5.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+				W6.C0 = CFrame.new(0, 0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + math.random(0,360) * math.sin(sine/math.random(1,60))),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "Tragedy" then
+				RT = 50 + sine
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -6),math.rad(0))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 2),math.rad(0))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -4),math.rad(0))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 5),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(-90),math.rad(0 + RT * -3),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 7),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+
+			elseif Mode == "Hyperium" then
+				RT = 50 + sine * 3
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(125),math.rad(0 - 8 * math.sin(sine/30)))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(-90),math.rad(0 - 8 * math.sin(sine/30)))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(50),math.rad(0 - 8 * math.sin(sine/30)))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(115 + RT),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(50 + RT * 2),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + RT * 2.5),math.rad(0))
+				W7.C0 = CFrame.new(1,0,1.5) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 7),math.rad(0))
+				W8.C0 = CFrame.new(1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 9),math.rad(0))
+				W9.C0 = CFrame.new(1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 10),math.rad(0))
+				W10.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 6),math.rad(0))
+				W11.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 8),math.rad(0))
+				W12.C0 = CFrame.new(-1,0,1.85) * CFrame.Angles(math.rad(90),math.rad(115 + RT * 5),math.rad(0))
+
+
+			else
+				local SV1 = math.sin(sine/30) local SV2 = math.sin(sine/32) local SV3 = math.sin(sine/34)
+				W1.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(0 + 5 * SV3),math.rad(0))
+				W2.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(35 - 30 * SV3),math.rad(0))
+				W3.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(70 - 65 * SV3),math.rad(0))
+				W4.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(180 - 5 * SV3),math.rad(0))
+				W5.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(145 + 30 * SV3),math.rad(0))
+				W6.C0 = CFrame.new(0,0,1.5) * CFrame.Angles(math.rad(90),math.rad(110 + 65 * SV3),math.rad(0))
+
+				W1.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W2.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W3.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W4.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W5.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+				W6.C1 = CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0))
+			end
+		end
+	end)
+	spawn(function()
+		while true do
+			swait()
+
+			local SND = Music
+			local Gui = DevoyanceGui.ChoiceBox
+
+			if Aero == true then
+				for i = 1, 300 do swait() end
+				if EyeToggle == true then
+					for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 1 end
+						for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 1 end end end 
+					C.Head["Left Eye"].Transparency = 1 LB.Transparency = 0
+					C.Head["Right Eye"].Transparency = 1 RB.Transparency = 0
+				end
+
+				for i = 1, 15 do swait() end
+				if EyeToggle == true then
+					for i,v in pairs(C.Head["Left Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 0 end
+						for i,v in pairs(C.Head["Right Eye"]:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Transparency = 0 end end end
+					C.Head["Left Eye"].Transparency = 0 LB.Transparency = 1
+					C.Head["Right Eye"].Transparency = 0 RB.Transparency = 1
+				end
+			end
+		end
+	end)
+	-- End of Loops --
+
+	-- Final Functions and variables --
+	function rayCast(Pos, Dir, Max, Ignore)  -- Origin Position , Direction, MaxDistance , IgnoreDescendants
+		return game:service("Workspace"):FindPartOnRay(Ray.new(Pos, Dir.unit * (Max or 999.999)), Ignore) 
+	end
+	local Anim="Idle"
+	-- Final Functions and variables end --
+	coroutine.resume(coroutine.create(function()
+		-- Face Handling
+	end))
+
+	print("sick")
+
+	--Footplanting code, no need to modify anything, variable is Vec.X,Y or Z
+	local Walking = Hum.MoveDirection.magnitude>0
+	local FwdDir = (Walking and Hum.MoveDirection*root.CFrame.lookVector or Vector3.new())
+	local RigDir = (Walking and Hum.MoveDirection*root.CFrame.rightVector or Vector3.new())
+	local Vec = {
+		X=RigDir.X+RigDir.Z,
+		Z=FwdDir.X+FwdDir.Z
+	};
+	local Divide = 1
+	if(Vec.Z<0)then
+		Divide=math.clamp(-(1.25*Vec.Z),1,2)
+	end
+	Vec.Z = Vec.Z/Divide
+	Vec.X = Vec.X/Divide
+
+	print("other suck")
+
+	DevoyanceGui.Enabled = false
+
+
+	while true do
+		local idlesoff = false
+		swait()
+		local torvel=(RootPart.Velocity*Vector3.new(1,0,1)).magnitude
+		local velderp=RootPart.Velocity.y
+		hitfloor,posfloor=rayCast(RootPart.Position,(CFrame.new(RootPart.Position,RootPart.Position - Vector3.new(0,1,0))).lookVector,4,char)
+
+		if RootPart.Velocity.y > 1 and hitfloor==nil then
+			Anim="Jump"
+			RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-15)),.1)
+			LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15)),.1)
+			RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(-15),math.rad(0),math.rad(0)),.1)
+			Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-35),math.rad(0),math.rad(0)),.1)
+			RW.C0=clerp(RW.C0,cf(1.5,0.5,.4)*angles(math.rad(-25),math.rad(-20),math.rad(20)),.1)
+			LW.C0=clerp(LW.C0,cf(-1.5,0.5,.4)*angles(math.rad(-25),math.rad(20),math.rad(-20)),.1)	
+
+		elseif RootPart.Velocity.y < -1 and hitfloor==nil then 
+			Anim="Fall"
+			RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-15)),.1)
+			LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15)),.1)
+			RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+			Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(20),math.rad(0),math.rad(0)),.1)
+			RW.C0=clerp(RW.C0,cf(1,0.9,0)*angles(math.rad(0),math.rad(-10),math.rad(145 - 10 * math.cos(sine/24))),.1)
+			LW.C0=clerp(LW.C0,cf(-1,0.9,0)*angles(math.rad(0),math.rad(10),math.rad(-145 + 10 * math.cos(sine/24))),.1)	
+
+		elseif torvel<1 and hitfloor~=nil then
+			Anim="Idle"
+			if Mode == 1 then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * math.cos(sine / 34),.3)*angles(math.rad(0),math.rad(60 + 10 * math.sin(sine/84)),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90 + 10 * math.sin(sine/84)),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * math.cos(sine / 34))*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30 - 10 * math.sin(sine/84))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 2.5 * math.cos(sine / 29)),math.rad(0 + 1.5 * math.sin(sine/33)),math.rad(-30 + 10 * math.sin(sine/84))),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(-40 - 5 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(40 + 5 * math.cos(sine/32))),.1)		
+
+			elseif Mode == 2 then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1.1,-1 - 0.1 * math.cos(sine / 34),-.1)*angles(math.rad(0),math.rad(-70),math.rad(25))*angles(math.rad(0),math.rad(0),math.rad(0 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(-25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 4 * math.cos(sine / 29)),math.rad(15),math.rad(25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(10 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.3,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(175 + 3 * math.cos(sine/30)),math.rad(0),math.rad(20 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == 3 then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-5 + 1.15 * math.cos(sine/34)),math.rad(0),math.rad(0 - 3.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-5 - 1.15 * math.cos(sine/34)),math.rad(0),math.rad(0 + 3.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 3 * math.cos(sine / 34)),math.rad(0),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.5 - 0.1 * math.cos(sine / 28),-.4)*angles(math.rad(65 - 3 * math.cos(sine/30)),math.rad(0),math.rad(-45 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.5 - 0.1 * math.cos(sine / 28),-.3)*angles(math.rad(95 - 3 * math.cos(sine/30)),math.rad(-5),math.rad(65 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Randomized" then
+				local MC = math.cos local MS = math.sin local MR = math.rad local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * MC(S1),.2)*angles(MR(0),MR(55),MR(0))*angles(MR(-2.5),MR(0),MR(0 - 2.75 * MC(S1))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * MC(S1))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* MC(S1))*angles(MR(0 - 2 * MC(S1)),MR(0),MR(35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 3 * MC(S2)),MR(0),MR(-35)),.1)
+				RW.C0=clerp(RW.C0,cf(1.2,0.2 - 0.1 * MC(S5),-.7)*angles(MR(180 - 0 * MC(S4)),MR(-5),MR(-65 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.2,0.5 - 0.1 * MC(S5),.5)*angles(MR(0 - 10 * MC(S4)),MR(0),MR(40 + 2 * MC(S3))),.1)
+
+			elseif Mode == "Inexplicability" then
+				RH.C0=clerp(RH.C0,cf(1,-1.2 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(80),math.rad(0))*angles(math.rad(8.5),math.rad(0),math.rad(0 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-70),math.rad(0))*angles(math.rad(-8.5),math.rad(0),math.rad(15 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(8),math.rad(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(-4),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0.3 - 0.1 * math.cos(sine / 28),.35)*angles(math.rad(0),math.rad(0),math.rad(-30 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 10 * math.cos(sine/30)),math.rad(0),math.rad(-15 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Tragedy" then
+				local MC = math.cos local MS = math.sin local MR = math.rad 
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.4 - 0.1 * MC(S1),-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-8 + 2.75 * MC(S3))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(5 - 2.75 * MC(S3))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,3 + 1.5* MC(S1))*angles(MR(-20 - 2 * MC(S1)),MR(-10),MR(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(30 - 5 * MC(S2)),MR(0),MR(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(0 - 10 * MC(S4)),MR(0),MR(40 - 8 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.3,0.5 - 0.1 * MC(S5),-.7)*angles(MR(165),MR(45),MR(35)),.1)	
+
+			elseif Mode == "Irrationality" then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * math.cos(sine / 34),.3)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(2.5),math.rad(0),math.rad(25 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * math.cos(sine / 34))*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 2.5 * math.cos(sine / 29)),math.rad(5 - 2 * math.sin(sine/33)),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 + 0.05 * math.cos(sine / 28),.5)*angles(math.rad(0),math.rad(0),math.rad(-40 - 5 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.3 + 0.05 * math.cos(sine / 28),.75)*angles(math.rad(-90),math.rad(10),math.rad(90 - 5 * math.cos(sine/32))),.1)		
+
+			elseif Mode == "Crisis" then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-5),math.rad(0),math.rad(0 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-5),math.rad(0),math.rad(0 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(30 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 4 * math.cos(sine/30)),math.rad(0),math.rad(10 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 - 4 * math.cos(sine/30)),math.rad(0),math.rad(-10 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Annihilation" then
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.2 - 0.1 * MC(S1),-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-25 + 5 * MC(S2))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * MC(S1),0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-6.5),MR(0),MR(0 - 5 * MC(S2))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,4 - 1.5* MC(S3))*angles(MR(0 - 2 * MC(S1)),MR(0),MR(35 - 5 * MC(S1))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(15 - 3 * MC(S2)),MR(0),MR(-35 + 5 * MC(S1))),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.3 - 0.1 * MC(S5),.6)*angles(MR(0 - 2 * MC(S4)),MR(0),MR(-40 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 - 0.1 * MC(S5),.6)*angles(MR(0 - 2 * MC(S4)),MR(0),MR(40 + 2 * MC(S3))),.1)		
+
+			elseif Mode == "Prosperous" then
+				local S1 = sine/34 local S2 = sine/29 local S3 = sine/32 local S4 = sine/30 local S5 = sine/28
+				RH.C0=clerp(RH.C0,cf(1,-.3 - 0.1 * math.cos(sine / 34),-.6)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(-15 - 2.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-2.5),math.rad(0),math.rad(15 + 2.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,6 + 1* math.cos(sine / 34))*angles(math.rad(-15 + 2 * math.cos(sine / 34)),math.rad(-10),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(35 - 3 * math.cos(sine / 29)),math.rad(4),math.rad(-25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(-25 - 3 * MC(S4)),MR(0),MR(25 - 2 * MC(S3))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * MC(S5),0)*angles(MR(-25 - 3 * MC(S4)),MR(0),MR(-25 + 2 * MC(S3))),.1)		
+
+			elseif Mode == "Serenity" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,-.5)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(-25 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(-35)),.1)
+				RW.C0=clerp(RW.C0,cf(1.2,0.4 - 0.1 * S5,.4)*angles(MR(0 - 2 * S4),MR(0),MR(-40 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 2 * S4),MR(0),MR(-10 + 2 * S3)),.1)	
+
+			elseif Mode == "Dilution" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-.2 - 0.1 * S1,-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(55 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(-90 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,-1.75 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(.7,0.5 - 0.1 * S5,0)*angles(MR(35 - 2 * S4),MR(125),MR(45 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-.7,0.5 - 0.1 * S5,0)*angles(MR(25 - 2 * S4),MR(-125),MR(-45 + 2 * S3)),.1)	
+
+			elseif Mode == "Affectionate" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,0)*angles(MR(0),MR(90),MR(0))*angles(MR(0),MR(0),MR(0 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-.7 - 0.1 * S1,-.4)*angles(MR(0),MR(-90),MR(0))*angles(MR(-4.5),MR(0),MR(45 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(-35)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(5 - 3 * S2),MR(5),MR(25)),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0 - 0.1 * S5,-.5)*angles(MR(0 - 3 * S4),MR(180),MR(140 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-.55,-.2 - 0.1 * S5,-.5)*angles(MR(0 - 3 * S4),MR(-180),MR(-135 + 2 * S3)),.1)	
+
+			elseif Mode == "Convivial" then
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-.4 - 0.1 * S5,-.6)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5 - 3 * S1),MR(0),MR(-10 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S5,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5 + 3 * S1),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0 + .3 * S1,0,3.5 + .5* S1)*angles(MR(0 - 2 * S1),MR(0 - 3 * S1),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0 + 3 * S1),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(20 - 10 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(-20 + 10 * S3)),.1)	
+
+			elseif Mode == "Debiliation" then
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,6 - 1 * MS(sine/34))*angles(math.rad(0),math.rad(180),math.rad(0 + 10 + sine * -10)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(80)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(-80)),.1)		
+
+			elseif Mode == "Inundated" then
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(25 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 5 * math.cos(sine / 29)),math.rad(0),math.rad(-15)),.1)
+				RW.C0=clerp(RW.C0,cf(1.1,0.5 - 0.1 * math.cos(sine / 28),.5)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(-40 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.5 - 0.1 * math.cos(sine / 28),.5)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(40 + 2 * math.cos(sine/32))),.1)		
+
+
+			elseif Mode == "Visualization" then
+				RH.C0=clerp(RH.C0,cf(.9,-1 - 0.05 * Loudness/75,.3)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 1.75 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.05 * Loudness/75,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 1.75 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.05 * Loudness/75)*angles(math.rad(0 - 1 * math.cos(sine / 34)),math.rad(0),math.rad(30)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(35 * Loudness/500),math.rad(0),math.rad(-30)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.3 + 0.05 * Loudness/73,.2)*angles(math.rad(5 * Loudness/18),math.rad(0),math.rad(20)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.1,0.3 + 0.05 * Loudness/73,.5)*angles(math.rad(0),math.rad(0),math.rad(40 - 5 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Recogniscent" then
+				RH.C0=clerp(RH.C0,cf(1.1,-1 - 0.1 * math.cos(sine / 34),-.2)*angles(math.rad(0),math.rad(60),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 - 2 * math.cos(sine/34))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-3),math.rad(0),math.rad(0 + 2 * math.cos(sine/34))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* math.cos(sine / 34))*angles(math.rad(0 - 3 * math.cos(sine / 34)),math.rad(0),math.rad(25)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 3 * math.cos(sine / 29)),math.rad(0 - 2 * math.cos(sine/32)),math.rad(-25 + 4 * math.cos(sine/31))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(20 - 2 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(210 + 3 * math.cos(sine/30)),math.rad(-30),math.rad(50 + 2 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Hyperium" then
+				RH.C0=clerp(RH.C0,cf(1,-.3 - 0.1 * math.cos(sine / 34),-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(-25 + 6 * math.cos(sine/30))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * math.cos(sine / 34),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(-6.5),math.rad(0),math.rad(15 - 6 * math.cos(sine/30))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,10 + 2* math.cos(sine / 34))*angles(math.rad(-3 + 2 * math.cos(sine / 34)),math.rad(0),math.rad(15)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(25 - 8 * math.cos(sine / 29)),math.rad(0),math.rad(-15)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(30 - 18 * math.cos(sine/30))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * math.cos(sine / 28),0)*angles(math.rad(0 + 3 * math.cos(sine/30)),math.rad(0),math.rad(-30 + 18 * math.cos(sine/30))),.1)	
+
+			else
+				local MC = math.cos local MS = math.sin local MR = math.rad 
+				local S1 = MS(sine/34) local S2 = MS(sine/29) local S3 = MS(sine/32) local S4 = MS(sine/30) local S5 = MS(sine/28)
+				RH.C0=clerp(RH.C0,cf(1,-1 - 0.1 * S1,0)*angles(MR(0),MR(90),MR(0))*angles(MR(-2.5),MR(0),MR(0 - 2.75 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - 0.1 * S1,0)*angles(MR(0),MR(-90),MR(0))*angles(MR(-2.5),MR(0),MR(0 + 2.75 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .1* S1)*angles(MR(0 - 2 * S1),MR(0),MR(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(MR(10 - 5 * S2),MR(0),MR(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(10 - 2 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5 - 0.1 * S5,0)*angles(MR(0 - 10 * S4),MR(0),MR(-10 + 2 * S3)),.1)	
+			end
+
+			-- root.RotVelocity.Y
+		elseif torvel>2 and torvel<22 and hitfloor~=nil then
+			Anim="Walk"
+
+			if Mode == 2 then
+				local Alpha = .1 local s = math.sin local S = sine local S1 = sine/11 local S2 = sine/5.5 local S3 = sine/10
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 + 2 * s(S1)),math.rad(0 + 10 * s(S3)),math.rad(0 + 50 * s(S1))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 - 2 * s(S1)),math.rad(0 + 10 * s(S3)),math.rad(0 + 50 * s(S1))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .15 * s(S2))*angles(math.rad(8),math.rad(0 + 2 * s(S1)),math.rad(0 - 10 * s(S3))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(15),math.rad(0 - 2 * s(S1)),math.rad(0 + 10 * s(S3))),.1)
+				RW.C0=clerp(RW.C0,cf(1,0.3,.5)*angles(math.rad(0),math.rad(0 + 10 * s(S3)),math.rad(-40)),.1)
+				LW.C0=clerp(LW.C0,cf(-1,0.3,.5)*angles(math.rad(0),math.rad(0 + 10 * s(S3)),math.rad(40)),.1)	
+
+			elseif Mode == 3 then
+				RH.C0=clerp(RH.C0,cf(1,-1 + 0.05 * math.cos(sine / 4),0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0 + 5 * math.cos(sine / 8)),math.rad(0 + 35 * math.cos(sine / 8))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1 + 0.05 * math.cos(sine / 4),0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0 + 5 * math.cos(sine / 8)),math.rad(0 + 35 * math.cos(sine / 8))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,-0.05,-0.05 - 0.05 * math.cos(sine / 4))*angles(math.rad(5 + 3 * math.cos(sine / 4)),math.rad(0 + root.RotVelocity.Y/1.5),math.rad(0 - root.RotVelocity.Y - 5 * math.cos(sine / 8))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(10 - 3 * math.cos(sine / 4)),math.rad(0 + root.RotVelocity.Y/1.5),math.rad(0 - hed.RotVelocity.Y*1.5 + 5 * math.cos(sine / 8))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0 + 0.25 * math.cos(sine / 8))*angles(math.rad(0 - 50 * math.cos(sine / 8)),math.rad(0),math.rad(5 - 10 * math.cos(sine / 4))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0 - 0.25 * math.cos(sine / 8))*angles(math.rad(0 + 50 * math.cos(sine / 8)),math.rad(0),math.rad(-5 + 10 * math.cos(sine / 4))),.1)
+
+			elseif Mode == "Serenity" or Mode == "Irrationality" then
+				local S1 = math.sin(sine/12) local S2 = math.sin(sine/6) local S3 = math.sin(sine/7.5)
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 - .75 * S1),math.rad(0 - 7 * S1),math.rad(0 + 45 * S1)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 - .75 * S1),math.rad(0 - 7 * S1),math.rad(0 + 45 * S1)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .125 * S2)*angles(math.rad(5),math.rad(0 + .75 * S1),math.rad(0 + 7 * S1)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(5),math.rad(0 - .75 * S1),math.rad(0 - 7 * S1)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0 - 45 * S1),math.rad(0 - 7 * S1),math.rad(0)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0 + 45 * S1),math.rad(0 - 7 * S1),math.rad(0)),.1)	
+
+			else
+
+				-- Cos and Sin stuff
+				local Alph = .1
+				local S1,S2,S3 = math.sin(sine/12),math.sin(sine/6),math.sin(sine/11.5)
+				local C1,C2,C3 = math.cos(sine/12),math.cos(sine/6),math.cos(sine/8)
+
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0 - 1.5 * S1),math.rad(0 + 8 * C3),math.rad(0 + 50 * S1)),Alph)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0 + 1.5 * S1),math.rad(0 + 8 * C3),math.rad(0 + 50 * S1)),Alph)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + .175 * S2)*angles(math.rad(10 - 2 * C2),math.rad(0 + 1.5 * S1),math.rad(0 - 8 * C3)),Alph)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0 - 1.5 * S1),math.rad(0 + 8 * C3)),Alph)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0 - 45 * S3),math.rad(0),math.rad(5)),Alph)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0 + 45 * S3),math.rad(0),math.rad(-5)),Alph)		
+
+			end
+
+		elseif torvel>=22 and hitfloor~=nil then
+			Anim="Run"
+
+			if Mode == "Annihilation" or Mode == "Prosperous" or Mode == "Tragedy" then 
+				RH.C0=clerp(RH.C0,cf(1,-.4,-.5)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(-25 + 5 * math.sin(sine/28))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(15 + 5 * math.sin(sine/28))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,1 + 1* math.cos(sine / 34))*angles(math.rad(65 - 8 * math.cos(sine / 34)),math.rad(0),math.rad(0 - 7 * math.sin(sine/34))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-55 + 10 * math.cos(sine / 34)),math.rad(0),math.rad(0 + 7 * math.sin(sine/34))),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,.1)*angles(math.rad(0),math.rad(-40),math.rad(15 + 3 * math.cos(sine/32))),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,.1)*angles(math.rad(0),math.rad(40),math.rad(-15 - 3 * math.cos(sine/32))),.1)	
+
+			elseif Mode == "Debiliation" then
+				RH.C0=clerp(RH.C0,cf(1,-1,0)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0)*angles(math.rad(0 + 10 + sine * -5),math.rad(0),math.rad(0)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(80)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(0),math.rad(0),math.rad(-80)),.1)	
+
+			elseif Mode == "Convivial" then
+				local S1 = MS(sine/34) local S2 = MS(sine/32) local S3 = MS(sine/30)
+				RH.C0=clerp(RH.C0,cf(1,-.4,-.6)*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0 - 10 * S3),math.rad(-15 + 2 * S3)),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0)*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0 - 10 * S3),math.rad(15 - 2 * S3)),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,3.5 - .5 * S1)*angles(math.rad(30 - 5 * S1),math.rad(0),math.rad(0 + 10 * S3)),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-25 + 5 * S1),math.rad(0),math.rad(0 - 10 * S3)),.1)
+				RW.C0=clerp(RW.C0,cf(1.5,0.5,0)*angles(math.rad(-25),math.rad(0),math.rad(25 + 5 * S3)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.5,0.5,0)*angles(math.rad(-25),math.rad(0),math.rad(-25 - 5 * S3)),.1)	
+
+			elseif Mode == "Hyperium" then
+				local A = .3 local MSine = 60 local HSine = 30 local OSine = 45 local Sine2 = 40
+				RH.C0=clerp(RH.C0,cf(1,-.2 - .1 * MS(sine/MSine),-.6)*angles(math.rad(0),math.rad(90),math.rad(-7 + 1.575 * MS(sine/MSine))),A)
+				LH.C0=clerp(LH.C0,cf(-1,-1 - .1 * MS(sine/MSine),0)*angles(math.rad(0),math.rad(-90),math.rad(7 - 1.575 * MS(sine/MSine))),A)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,5 + 1 * MS(sine/HSine))*angles(math.rad(55 + 1.5 * MS(sine/MSine)),math.rad(0),math.rad(0)),A)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(-35 + 5 * MS(sine/OSine)),math.rad(0),math.rad(0)),A)
+				RW.C0=clerp(RW.C0,cf(1.25,0.5 - .1 * MS(sine/HSine),.4)*angles(math.rad(0 + 5 * MS(sine/Sine2)),math.rad(-60),math.rad(35 - 8 * MS(sine/Sine2))),A)
+				LW.C0=clerp(LW.C0,cf(-1.25,0.5 - .1 * MS(sine/HSine),.4)*angles(math.rad(0 - 5 * MS(sine/Sine2)),math.rad(60),math.rad(-35 + 8 * MS(sine/Sine2))),A)
+
+			else
+				RH.C0=clerp(RH.C0,cf(1,-1,0 + .5 * math.cos(sine/3.5))*angles(math.rad(0),math.rad(90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 145 * math.cos(sine / 6))),.1)
+				LH.C0=clerp(LH.C0,cf(-1,-1,0 + .5 * math.cos(sine/3.5))*angles(math.rad(0),math.rad(-90),math.rad(0))*angles(math.rad(0),math.rad(0),math.rad(0 + 145 * math.cos(sine / 6))),.1)
+				RootJoint.C0=clerp(RootJoint.C0,RootCF*cf(0,0,0 + 0.25 * math.cos(sine / 3.5))*angles(math.rad(28 - 1 * math.cos(sine / 7)),math.rad(0 + 1 * math.cos(sine/6)),math.rad(0 - 5* math.cos(sine/6))),.1)
+				Torso.Neck.C0=clerp(Torso.Neck.C0,necko*angles(math.rad(5),math.rad(0),math.rad(0 - 2* math.cos(sine/6))),.1)
+				RW.C0=clerp(RW.C0,cf(1.4,0.5,0 + .5 * math.cos(sine/7.5))*angles(math.rad(0 + 165 * math.cos(sine/6)),math.rad(0),math.rad(0)),.1)
+				LW.C0=clerp(LW.C0,cf(-1.4,0.5,0 - .5 * math.cos(sine/7.5))*angles(math.rad(0 - 165 * math.cos(sine/6)),math.rad(0),math.rad(0)),.1)		
+			end
+		end 
+	end
+end
